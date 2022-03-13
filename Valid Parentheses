@@ -1,0 +1,50 @@
+/* Company::Amazon|LinkedIn|Microsoft|Adobe|Google|Apple|Oracle|Vmware
+Important:: Problem Description:: Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+An input string is valid if:
+    Open brackets must be closed by the same type of brackets.
+    Open brackets must be closed in the correct order.
+Example 1:
+Input: s = "()"
+Output: true
+
+Example 2:
+Input: s = "()[]{}"
+Output: true
+
+Example 3:
+Input: s = "(]"
+Output: false
+
+Constraints:
+    1 <= s.length <= 104
+    s consists of parentheses only '()[]{}'.
+*/
+//Approach:: We are taking a stack and pushing all the open braces there,now while traversing a string encounter a close brace we are checking if stack is not empty then we pop stack's top and see if it complementing the current close brace,if yes return true else fase.
+//even if the stack is empty while we are traversing the input string then also it should return false,if stack is non empty after traversing the whole string then also it should return false.If encounter first as a close brace then also it should return false.
+class Solution {
+    public boolean isValid(String s) 
+    {
+     Stack<Character> stack=new Stack<Character>();
+     for(char c:s.tocharArray())
+     {
+       if(c=='('||c=='{'||c=='[')
+       {
+       stack.push(c);
+       }
+       else
+     {
+       if(stack.isEmpty)
+       {
+       return false;
+       }
+       char ch=stack.pop;
+       if(ch=='(' && c==')' || ch=='{' && c=='}' || ch=='[' && c==']')
+       {
+       continue;
+       }
+       return false;
+     }
+     return stack.isEmpty();
+    }
+    }
+
