@@ -14,8 +14,8 @@ Constraints:
     nums.length == n + 1
     1 <= nums[i] <= n
     All the integers in nums appear only once except for precisely one integer which appears two or more times.
-    
-  *********************************************************************Approach******************************************************************************************8
+    ains
+  *********************************************************************Approach:: Time complexity:O(nlogn) and space complexity:O(n)******************************************************************************************8
     class Solution {
     public int findDuplicate(int[] nums) 
     {
@@ -35,3 +35,39 @@ Constraints:
      return 0;
     }
 }
+//*****************************Optimize Approach: Time complexity:O(n) and space complexity:O(1) ******************************************************************************************************************
+class Solution {
+    public int findDuplicate(int[] nums) 
+    {
+    //Approach is: Floyd cycle detection algo:: Here we are converting the array to a linkedlist or graph representation in order to find the duplicate element,there should be a cycle if there is a duplicate elemnet exists.
+    //We convert index->value->Index to get a list/graph representation from an array. Like array index starts from 0-n and could have no of 1-n,hence for 
+    // an array[3,4,1,4,2]-> represented as [(index0)->( value in index3)->(value in index4)->(value in index 2)->(value in index 1)] ->[3->4->2->1->4],here 2 as value is the intersection point.
+    //intersection point is something where all duplicate values got meet and intersection points can have a outward edge and many incoming edges depends on no of duplicate values.
+    // hence once we find this intersection point,i.e slow and fast meets at value 2 first then slow goes back to index0 and then slow and fast increase as same and after a while slow and fast will be on two duplicate elements.
+    
+    class Solution {
+    public int findDuplicate(int[] nums) 
+    {
+  int fast=nums[0];
+  int slow=nums[0]; 
+    do
+    {
+        slow=nums[slow];
+        fast=nums[nums[fast]];
+        
+    }while(slow!=fast); // got the intersetion
+        
+//once found the intersection make slow as start index and fast as it is..then while slow!=fast increment slow and fast by 1.
+    slow= nums[0];
+        
+        while(slow!=fast)
+        {
+            slow=nums[slow];
+            fast=nums[fast];
+        }
+    
+return slow;
+    }
+}
+    }
+    }
