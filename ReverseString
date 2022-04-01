@@ -1,0 +1,43 @@
+Problem Description:: Write a function that reverses a string. The input string is given as an array of characters s.You must do this by modifying the input array in-place with O(1) extra memory.
+
+Example 1:
+Input: s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+
+Example 2:
+Input: s = ["H","a","n","n","a","h"]
+Output: ["h","a","n","n","a","H"]
+
+Constraints:
+    1 <= s.length <= 105
+    s[i] is a printable ascii character.
+    *******************************************************************Approach::Time Complexity:O(n),Space:O(1)**************************************************************************************
+    class Solution {
+    public int[][] diagonalSort(int[][] mat) 
+    {
+        int m=mat.length;
+        int n=mat[0].length;
+        Map<Integer,PriorityQueue<Integer>> map=new HashMap();
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {                
+                PriorityQueue<Integer> pq= map.getOrDefault((i-j),new PriorityQueue());
+                pq.add(mat[i][j]);
+                map.put(i-j,pq);
+            }
+        }
+        
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+              PriorityQueue<Integer> pq=map.get(i-j); 
+                mat[i][j]=pq.poll();
+                
+            }
+        }
+        return mat;
+    }
+} 
+
