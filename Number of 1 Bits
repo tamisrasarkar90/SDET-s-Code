@@ -24,24 +24,28 @@ Follow up: If this function is called many times, how would you optimize it?
 *****************************************************************************************************************************************************************
 public class Solution {
     // you need to treat n as an unsigned value
-  /*  public int hammingWeight(int n) 
+    //Here the concept is, when perform AND to one number and Number-1 it will always loose one sign bit from right!
+    //Untill the AND result becomes zero will perform that.The total number of opertaions required to perform a number to zero is what the result is! that means no of sign bit.
+    public int hammingWeight(int n) 
     {
         int count=0;
         while(n!=0)
         {
-            n=(n&n-1);
+            n=(n&n-1);  //Untill return zero
             count++;
         }
         return count;
-    }*/
+    }
 
 //******************************************TC:O(~32)i.e :TC::O(1)********************************
 public int hammingWeight(int n) 
     {
+    //The concept here is we are taking a 32 bit integer array to store the input. we are taking right most bit,if it is 1 then count++;and right shift to it's left.Again if it is 1 then count will increment else if 0 will ignore and move forward to left.At the end will return count. */
+    
         int count=0;
         for(int i=0;i<32;i++)
         {
-          if(((n>>i)&1)==1)
+          if(((n>>i)&1)==1)    //to take right most digit we need to do like (n>>i)&1
           {
               count++;
           }
