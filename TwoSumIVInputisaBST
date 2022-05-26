@@ -57,8 +57,7 @@ class Solution {
         }
         return false;
     }
-        
-        public static void inorder(TreeNode root,List<Integer> list)
+  public static void inorder(TreeNode root,List<Integer> list)
         {    
             if(root==null)
             {
@@ -68,6 +67,36 @@ class Solution {
                 list.add(root.val);
                 inorder(root.right,list);            
         }
-    
-
 }
+//************************************************************************* Using Set:: TC::O(n) & SC::O(n) *************************************************************
+/* Approach:: Will visit the tree by Preeorder,first calculate target-root if it is not there in the set then add root to the set and visit it's left and right child accordingly. But 
+if target-root is there in the set will return true.
+*/
+
+class Solution {
+    public boolean findTarget(TreeNode root, int k) 
+    {
+       Set<Integer> set=new HashSet<Integer>();       
+       return preorder(root,k,set); 
+    }
+    
+    public static boolean preorder(TreeNode root, int k,Set<Integer> set)
+    {
+        if(root==null)
+        {
+            return false;
+        }
+        int complement=k-root.val;
+        if(set.contains(complement))
+        {
+            return true;
+        }
+        else
+        {
+            set.add(root.val);
+        }
+        return preorder(root.left,k,set)|| preorder(root.right,k,set);
+    }
+}
+
+
