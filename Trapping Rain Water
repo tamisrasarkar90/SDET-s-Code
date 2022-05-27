@@ -1,0 +1,55 @@
+/*Problem Statement:: Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+Example 1:
+Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
+
+Example 2:
+Input: height = [4,2,0,3,2,5]
+Output: 9
+
+Constraints:
+    n == height.length
+    1 <= n <= 2 * 104
+    0 <= height[i] <= 105
+*/
+******************************************Approach1::Nested for loop::starting one pointer from 0 another from 1 and for a particular given time for a particular index
+check the min of both and subtract with the current value and now multiple wth 1(as width) and keep adding on in order to get the total area of water tapping*******************TC::O(N^2) and SC:O(1)
+
+
+*******************************************Approach 2:: TC::O(n) and SC:O(n^2)******************************************************************************************
+class Solution {
+    public int trap(int[] height) 
+    {
+        int result=0;
+        int n=height.length;
+        //Step1. We declare left and right array in order to get the max of left and max of right to calculate tapped water
+        int[] leftmax=new int[n];
+        int[] rightmax=new int[n];
+        
+    //Step2. we need to fill these two array now by comparing current value of height array with the previous(for leftmax) and next(for rightmax) value and get the max in both the cases.
+        leftmax[0]=height[0];
+        rightmax[n-1]=height[n-1];
+        
+        for(int i=1;i<n;i++)
+        {
+            leftmax[i]=Math.max(leftmax[i-1],height[i]);
+        }
+        
+         for(int j=n-2;j>=0;j--)
+        {
+            rightmax[j]=Math.max(rightmax[j+1],height[j]);
+        }
+        
+       //Step3:: We need to calculate now the area of tapping water by taking min height from leftmax and rightmax array and subtract it with the current value from height array * 1(as width mentioned 1) and keep adding the value in order to return the total area of water is getting tapped.
+        
+        for(int k=0;k<n;k++)
+        {
+          result+=(Math.min(leftmax[k],rightmax[k]))-height[k] *1;
+        }
+        return result; 
+    }
+}
+
+
+
