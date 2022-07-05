@@ -1,0 +1,88 @@
+/*Problem Statement:: Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.You must write an algorithm that runs in O(n) time.
+Example 1:
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+
+Example 2:
+Input: nums = [0,3,7,2,5,8,4,6,0,1]
+Output: 9
+
+Constraints:
+    0 <= nums.length <= 105
+    -109 <= nums[i] <= 109
+*/
+// ********************************************************* TC:O(nlogn) & SC:O(1) *********************************************************************************************
+class Solution {
+    public int longestConsecutive(int[] nums) 
+    {
+      //TC:O(nlogn)
+     //SC:O(1)
+        
+        int maxcount=1;
+        int currentcount=1;
+        Arrays.sort(nums);
+       // int i=0;
+       // int j=i+1;
+       // while(j<nums.length)
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        for(int i=1;i<nums.length;i++)
+        {
+        if(nums[i]!=nums[i-1])
+        {
+           if(nums[i]==nums[i-1]+1)
+           {
+               //j++;
+              // count+=j-i+1;
+             currentcount+=1;  
+           } 
+            else
+            {
+                maxcount=Math.max(maxcount,currentcount);
+                currentcount=1;
+                    
+            }
+        }
+        
+            
+        }
+        return Math.max(maxcount,currentcount);
+    }
+}
+
+//*************************************************Using HashSet:: TC::O(N)(for inserting data into Set)+O(N)(for looping through the elements)+O(N)(for inner while loop)~O(3N) and SC:: O(N)(for unordered set)*********************************************
+class Solution {
+    public int longestConsecutive(int[] nums) 
+    {
+        Set<Integer> set=new HashSet<Integer>();
+        int maxlength=0;
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        for(int num:nums)
+        {
+            set.add(num);
+        }
+        for(int el:nums)
+        {
+            if(!set.contains(el-1))
+            {
+                int currnum=el;
+                int currlength=1;
+                
+                while(set.contains(currnum+1))
+                {
+                       currnum+=1;
+                       currlength+=1;
+                }
+            maxlength=Math.max(maxlength,currlength);
+          }
+        }
+        return maxlength;
+    }
+}
+
