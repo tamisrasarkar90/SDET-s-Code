@@ -1,0 +1,33 @@
+package HashMapHeapsQueue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MaxFrequencyOfCharByHashMap {
+
+	public static void main(String[] args) 
+	{
+		
+		System.out.println(MaxFrequencyofChar("AMAZON"));
+	}
+	
+	public static char MaxFrequencyofChar(String str)
+	{
+		
+		Map<Character,Integer> map=new HashMap();
+		for(char ch:str.toCharArray())
+		{
+			map.put(ch, map.getOrDefault(ch, 0)+1);
+		}
+		char max=str.charAt(0);
+		for(char k:map.keySet())
+		{		
+			if(map.get(k)>map.get(max))  //this is returning no of occurance of that character as value
+			{
+				max=k;
+			}			
+		}
+		return max;
+	}
+
+}
