@@ -20,7 +20,7 @@ Input: n = 4
 Output: 3
 Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.
 */
-// TC:O(NlogN) and SC:: O(N) (for auxilary space used in recursion)
+// TC:O(2^N) and SC:: O(N) (for auxilary space used in recursion)
 class Solution {
     public int fib(int n) 
     {
