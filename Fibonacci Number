@@ -38,3 +38,23 @@ class Solution {
        }
     }
 }
+//********************************************************DP Iterative:: TC::O(N) and SC::O(1)******************************************************************
+class Solution {
+    public int fib(int n) 
+    {
+        if(n<=1)
+        {
+            return n;
+        }
+        int sum=0;
+        int i=0;
+        int j=1;
+       while(n-->1)
+       {
+       sum=i+j;
+       i=j;
+       j=sum;
+       }
+       return sum;         
+     }
+        }
