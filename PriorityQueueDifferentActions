@@ -1,0 +1,37 @@
+package HashMapHeapsQueue;
+
+import java.util.Collections;
+import java.util.PriorityQueue;
+
+/*Priority Queue:: It is a type of data Structure same as Queue(FIFO) only difference is, it can release element based on priority which is
+ * by default set as lower priority but we can customize as High Priority Queue. In that case higher value will remove first.
+ *  **************************************************Different Methods*************************************************************
+ *  Add::O(logN)
+ *  Remove:: O(logN)
+ *  Peek::O(1)
+ * 
+ */
+public class PriorityQueueDifferentActions {
+
+	
+	public static void main(String[] args) 
+	{
+	//	PriorityQueue<Integer> pq=new PriorityQueue(Collections.reverseOrder()); // to print higher value first
+		PriorityQueue<Integer> pq=new PriorityQueue(); //print by default as lower value first
+		int[] ranks= {22,29,27,4,10,3,1};
+		for(int rank:ranks)
+		{
+			pq.add(rank);                    //TC:O(logN)
+		}
+		while(!pq.isEmpty())
+		{
+			System.out.println(pq.peek());   //TC:O(1)
+			pq.remove(pq.peek());            //TC:O(logN)
+			//System.out.println(pq.peek());
+		}
+
+	}
+
+}
+//Here using PriorityQueue we kind of sort the array. TC:: O(NlogN) and SC::O(N)  
+//N for traversing the array and add/remove TC is logN ; This sort is known as Heap sort apart from explicitly assign space!
