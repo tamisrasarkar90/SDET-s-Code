@@ -1,0 +1,133 @@
+/* Problem Description::You have a set which contains all positive integers [1, 2, 3, 4, 5, ...].
+Implement the SmallestInfiniteSet class:
+    SmallestInfiniteSet() Initializes the SmallestInfiniteSet object to contain all positive integers.
+    int popSmallest() Removes and returns the smallest integer contained in the infinite set.
+    void addBack(int num) Adds a positive integer num back into the infinite set, if it is not already in the infinite set.
+
+Example 1:
+Input
+["SmallestInfiniteSet", "addBack", "popSmallest", "popSmallest", "popSmallest", "addBack", "popSmallest", "popSmallest", "popSmallest"]
+[[], [2], [], [], [], [1], [], [], []]
+Output
+[null, null, 1, 2, 3, null, 1, 4, 5]
+
+Explanation
+SmallestInfiniteSet smallestInfiniteSet = new SmallestInfiniteSet();
+smallestInfiniteSet.addBack(2);    // 2 is already in the set, so no change is made.
+smallestInfiniteSet.popSmallest(); // return 1, since 1 is the smallest number, and remove it from the set.
+smallestInfiniteSet.popSmallest(); // return 2, and remove it from the set.
+smallestInfiniteSet.popSmallest(); // return 3, and remove it from the set.
+smallestInfiniteSet.addBack(1);    // 1 is added back to the set.
+smallestInfiniteSet.popSmallest(); // return 1, since 1 was added back to the set and
+                                   // is the smallest number, and remove it from the set.
+smallestInfiniteSet.popSmallest(); // return 4, and remove it from the set.
+smallestInfiniteSet.popSmallest(); // return 5, and remove it from the set.
+
+ 
+Constraints:
+    1 <= num <= 1000
+    At most 1000 calls will be made in total to popSmallest and addBack
+
+*/
+class SmallestInfiniteSet 
+{
+ 
+ //TC:O(N) for PriorityQueue Contains method    
+    PriorityQueue<Integer> pq=null;
+    public SmallestInfiniteSet() 
+    {    
+        pq=new PriorityQueue<Integer>(1000);
+        for(int i=1;i<=1000;i++)
+        {
+            pq.offer(i);     //TC:O(logN)
+            
+        }
+    }
+ 
+    public int popSmallest()   // TC:O(logN)
+    {                  
+        int popele=pq.remove();
+            
+        return popele;
+    }
+    
+    public void addBack(int num)
+    {
+              if(!pq.contains(num)) //TC:O(N) => In order to better we can use Set as set.contains method TC:O(1) and SC:O(2N)~ O(N)
+               {
+                   pq.offer(num);
+               }
+    }
+          
+}  
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet obj = new SmallestInfiniteSet();
+ * int param_1 = obj.popSmallest();
+ * obj.addBack(num);
+ */
+
+// *****************************************Using SET and PriorityQueue Combinations************************************
+
+
+class SmallestInfiniteSet 
+{
+    PriorityQueue<Integer> pq=null;
+    Set<Integer> set=null;
+    public SmallestInfiniteSet() 
+    {
+        set=new HashSet<Integer>(1000);
+        pq=new PriorityQueue<Integer>(1000);
+        for(int i=1;i<=1000;i++)
+        {
+            pq.offer(i);     //TC:O(logN)
+            set.add(i);
+            
+        }
+    }
+ 
+    public int popSmallest()   // TC:O(logN)
+    {                  
+        int popele=pq.remove();
+        set.remove(popele) ;
+        return popele;
+    }
+    
+    public void addBack(int num)
+    {
+              if(!set.contains(num)) //TC:O(N) => In order to better we can use Set as set.contains method TC:O(1) and SC:O(2N)~ O(N)
+               {
+                  set.add(num);
+                   pq.offer(num);
+               }
+    }
+          
+} 
+
+// *****************************************Using TreeSet as treeSet maintains both SETs properties as well as keep it sorted within it and contains also it checks************************************
+class SmallestInfiniteSet 
+{
+    
+    TreeSet<Integer> set=null;
+    public SmallestInfiniteSet() 
+    {
+        set=new TreeSet<Integer>();
+        for(int i=1;i<=1000;i++)
+        {
+            set.add(i);                //TC:O(1)
+            
+        }
+    }
+ 
+    public int popSmallest()   // TC:O(logN)
+    {                         
+       return set.pollFirst();
+    }
+    
+    public void addBack(int num)  // TC:O(LogN)
+    {
+       set.add(num);  // As treeset will check internally if the value contains or not and insert accordingly.
+    }
+          
+} 
