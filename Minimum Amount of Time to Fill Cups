@@ -1,0 +1,108 @@
+/*
+Problem Description:: You have a water dispenser that can dispense cold, warm, and hot water. Every second, you can either fill up 2 cups with different types of water, or 1 cup of any type of water.
+
+You are given a 0-indexed integer array amount of length 3 where amount[0], amount[1], and amount[2] denote the number of cold, warm, and hot water cups you need to fill respectively. Return the minimum number of seconds needed to fill up all the cups.
+
+ 
+
+Example 1:
+
+Input: amount = [1,4,2]
+Output: 4
+Explanation: One way to fill up the cups is:
+Second 1: Fill up a cold cup and a warm cup.
+Second 2: Fill up a warm cup and a hot cup.
+Second 3: Fill up a warm cup and a hot cup.
+Second 4: Fill up a warm cup.
+It can be proven that 4 is the minimum number of seconds needed.
+
+Example 2:
+
+Input: amount = [5,4,4]
+Output: 7
+Explanation: One way to fill up the cups is:
+Second 1: Fill up a cold cup, and a hot cup.
+Second 2: Fill up a cold cup, and a warm cup.
+Second 3: Fill up a cold cup, and a warm cup.
+Second 4: Fill up a warm cup, and a hot cup.
+Second 5: Fill up a cold cup, and a hot cup.
+Second 6: Fill up a cold cup, and a warm cup.
+Second 7: Fill up a hot cup.
+
+Example 3:
+
+Input: amount = [5,0,0]
+Output: 5
+Explanation: Every second, we fill up a cold cup.
+
+ 
+
+Constraints:
+
+    amount.length == 3
+    0 <= amount[i] <= 100
+
+*/
+class Solution {
+ public int fillCups(int[] amount) 
+    {
+   // Approach for PriorityQueue. TC:: O(nlogk) and SC:O(k)
+        
+    PriorityQueue<Integer> pq=new  PriorityQueue<Integer>((a,b)->(b-a));  //maxheap means will return the max elements
+    int minsec=0;    
+    for(int i:amount)
+    {
+        pq.offer(i);
+    }
+     while(!pq.isEmpty())  
+     {
+         int firstmax=pq.poll();
+         int secondmax=pq.poll();
+         if(firstmax<=0 && secondmax<=0 )
+         {
+             break;
+         }
+             firstmax--;
+             secondmax--;
+             pq.offer(firstmax);
+             pq.offer(secondmax);
+             minsec++;            
+         
+     }
+        return minsec;
+    }
+} 
+
+/* Approach is:: We need to pull out the first max and second max elements from the array and then decrease them by 1 and put them back on the array again. and increase one second. Untill the two becomes zero(either or both) or if there is only one element which needs to decrease separately and increase the second count too!
+We can do that by greedy and PriorityQueue.
+
+*/
+class Solution {
+    public int fillCups(int[] amount) 
+    {
+      int minsec=0;
+      Arrays.sort(amount);
+      int firstmax=amount.length-1;
+      int secondmax=amount.length-2;
+        //Now taking the two biggest numbers of the array which will be at the last and the second last index as the array is sorted.
+      while(amount[firstmax]>0 && amount[secondmax]>0)
+      {
+          amount[firstmax]--;
+          amount[secondmax]--;
+          minsec++;
+          Arrays.sort(amount);
+      }
+       //The above loop will break when either of the two places becomes 0
+        //If the number at last and secon last index were equal, then both of them will become zero
+        //Or if it is not the case, then only one type of water is present in the dispenser 
+        while(amount[firstmax]>0)   //for one type still present in array
+        {
+            amount[firstmax]--;
+            minsec++;
+        }
+      return minsec;
+    }
+}
+
+TC:: O(NlogN)
+SC:O(N/2)[auxilary for sort]
