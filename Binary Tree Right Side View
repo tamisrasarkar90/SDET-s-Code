@@ -1,0 +1,63 @@
+/*Problem Description::  Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+Example 1:
+Input: root = [1,2,3,null,5,null,4]
+Output: [1,3,4]
+
+Example 2:
+Input: root = [1,null,3]
+Output: [1,3]
+
+Example 3:
+Input: root = []
+Output: []
+Constraints:
+    The number of nodes in the tree is in the range [0, 100].
+    -100 <= Node.val <= 100
+
+*/
+/* *****************************Approach:: Recursive and Iterative:: For recursive the SC will be O(H) where H is the height of binary tree and where as for iterative SC: will be 
+will be O(N) where N is number of nodes for both TC:O(N).
+Now for this problem we need to consider not only right view but also if each level consisting of only one node that also be visible. and if each level consisting of multiple nodes then the most right one will be visible.
+ so we are doing here reversal PreOrder which is : Root,Right,Left
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution 
+{
+    public List<Integer> rightSideView(TreeNode root) 
+    {
+        List<Integer> result=new ArrayList<Integer>();
+        reversepreorder(root,result,0);
+        return result;
+    }
+   
+    public static void reversepreorder(TreeNode root,List<Integer> result,int level) 
+     {
+        if(root==null)
+        {
+            return ;
+        }
+        
+        if(result.size()==level)
+        {
+            result.add(root.val);
+        }
+       reversepreorder(root.right,result,level+1);
+       reversepreorder(root.left,result,level+1);
+                
+    }
+}
