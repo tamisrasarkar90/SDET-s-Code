@@ -1,0 +1,82 @@
+/*
+Problem Descriptin::: Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
+Example 1:
+Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+Output: [3,9,20,null,null,15,7]
+
+Example 2:
+Input: preorder = [-1], inorder = [-1]
+Output: [-1]
+
+Constraints:
+    1 <= preorder.length <= 3000
+    inorder.length == preorder.length
+    -3000 <= preorder[i], inorder[i] <= 3000
+    preorder and inorder consist of unique values.
+    Each value of inorder also appears in preorder.
+    preorder is guaranteed to be the preorder traversal of the tree.
+    inorder is guaranteed to be the inorder traversal of the tree.
+*/    
+// TC:: O(N) | SC:O(N) Approach is basically 1) Make the start index of preorder as root and then find that (preorder root->inroot) value in inorder array and return the index. Now in Inorder array
+//from inorder[start] to this inorder[inroot-1]would be left subtree and from inorder[inroot+1] to inorder[inorder.length-1] is right subtree where the same will apply. Like finding
+//root in left subtree and then divide in on two halves and same for right!
+
+/*The algorithm approach can be stated as:
+
+    Create a map to store the inorder indexes.
+    Call the function constructTree with all 7 parameters as shown above.
+    In the recursive function, first check the base case, if (preStart,>preEnd || inStart> inEnd) then return NULL.
+    Construct a node (say root) with the root value( first element of preorder). 
+    Find the index of the root, say elem from the hashmap.
+    Find the number of elements ( say nElem) in the left subtree  = elem – inStart
+     Call recursively for the left subtree with correct values (shown in the above table) and store the answer received in root->left.
+    Call recursively for the right subtree with correct values (shown in the above table) and store the answer received in root->right.
+    Return root
+*/
+
+  /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+   public TreeNode buildTree(int[] preorder, int[] inorder) 
+    {
+        if(preorder.length==1 ||inorder.length==1)
+        {
+            return new TreeNode(preorder[0]);
+        }
+      Map<Integer,Integer> map=new HashMap<Integer,Integer>();
+      for(int i=0;i<inorder.length;i++)
+         {
+             map.put(inorder[i],i);
+         }
+      return buildTree(preorder,0,preorder.length-1,inorder,0,inorder.length-1,map);
+            
+        }
+    public static TreeNode buildTree(int[] preorder,int prestart,int preend,int[] inorder,int instart,int inend,Map<Integer,Integer>map) 
+    {
+        if(prestart> preend|| instart>inend)
+        {
+            return null;
+        }
+        TreeNode root= new TreeNode(preorder[prestart]);
+        int inroot= map.get(root.val);
+        int inleft=inroot-instart;       
+        root.left= buildTree(preorder,prestart+1,prestart+inleft,inorder,instart,inroot-1,map);
+        root.right=buildTree(preorder,prestart+inleft+1,preend,inorder,inroot+1,inend,map);
+        
+        return root; 
+    }
+}  
+
