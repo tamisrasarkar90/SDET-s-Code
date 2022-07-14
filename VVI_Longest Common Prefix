@@ -1,0 +1,50 @@
+/*Problem Description::  LEETCODE 14::  VERY VERY VERY IMPORTANT ||GOOGLE,AMAZON,FACEBOOK,MICROSOFT ALL FANG ASKED !!
+Write a function to find the longest common prefix string amongst an array of strings.
+If there is no common prefix, return an empty string "".
+Example 1:
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+
+Example 2:
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+
+Constraints:
+    1 <= strs.length <= 200
+    0 <= strs[i].length <= 200
+    strs[i] consists of only lowercase English letters.
+*/
+/* Approach is:: will take first String all characters and compare with all other strings if those charactes exists,if yes then will add into result or else will return result;
+ //TC:: O(M*N) where M is the no of chars exists in the first STring and N is the no of string to be compared 
+//SC:O(1)
+ */
+class Solution {
+    public String longestCommonPrefix(String[] strs)
+    {
+     String result="";
+        if(strs==null|| strs.length==0)
+        {
+            return result;
+        }
+        //for 1st string within String array strs comparing characters by chars with other strings characters
+        int index=0;
+      for(char c: strs[0].toCharArray())
+      {         
+          //within String array,comparing with other strings if the characters of 1st string is present
+          for(int j=1;j<strs.length;j++)
+          {
+              if(index>=strs[j].length()||c!=strs[j].charAt(index))   // if 1st string charindex within String array strs is greater than or equal to the  total string length comparing with(within String array strs) OR, First string char is not matching with other string(currently comparing within STring Array strs)char at the same index,then break and return the result.
+              {
+                 return result;
+              }
+          }
+    // If matches found for 1st character in the first String of strs then add it to the result and go for second/next character within 1st string of string array strs.
+          result+=c;
+          index++;
+  }
+        return result;
+        
+    }
+}
+
