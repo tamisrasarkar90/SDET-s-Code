@@ -1,0 +1,71 @@
+/* Problem Description::
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+Example 1:
+Input: s = "anagram", t = "nagaram"
+Output: true
+
+Example 2:
+Input: s = "rat", t = "car"
+Output: false
+
+Constraints:
+    1 <= s.length, t.length <= 5 * 104
+    s and t consist of lowercase English letters.
+
+*/
+//Approach:: for one string put them on a hashmap and then traverse the second string each char wise if exists in hashmap & with the same count as s..hence once we get the char in hashmap while
+//traversing t,will remove the count by1 and if only one char exists in the map,will remove that..Likeise if the return if map.size()==0 then return true else false;
+//TC::O(N) and SC::O(N)
+class Solution {
+    public boolean isAnagram(String s, String t) 
+    {
+        if(s.length()==0|| t.length()==0||s.length()!=t.length())
+        {
+            return false;
+        }
+        Map<Character,Integer> smap=new HashMap<>();
+        for(char c:s.toCharArray())
+        {
+            smap.put(c,smap.getOrDefault(c,0)+1);
+        }
+        for(char ch: t.toCharArray())
+        {
+            if(smap.containsKey(ch)==false)
+            {
+                return false;
+            }
+             if(smap.get(ch)==1)
+            {
+                smap.remove(ch);
+            }
+            else 
+            {
+                int val=smap.get(ch);
+                smap.put(ch,val-1);
+            }
+        }
+        
+       if(smap.size()==0)
+       {
+           return true;
+       }
+        return false;
+    }
+}
+
+//Another Approach *****************************************By sorting two strings so that it would be all same with char and count if both are anagram else return false;
+//TC::O(NlogN) and SC::O(N)
+class Solution {
+    public boolean isAnagram(String s, String t) 
+    {
+        if(s.length()==0|| t.length()==0||s.length()!=t.length())
+        {
+            return false;
+        }
+        char[] arr1=s.toCharArray();
+        char[] arr2=t.toCharArray();
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        
+        return Arrays.equals(arr1,arr2);
+        }
