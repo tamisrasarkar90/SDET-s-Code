@@ -1,0 +1,43 @@
+/* Problem Statement::Implement strStr().
+Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+Clarification:
+What should we return when needle is an empty string? This is a great question to ask during an interview.
+For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
+
+Example 1:
+Input: haystack = "hello", needle = "ll"
+Output: 2
+
+Example 2:
+Input: haystack = "aaaaa", needle = "bba"
+Output: -1
+
+Constraints:
+    1 <= haystack.length, needle.length <= 104
+    haystack and needle consist of only lowercase English characters.
+*/
+class Solution {
+    public int strStr(String haystack, String needle) 
+    {
+        if(needle.length()==0)
+        {
+            return 0;
+        }       
+       int len1= haystack.length();
+       int len2= needle.length();
+       if(len1<len2)
+       {
+           return -1;
+       }
+       //int j=i+1;
+                   //len1-len2 coz suppose text is:: aabbcabcd and pattern is abcd; now till i=4 text can accomplish pattern but for i==5 text is bcd and pattern.length is 4;similarly for i=6,7,8 text can't accompany pattern and giving error hence to accompy full pattern within text i should be till textlength-patternlength
+             for(int i=0;i<=len1-len2;i++)
+             {
+                if(haystack.substring(i,i+len2).equals(needle))
+               {
+                   return i;
+               }               
+           }
+       return -1; 
+    }
+}
