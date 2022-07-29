@@ -1,0 +1,54 @@
+/* Problem Description:: Given a list of strings words and a string pattern, return a list of words[i] that match pattern. You may return the answer in any order.
+A word matches the pattern if there exists a permutation of letters p so that after replacing every letter x in the pattern with p(x), we get the desired word.Recall that a permutation of letters is a bijection from letters to letters: every letter maps to another letter, and no two letters map to the same letter.
+
+Example 1:
+Input: words = ["abc","deq","mee","aqq","dkd","ccc"], pattern = "abb"
+Output: ["mee","aqq"]
+Explanation: "mee" matches the pattern because there is a permutation {a -> m, b -> e, ...}. 
+"ccc" does not match the pattern because {a -> c, b -> c, ...} is not a permutation, since a and b map to the same letter.
+
+Example 2:
+Input: words = ["a","b","c"], pattern = "a"
+Output: ["a","b","c"]
+
+Constraints:
+    1 <= pattern.length <= 20
+    1 <= words.length <= 50
+    words[i].length == pattern.length
+    pattern and words[i] are lowercase English letters.
+*/
+//TC::O(N) and SC::O(N)
+/* Here first we want a hashvalue of pattern which is a combination of 1,2,3,.. so on based on new chracters or repeat char.Means suppose Pattern ="abbcd" then the patternnew would be 12234 like this as if a=1,b=2,c=3,d=4 etc.
+Now will iterate through the list of strings and try to find this hasvalue for each string,if matches then will add into result else will skip.
+Normalize method is important.It is takinga String and return as a combination of number.Here we are using a map and each char is key and value is map.size().Once map.size increase the value string also increase for each new char,if already exists char the will not increase the val part.
+Now concat is answwer String and return.
+*/
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) 
+    {
+        List<String> result=new ArrayList();
+        String patternnew=normalize(pattern);
+        for(int i=0;i<words.length;i++)
+        {
+            if(patternnew.equals(normalize(words[i])))
+               {
+                   result.add(words[i]);
+               }
+        }
+               return result;
+    }
+    public String normalize(String str)
+    {
+     String ans="";
+     Map<Character,Integer> map=new HashMap<>();
+     for(char c:str.toCharArray())
+     {      
+        map.putIfAbsent(c,map.size());
+        ans+=map.get(c);     
+     }
+      
+       return ans; 
+    }
+} 
+               
+        
