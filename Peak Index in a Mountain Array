@@ -25,6 +25,12 @@ Constraints:
 */
 //TC::O(logN) and SC::O(1)
 //Approach:: Binary Search
+/* There are two scope to consider.One is ascending order then reach peak(max i.e. the o/p),then decending order. Hence will look for mid first. 
+If arr[mid]>arr[mid+1] then we are in decending part of moutain array.Then arr[mid] can be a possible answer hence high=arr[mid] and search for another bigger(max) number in the left side of teh array.
+Similarly,when arr[mid]<arr[mid+1] that means we are in increasing /ascending part of array then the answer may lie from mid+1 to right side.
+AS max we need to return hence will not consider arr[mid] as arr[mid+1]>arr[mid] hence set low=mid+1; and once you reach the peak i.e. high=low=maxitem then 
+return any one high/low
+*/
 class Solution {
     public int peakIndexInMountainArray(int[] arr) 
     {
@@ -33,15 +39,15 @@ class Solution {
         while(high>low)
         {
             int mid=low+(high-low)/2;
-            if(arr[mid]>arr[mid+1])
+            if(arr[mid]>arr[mid+1]) //decending part of array
             {
                 high=mid;
             }
             else
             {
-                low=mid+1;
+                low=mid+1;  //ascending part of array
             }
         }
-        return low;        
+        return low;  //Or can return high too!        
     }
 }
