@@ -1,0 +1,48 @@
+/*Problem Description:: Given a string s which consists of lowercase or uppercase letters, return the length of the longest palindrome that can be built with those letters.
+Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
+
+Example 1:
+Input: s = "abccccdd"
+Output: 7
+Explanation: One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+Example 2:
+Input: s = "a"
+Output: 1
+Explanation: The longest palindrome that can be built is "a", whose length is 1.
+
+Constraints:
+    1 <= s.length <= 2000
+    s consists of lowercase and/or uppercase English letters only.
+*/
+//TC:O(N) and SC::O(N)
+class Solution
+{
+    public int longestPalindrome(String s) 
+    {
+        //Approach:: 1)First we need to store occurance of each characters in a map or character frequency array.
+    Map<Character,Integer> map=new HashMap();
+        for(char c: s.toCharArray())
+        {
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+       
+ //2) Now check,if each char frequency is even then directly add them to the result as length coz with even no of char we can form palidrome! But if any char charfreq is odd then subtract 1 from it in order to make it even and add to the result and at last add 1 if odd flag is 1/true.
+       int result=0;
+       int odd=0; 
+       for(int val:map.values()) //where map.values return an array of int with all values of the map basically the char frequency which we want to consider 
+       {
+           if(val%2==0)
+           {
+               result+=val;
+           }
+           else
+           {
+               odd=1;
+               result+=val-1;    //incase of odd numbers of occurance of character
+           }
+       } 
+        
+        return result+odd;   //if odd =0 incase of even occurance of char,it will be 0 else 1
+    }
+}
