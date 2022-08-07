@@ -19,27 +19,36 @@ class Solution {
 //TC:: O(n^2)
 //SC:O(1)
     
-    int maxlength=0;
-    int startingindex=0;
+    class Solution {
+ 
+//TC:: O(n^2)
+//SC:O(1)
+    
+    int maxlength=0;  // the length to keep check of maxlength Substring
+    int startingindex=0;    //to get the possible start from where the palindrome start
     
     public String longestPalindrome(String s) 
     {
-      for(int i=0;i<s.length();i++)
+      for(int i=0;i<s.length();i++) //Why this for loop? Because this is to get the possible mid element considering every element as possble mid/center for palindrome
         {
-            helper(s,i,i);//for odd numbers of alphabet in palindrome
-            helper(s,i,i+1); //for even numbers of alphabet in palindrome            
+            checkPalindrome(s,i,i);//for odd numbers of alphabet in palindrome
+            checkPalindrome(s,i,i+1); //for even numbers of alphabet in palindrome            
         }
         
-      return s.substring(startingindex,startingindex+maxlength) ;
+      return s.substring(startingindex,startingindex+maxlength) ;//why this startIndex and Endindex=startIndex+length()? coz startIndex+length is giving us endindex+1 index of which 1 is nullify while consider to get a substring and as to get a max length palindrome we have to keep track of maxlength anyway!
+        
+//i.e suppose for String="chiabababakts" startindex=3 and length=7 and endindex=9 now startIndex+length=7+3=10 now while considering to get a substring which is palindrome we need to give s.substring(3,10) =>to get string as abababa right? EndIndex+1=length
     }
   
-    public void helper(String s,int startindex,int endindex)
+    public void checkPalindrome(String s,int startindex,int endindex) //once we got the probable center of the palindrome we need to find the MAX length of the palindrome and StartIndex to get the Substring from the input String
     {
     while(startindex>=0 && endindex<s.length() && (s.charAt(startindex)==s.charAt(endindex)))
         {                
             startindex--;
             endindex++;        
         }
+//Once it violates the condition that means we got a updated length & startIndex. It could be max than earlier or not.
+     //Now endIndex and startIndex are pointing two index which are not within palindrome/just outside of the palindrome,so length of palindrome is end-start-1 and as current startIndex is pointing to just 1 char away from the actual starting of the palindrome so startIndex of palindrome=currentstartIndex+1
            if(maxlength<endindex-startindex-1)
            {
                maxlength=endindex-startindex-1;
