@@ -1,0 +1,126 @@
+/*Problem Description::
+Given the head of a singly linked list, return true if it is a palindrome.
+
+Example 1:
+Input: head = [1,2,2,1]
+Output: true
+
+Example 2:
+Input: head = [1,2]
+Output: false
+
+Constraints:
+    The number of nodes in the list is in the range [1, 105].
+    0 <= Node.val <= 9
+
+ 
+Follow up: Could you do it in O(n) time and O(1) space?
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+/*class Solution {
+    public boolean isPalindrome(ListNode head) 
+    {
+        if(head==null||head.next==null)
+        {
+            return true;
+        }
+        ListNode temp=head;
+        List<Integer> firstList=new ArrayList<Integer>();
+        List<Integer> revList=new ArrayList<Integer>();
+        while(temp!=null)
+        {
+            firstList.add(temp.val);
+            temp=temp.next;
+        }
+       
+    // to reverse the list
+        for(int i=firstList.size()-1;i>=0;i--)
+        {
+            revList.add(firstList.get(i));
+        }
+        for(int i=0;i<firstList.size();i++)
+        {
+            if(firstList.get(i)!=revList.get(i))
+            {
+                return false;
+            }      
+        }
+       return true;
+    }
+} */
+//TC::O(3N)~O(N) && SC::O(2N)~O(N)
+//****************************************************************************************
+
+//Approach:: INPLACE TC::O(N) & SC:O(1)
+// First will find then mid of the list by first pointer and Slow pointer
+//Then will reverse the second Half of the list
+//Third compare first and second half
+//Now restore back the second half to its original position
+class Solution {
+    public boolean isPalindrome(ListNode head) 
+    {
+       if(head==null)
+       {
+           return true;
+       }
+       ListNode p1=head;
+       ListNode firsthalfend= findsecondhalfpos(head);
+       ListNode secondhalfstart=reversesecondhalf(firsthalfend.next);
+       ListNode p2= secondhalfstart;
+       boolean result=true; 
+       while(p2!=null)
+       {
+           if(p1.val!=p2.val)
+           {
+              result=false;
+           }
+           p1=p1.next;
+           p2=p2.next;
+       }
+        
+        return result;
+    }
+    
+private static ListNode findsecondhalfpos(ListNode head)
+{
+    ListNode fast=head;
+    ListNode slow=head;
+    while(fast.next!=null && fast.next.next!=null)
+    {
+        fast=fast.next.next;
+        slow=slow.next;
+    }
+    return slow;
+}
+
+private static ListNode reversesecondhalf(ListNode head)
+{
+    ListNode prev=null;
+    ListNode curr=head;
+    ListNode nextNode=null;
+    while(curr!=null)
+    {
+        nextNode=curr.next;
+        curr.next=prev;
+        prev=curr;
+        curr=nextNode;
+    }
+   return prev;     
+}
+    
+}
+
+
+
+
+
+
