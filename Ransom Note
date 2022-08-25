@@ -1,0 +1,59 @@
+/* Problem Statement::
+Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+
+Each letter in magazine can only be used once in ransomNote.
+
+
+Example 1:
+
+Input: ransomNote = "a", magazine = "b"
+Output: false
+
+Example 2:
+
+Input: ransomNote = "aa", magazine = "ab"
+Output: false
+
+Example 3:
+
+Input: ransomNote = "aa", magazine = "aab"
+Output: true
+
+
+Constraints:
+
+    1 <= ransomNote.length, magazine.length <= 105
+    ransomNote and magazine consist of lowercase English letters.
+
+*/
+
+//TC::O(N+M)~ O(M)
+//SC::O(26)~O(1)
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) 
+    {
+        if(ransomNote.length()==0)
+        {
+            return false;
+        }
+       /* Map<Character,Integer> map1=new HashMap<Character,Integer>();
+        for(char c:ransomNote.toCharArray())
+        {
+            map1.put(c,map1.getOrDefault(c,0)+1);
+        }*/
+        Map<Character,Integer> map=new HashMap<Character,Integer>();
+        for(char ch:magazine.toCharArray())
+        {
+            map.put(ch,map.getOrDefault(ch,0)+1);
+        }
+        for(char key:ransomNote.toCharArray())
+        {
+            if(!map.containsKey(key) || map.get(key)<=0)
+            {
+                return false;
+            }
+           map.put(key,map.get(key)-1);
+        }
+        return true;
+    }
+}
