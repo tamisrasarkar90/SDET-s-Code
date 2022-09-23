@@ -32,6 +32,7 @@ class Solution {
        for(int i=1;i<=n;i++)
        {
           String binRep=Integer.toBinaryString(i);
+          //Inorder to chnage back to decimal,each bit wise changing
           for(char c:binRep.toCharArray())
           {
              int val= (c=='0')?0:1;
