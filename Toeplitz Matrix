@@ -45,5 +45,7 @@ class Solution {
 }
 
 The logic behind this is, if you are in matrix[i][j],check with matrix[i+1][j+1] value which turns as diagonal value, needs to be same, if not then nly instantly return false; if yes,then loop through and check each cell diagonally;once completed the loop,break it and return true!
+TC::O(N^2)
+SC::O(1)
 */
 
