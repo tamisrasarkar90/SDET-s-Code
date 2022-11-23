@@ -1,0 +1,82 @@
+/* Problem Statement::
+Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+    Each row must contain the digits 1-9 without repetition.
+    Each column must contain the digits 1-9 without repetition.
+    Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+
+Note:
+
+    A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+    Only the filled cells need to be validated according to the mentioned rules.
+
+ 
+
+Example 1:
+
+Input: board = 
+[["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: true
+
+Example 2:
+
+Input: board = 
+[["8","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: false
+Explanation: Same as Example 1, except with the 5 in the top left corner being modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
+
+ 
+
+Constraints:
+
+    board.length == 9
+    board[i].length == 9
+    board[i][j] is a digit 1-9 or '.'.
+
+*/
+//**********************************************Very Very Important*****************************************************************************************************
+//Very Very Important::Amazon,Apple,Karat,UBER,Adobe,Bloomberg,tesla,Nvidia,Microsoft,Google,Ebay,facebook,Indeed,Intuit,Paypal,Qualcomm,Snapchat etc
+
+class Solution {
+    public boolean isValidSudoku(char[][] board) 
+    {
+        HashSet<String> seen= new HashSet<String>(); //we can take 3 hashset for keeping value of each row,each col,each box but if we declare as string and differntitae by row,col,and box add as string then with one hashset we can store value instead of 3 Hashset.
+        for(int i=0;i<9;i++) //As 9*9 board
+        {
+             for(int j=0;j<9;j++) //As 9*9 board
+             {
+                 int current=board[i][j]; //taking the current value
+                 if(current!='.') //if not null
+                 {  
+            //This hashset.add method return true if the element if not there in the set otherwise return false.
+//so instead adding and then checking if set.contains the value or not we can simple check if add return false,i.e.element is alreday there i the SET
+         if(!(seen.add(current +"_row_"+i))||!(seen.add(current +"_coloumn_"+j))||!(seen.add(current +"_box_"+i/3+"-"+j/3)))
+                 {
+                          return false;                                
+                 }
+            }
+             }
+        }
+          return true;
+    }
+}
+
+
+//TC::O(1) //as 9*9 board hence constant else it will be O(N^2)
+//SC::O(1)
