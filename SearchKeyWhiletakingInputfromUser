@@ -1,0 +1,32 @@
+public class TakeInputForArray {
+
+	public static void main(String[] args) 
+	{
+		Scanner sc=new Scanner(System.in);
+		System.out.print("Enter array's length::");
+		int n=sc.nextInt();
+		int[] nums=new int[n];
+		System.out.print("Enter Arrays elements as input::");
+		for(int i=0;i<n;i++)
+		{
+			nums[i]=sc.nextInt();
+		}
+		List<Integer> list=new ArrayList();
+		System.out.print("Enter key element to search in array::");
+		int key=sc.nextInt();
+		for(int num:nums)
+		{
+			list.add(num);
+			
+		}
+		if(list.contains(key))
+		{
+			System.out.print("The element found: True");
+		}
+		else
+		{
+			System.out.print("The element found: False");
+		}
+	}
+
+}
