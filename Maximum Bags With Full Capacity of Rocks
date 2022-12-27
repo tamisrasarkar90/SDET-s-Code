@@ -55,3 +55,47 @@ Constraints:
     }
 }
 
+/***************************************************************Another Approach************************************************************************
+class Solution {
+    public int maximumBags(int[] capacity, int[] rocks, int additionalRocks) 
+    {
+       int  n = capacity.length;
+       n = rocks.length;
+       int maxcapacity=0;
+       List<Integer> listdiff=new ArrayList();
+/*
+First I will get the differenece between rocks and capacity,and get another array or List. Now if this newly array/list,first needs to sort inorder to get what are the numbers of elements we can make it as full capacity.Strating from sorted list/array from 0 index,if it contains 0 in any place that menas it is in full capacity and maxcapacity and increase to one,if not, then I will check if additionalrocks is more than zero,then I will deduct the value in newly created list/array  on that index while traversing,from addition rocks,in order to make the element of that newly array/list in full capacity and increase maxcapacity by one,Untill additionalrocks==0,then it will break the loops and  I will return maxcapacity
+*/
+
+        for(int i=0;i<n;i++)
+        {
+            int diff=0;
+            diff=capacity[i]-rocks[i];
+            listdiff.add(diff);
+        }
+        Collections.sort(listdiff);
+        for(int j=0;j<listdiff.size();j++)
+        {
+            if(listdiff.get(j)==0)
+            {
+                maxcapacity++;
+            }
+            else{
+            int val= listdiff.get(j);
+           if(val<=additionalRocks)
+           {
+              maxcapacity++;
+              additionalRocks =additionalRocks-val;            
+           }
+           else
+           {
+               break;
+           }
+
+            }         
+        }
+        return maxcapacity;
+    }
+}
+//TC:O(N+NLogN)~O(2N)~O(N)
+//SC:O(N) //for extra array /list
