@@ -8,6 +8,15 @@ Return the minimum possible total number of stones remaining after applying the 
 
 floor(x) is the greatest integer that is smaller than or equal to x (i.e., rounds x down).
 
+/*
+Procedure::
+Here return the minimum possible total numbers of stones -is the ask. 
+In order to return the minimum,we need to divide the largest/maximum avaiable on the piles array. And depends on k's value each time we will look for the max in the piles
+array and divide it by 2 in order to get minimum. hence we are using PriorityQueue with comparator to check each time largest element available in the piles,
+will get it and divide it with 2 and then subtract fron it oldest value and return back to piles.
+
+*/
+
  
 
 Example 1:
