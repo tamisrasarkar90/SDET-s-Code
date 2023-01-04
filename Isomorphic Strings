@@ -1,0 +1,73 @@
+/*
+Problem Statement::
+Given two strings s and t, determine if they are isomorphic.
+
+Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+
+ 
+
+Example 1:
+
+Input: s = "egg", t = "add"
+Output: true
+Example 2:
+
+Input: s = "foo", t = "bar"
+Output: false
+Example 3:
+
+Input: s = "paper", t = "title"
+Output: true
+ 
+
+Constraints:
+
+1 <= s.length <= 5 * 104
+t.length == s.length
+s and t consist of any valid ascii character.
+
+*/
+class Solution {
+    public boolean isIsomorphic(String s, String t) 
+    {
+    /*
+    Approach:: Will take two Hasmap, One as character & character ,which will map string s each character to string t each character and another one is string t's character with boolean as true or false.
+    Once check if String s's character is used then will check if that has been map to corresponding char we get from t ,if not will return false. If it is a new one will add into map1 and will mark in map2
+    */
+        if(s.length()!=t.length())
+        {
+           return false;
+        }
+    
+        Map<Character,Character> charmap=new HashMap(); //in order to map s's char with t's char
+        Map<Character,Boolean> tmap=new HashMap(); //in order to check if t's char alreday use'
+        
+        for(int i=0;i<s.length();i++)
+        {
+            char schar=s.charAt(i);
+            char tchar=t.charAt(i);
+            if(charmap.containsKey(schar)) //if alreday contains we need to check corresponding char which is already mapped is similar to the current or not
+            {
+                if(charmap.get(schar)!=tchar)
+                {
+                    return false;
+                }
+            }
+            else //if charmap not contains schar that means encountering for firsttime,then will check for tchar which is schar's value, if it is alreday exists as true will return false if not will put into map'
+            {
+                if(tmap.containsKey(tchar))
+                {
+                    return false;
+                }
+                charmap.put(schar,tchar);
+                tmap.put(tchar,true);
+            }
+        }
+       return true;          
+    }
+}
+
+//TC::O(N)
+//SC::O(2N)~O(N)
