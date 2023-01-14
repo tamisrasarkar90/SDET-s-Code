@@ -1,0 +1,103 @@
+/*
+Problem Description::
+You are given two strings of the same length s1 and s2 and a string baseStr.
+
+We say s1[i] and s2[i] are equivalent characters.
+
+For example, if s1 = "abc" and s2 = "cde", then we have 'a' == 'c', 'b' == 'd', and 'c' == 'e'.
+Equivalent characters follow the usual rules of any equivalence relation:
+
+Reflexivity: 'a' == 'a'.
+Symmetry: 'a' == 'b' implies 'b' == 'a'.
+Transitivity: 'a' == 'b' and 'b' == 'c' implies 'a' == 'c'.
+For example, given the equivalency information from s1 = "abc" and s2 = "cde", "acd" and "aab" are equivalent strings of baseStr = "eed", and "aab" is the lexicographically smallest equivalent string of baseStr.
+
+Return the lexicographically smallest equivalent string of baseStr by using the equivalency information from s1 and s2.
+
+Example 1:
+
+Input: s1 = "parker", s2 = "morris", baseStr = "parser"
+Output: "makkek"
+Explanation: Based on the equivalency information in s1 and s2, we can group their characters as [m,p], [a,o], [k,r,s], [e,i].
+The characters in each group are equivalent and sorted in lexicographical order.
+So the answer is "makkek".
+Example 2:
+
+Input: s1 = "hello", s2 = "world", baseStr = "hold"
+Output: "hdld"
+Explanation: Based on the equivalency information in s1 and s2, we can group their characters as [h,w], [d,e,o], [l,r].
+So only the second letter 'o' in baseStr is changed to 'd', the answer is "hdld".
+Example 3:
+
+Input: s1 = "leetcode", s2 = "programs", baseStr = "sourcecode"
+Output: "aauaaaaada"
+Explanation: We group the equivalent characters in s1 and s2 as [a,o,e,r,s,c], [l,p], [g,t] and [d,m], thus all letters in baseStr except 'u' and 'd' are transformed to 'a', the answer is "aauaaaaada".
+ 
+Constraints:
+1 <= s1.length, s2.length, baseStr <= 1000
+s1.length == s2.length
+s1, s2, and baseStr consist of lowercase English letters.
+*/
+
+class Solution {
+    public String smallestEquivalentString(String s1, String s2, String baseStr)
+     {
+        int n=s1.length();
+        n=s2.length();
+        String ans="";
+       // StringBuilder str=new StringBuilder();
+        Map<Character, TreeSet<Character>> map=new HashMap();
+       for(int i=0;i<n;i++)
+       {
+           char c1=s1.charAt(i);
+           char c2=s2.charAt(i);
+           boolean c1present=map.containsKey(c1);
+           boolean c2present=map.containsKey(c2);
+           if((c1present)&& (c2present))
+           {
+    // In this case suppose map -> p->[m,p] & m->[m,p] and we encounter again p & m
+              map.get(c1).addAll(map.get(c2));
+              //incase of c2 to
+            map.get(c2).forEach(c2Match->map.put(c2Match,map.get(c1)));             
+           }
+           else if(c1present)
+          {
+              //same as prev
+         map.get(c1).add(c2); //will get valueset correspond to key c1 and add c2 into it.
+         map.put(c2,map.get(c1));  //will fetch the valueset from map correspond to c1 key and add it against c2 key
+
+          }
+        else if(c2present)
+        {
+    // if map.containsKey(c2)==true but map.containsKey(c1)!=true
+         map.get(c2).add(c1); // will get the valueset of key correspond to c2 and add c1 to it and then create another entry to the map as c1 and ass value correspond to c2.
+// ex:: this exists in map  r->[r] and we found k as new char then in map will create entry as r->[k,r] & k->[k,r] again when s encounter will add r->[k,r,s] and k->[k,r,s], s->[k,r,s] 
+         map.put(c1,map.get(c2)); //as map.get(c2) is currently updated with the current element
+
+        }
+        else
+        {
+           // if both the characters seems new then put it to the map
+    //i.e suppose for s1.charAt(0)->p and s2.charAt(0)->m for #example 1 will create a map entry like
+    // p->[m,p] & m->[m,p]
+    //Here TreeSet will sort the set based on lexographical order and add as value of the map
+           TreeSet<Character> set=new TreeSet<Character>();
+           set.add(c1);
+           set.add(c2);
+           map.put(c1,set);
+           map.put(c2,set);
+        }
+       }
+        for(char c:baseStr.toCharArray())
+        {
+//for each character in basestring will check if exists that key in map will get the first element of valueset else will keep the basestring character only.
+            ans+= map.containsKey(c) ? map.get(c).first():c ;
+        }
+
+        return ans;
+    }
+}
+
+//TC::O(N)
+//SC::O(N)
+
