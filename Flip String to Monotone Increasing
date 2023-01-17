@@ -1,0 +1,67 @@
+/*
+Problem Statement::
+A binary string is monotone increasing if it consists of some number of 0's (possibly none), followed by some number of 1's (also possibly none).
+
+You are given a binary string s. You can flip s[i] changing it from 0 to 1 or from 1 to 0.
+
+Return the minimum number of flips to make s monotone increasing.
+
+Example 1:
+
+Input: s = "00110"
+Output: 1
+Explanation: We flip the last digit to get 00111.
+Example 2:
+
+Input: s = "010110"
+Output: 2
+Explanation: We flip to get 011111, or alternatively 000111.
+Example 3:
+
+Input: s = "00011000"
+Output: 2
+Explanation: We flip to get 00000000.
+
+Constraints:
+
+1 <= s.length <= 105
+s[i] is either '0' or '1'.
+*/
+
+class Solution {
+    public int minFlipsMonoIncr(String s) 
+    { 
+        int zerotoone=0;
+        int i=0;
+        int onecount=0;
+        int n=s.length();
+        while(i<n && s.charAt(i)=='0')
+        {
+           i++;
+        }
+        for(;i<n;i++)
+        {
+          if(s.charAt(i)=='0')
+          {
+                zerotoone++;
+          }
+          else
+          {
+            onecount++;
+          }
+        if(zerotoone>onecount)
+        {
+          zerotoone=onecount;
+        }  
+    }
+        return zerotoone;
+    }
+}
+//TC::O(N)
+//SC::O(1)
+/*
+Here we are taking 0 while traversing into one variable and update it if enter more 0(zerotoone variable)
+And similarly for 1 it is onecount.Now logic is whoever is minimum need to perform that no of Flip
+But there are some end cases which we need to keep in mind, for that we need to first keep the zero count 
+
+*/
