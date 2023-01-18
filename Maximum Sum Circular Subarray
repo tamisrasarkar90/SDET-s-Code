@@ -1,0 +1,77 @@
+/*
+Problem Description::
+Given a circular integer array nums of length n, return the maximum possible sum of a non-empty subarray of nums.
+
+A circular array means the end of the array connects to the beginning of the array. Formally, the next element of nums[i] is nums[(i + 1) % n] and the previous element of nums[i] is nums[(i - 1 + n) % n].
+
+A subarray may only include each element of the fixed buffer nums at most once. Formally, for a subarray nums[i], nums[i + 1], ..., nums[j], there does not exist i <= k1, k2 <= j with k1 % n == k2 % n.
+
+Example 1:
+
+Input: nums = [1,-2,3,-2]
+Output: 3
+Explanation: Subarray [3] has maximum sum 3.
+Example 2:
+
+Input: nums = [5,-3,5]
+Output: 10
+Explanation: Subarray [5,5] has maximum sum 5 + 5 = 10.
+Example 3:
+
+Input: nums = [-3,-2,-3]
+Output: -2
+Explanation: Subarray [-2] has maximum sum -2.
+
+Constraints:
+
+n == nums.length
+1 <= n <= 3 * 104
+-3 * 104 <= nums[i] <= 3 * 104
+*/
+class Solution {
+    public int maxSubarraySumCircular(int[] nums) 
+    {
+    /*
+     This question is similar to kadane's  Algoritm only diff is in it is circular array.
+     So we can divide the problem into three subParts.1) max subarray exists within the array(no rotation required) will apply kadane's Algo direct here. 2) Max subarray exists in extreme start and end position,hence we have to calculate minsubarraysum and then maxsubarray=totalsum-minsubrraysum'
+    3) All values are negative in the integer array,in this case totalsum==minsubarraysum so always 0,hence for negative numbers of int array maxsubarraysum=maxno present in the array
+
+    Funda of kadane Algo is:: We will create two variable totalsum & currsum, while traversing the array if currsum<0 will update currsum as 0 else will keep on adding value from integer array. Each time we will compare with currsum with totalsum, if currsum contains value greater than totalsum will update totalsum as currsum.Return totalsum at the end.
+     */
+        int maxsum=Integer.MIN_VALUE;
+        int minsum=Integer.MAX_VALUE;
+        int curr1=0;
+        int curr2=0;
+        int totalsum=0;
+    // For Part 1. Where kadane's Algo can apply directly'
+    for(int i=0;i<nums.length;i++)
+    {
+        curr1+=nums[i];
+        maxsum=Math.max(maxsum,curr1);
+        curr1=Math.max(curr1,0);
+    }
+    //For Part 2:: i.e both end and start contains max subarray
+    for(int i=0;i<nums.length;i++)
+    {
+        totalsum+=nums[i];
+        //in order to get the moinsum out of the array
+        curr2+=nums[i];
+        minsum=Math.min(minsum,curr2);
+        curr2=Math.min(curr2,0);
+    }
+     // Combining Part2 & part 3, i.e if every element in the int array is negative then takethe max out of array else, get the totalsum-minsum
+
+     /* if(maxsum<0)
+      {
+          return maxsum;
+      }
+      else{
+          return Math.max(maxsum,totalsum-minsum);
+      }*/
+        return maxsum<0 ? maxsum : Math.max(maxsum,totalsum-minsum);
+    }
+}
+
+
+//TC::O(N)
+//SC::O(1)
