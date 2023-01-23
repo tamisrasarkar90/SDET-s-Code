@@ -1,0 +1,58 @@
+/*
+Problem Description:: In a town, there are n people labeled from 1 to n. There is a rumor that one of these people is secretly the town judge.
+If the town judge exists, then:
+The town judge trusts nobody.
+Everybody (except for the town judge) trusts the town judge.
+There is exactly one person that satisfies properties 1 and 2.
+You are given an array trust where trust[i] = [ai, bi] representing that the person labeled ai trusts the person labeled bi.
+
+Return the label of the town judge if the town judge exists and can be identified, or return -1 otherwise.
+
+Example 1:
+Input: n = 2, trust = [[1,2]]
+Output: 2
+Example 2:
+
+Input: n = 3, trust = [[1,3],[2,3]]
+Output: 3
+Example 3:
+
+Input: n = 3, trust = [[1,3],[2,3],[3,1]]
+Output: -1
+ 
+Constraints:
+1 <= n <= 1000
+0 <= trust.length <= 104
+trust[i].length == 2
+All the pairs of trust are unique.
+ai != bi
+1 <= ai, bi <= n
+
+*/
+class Solution {
+    public int findJudge(int n, int[][] trust) 
+    {
+        //basically trustree are the one who trusted others(trust[i][0]) and trusted by means trust[i][1] those who have been trusted. hence we incrementing by t[0] & t[1] value while travering the trust array.
+
+           int[] trustree= new int[n+1]; // n+1 as there are 1-n person then if starting from 0 there are n+1 person
+           int[] trustedBy= new int[n+1]; //
+
+              for(int[] t:trust)
+              {
+                   trustree[t[0]]++;
+                   trustedBy[t[1]]++;
+              }
+        for(int i=1;i<=n;i++)
+        {
+            if(trustree[i]==0 && trustedBy[i]==n-1 ) //Now if one person or level is trusted by n-1 people(apart from his/her own) as n is total no of people and don't trust anybody then he/she is the judge. Will return i'else return -1;
+            {
+               return i;
+            }
+        }
+       return -1;
+    }
+}
+
+
+//TC::O(N)
+//SC::O(2N)~O(N)
