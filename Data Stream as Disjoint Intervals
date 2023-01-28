@@ -1,0 +1,86 @@
+/*
+Problem Description:: Given a data stream input of non-negative integers a1, a2, ..., an, summarize the numbers seen so far as a list of disjoint intervals.
+
+Implement the SummaryRanges class:
+
+SummaryRanges() Initializes the object with an empty stream.
+void addNum(int value) Adds the integer value to the stream.
+int[][] getIntervals() Returns a summary of the integers in the stream currently as a list of disjoint intervals [starti, endi]. The answer should be sorted by starti.
+ 
+
+Example 1:
+
+Input
+["SummaryRanges", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals"]
+[[], [1], [], [3], [], [7], [], [2], [], [6], []]
+Output
+[null, null, [[1, 1]], null, [[1, 1], [3, 3]], null, [[1, 1], [3, 3], [7, 7]], null, [[1, 3], [7, 7]], null, [[1, 3], [6, 7]]]
+
+Explanation
+SummaryRanges summaryRanges = new SummaryRanges();
+summaryRanges.addNum(1);      // arr = [1]
+summaryRanges.getIntervals(); // return [[1, 1]]
+summaryRanges.addNum(3);      // arr = [1, 3]
+summaryRanges.getIntervals(); // return [[1, 1], [3, 3]]
+summaryRanges.addNum(7);      // arr = [1, 3, 7]
+summaryRanges.getIntervals(); // return [[1, 1], [3, 3], [7, 7]]
+summaryRanges.addNum(2);      // arr = [1, 2, 3, 7]
+summaryRanges.getIntervals(); // return [[1, 3], [7, 7]]
+summaryRanges.addNum(6);      // arr = [1, 2, 3, 6, 7]
+summaryRanges.getIntervals(); // return [[1, 3], [6, 7]]
+ 
+
+Constraints:
+
+0 <= value <= 104
+At most 3 * 104 calls will be made to addNum and getIntervals.
+ 
+
+Follow up: What if there are lots of merges and the number of disjoint intervals is small compared to the size of the data stream?
+
+*/
+
+class SummaryRanges 
+{
+    Set<Integer> set;
+    public SummaryRanges()
+    {
+       set =new TreeSet();
+    }
+    
+    public void addNum(int value)  //TC::O(logN) //SC::O(N)
+    {
+        set.add(value);
+    }
+    
+    public int[][] getIntervals() // SC::O(N) //TC::O(N)
+    {
+        List<int[]> result=new ArrayList();    
+        for(int num:set)
+        {
+            int n=result.size();
+            if(n>0 && result.get(n-1)[1]+1==num) //result:: [1,3] now next add element is 4 as 3+1=4 hence interval will be updated as [1,4] else will create a new entry in result
+            {
+                 result.get(n-1)[1]=num;
+            }
+            else
+            {
+                result.add(new int[]{num,num});
+            }
+        }
+        
+        return result.toArray(new int[0][]);
+    }
+}
+/**
+Approach:: First we need sorted input so that we can easily count(by adding 1) if the next input with current one are in the same interval or in different.
+So for sorting we can use any in build sorting method or TreeSet(as it will do sorting within).Now once inserted the element into treeset and in result we need to check in result[result.size()-1][1]+1==current element or not if yes then will add in the same interval and update else will create a new interval in teh result with the same input and at the end will return the result
+ */
+ 
+ 
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges obj = new SummaryRanges();
+ * obj.addNum(value);
+ * int[][] param_2 = obj.getIntervals();
+ */
