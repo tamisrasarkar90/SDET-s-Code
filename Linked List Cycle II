@@ -1,0 +1,93 @@
+/*
+Very Very Important and Good Questions
+Problem Description::
+Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+
+Do not modify the linked list.
+
+Example 1:
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+Example 2:
+
+
+Input: head = [1,2], pos = 0
+Output: tail connects to node index 0
+Explanation: There is a cycle in the linked list, where tail connects to the first node.
+Example 3:
+
+
+Input: head = [1], pos = -1
+Output: no cycle
+Explanation: There is no cycle in the linked list.
+ 
+Constraints:
+The number of the nodes in the list is in the range [0, 104].
+-105 <= Node.val <= 105
+pos is -1 or a valid index in the linked-list.
+Follow up: Can you solve it using O(1) (i.e. constant) memory?
+*/
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head)
+    {
+        if(head==null||head.next==null)
+        {
+            return null;
+        }
+        ListNode fast=head;
+        ListNode slow=head;
+        ListNode entry=head;
+
+        while(fast.next!=null && fast.next.next!=null)
+        {
+            fast=fast.next.next;
+            slow=slow.next;
+            if(fast==slow) //Cycle detected
+            {
+                while(slow!=entry) //Now entry and slow would start the journey while L1=nC-L2 that is the starting of the loop, can return slow or entry anyone as answer
+                {
+                    slow=slow.next;
+                    entry=entry.next;
+                }
+                return entry;
+            }
+        }
+        return null;
+    }
+}
+
+/*
+The logic behind the question lies into 2 findings.
+1)Detect there is cycle -> For that we need two pointers slow and fast while fast travelling twice
+ the distance of slow.If fast and slow meet then there is a cycle else not.
+ 2)Starting point of Cycle:: Now if once we detect there is a cycle, then how to get that starting point where the cycle has started? To detect that we need to initialize one pointer on head while slow and 
+ fast alreday meet in a point,from there slow will start the journey(or any new pointer having starting point as slow's position i.e where slow and fast would meet') and the other new pointer will start their 
+ journey from head,the point this new pointer and slow meet is the starting point of the cycle.
+
+Mathematically, lets Consider Example 1, so Let's keep Node 3 to node 2 distance as L1 and L2 is the distance where fast and slow meet
+then for slow= the total distance covered is:: L1+L2+nC(where n is the distance of teh loop and c is no of time it evlove)
+slow=L1+L2+nC
+fast=2(L1+L2+nC)'
+slow=fast i.e 2L1+2L2+2nC=l1+L2+nC
+ L1+L2=nC
+ L1=nC-L2
+ L2 is the point where fast and slow would meet for the first time and nC is the total no of times the loop iterate multiple y loop's distance.'
+ so currently slow will traverse L2-nC distance and any other node which get initialte now in head and starting the journey from head will traverse L1 distance,when this new Node and slow would meet is denoting the start point of loop i.e the answer.
+ TC::O(N)
+ SC::O(1
+
+*/
