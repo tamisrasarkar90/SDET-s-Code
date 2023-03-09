@@ -1,0 +1,74 @@
+/* Very VEry Important:: Range based Binary Search
+Problem Description::
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+Example 2:
+
+Input: piles = [30,11,23,4,20], h = 5
+Output: 30
+Example 3:
+
+Input: piles = [30,11,23,4,20], h = 6
+Output: 23
+ 
+Constraints:
+1 <= piles.length <= 104
+piles.length <= h <= 109
+1 <= piles[i] <= 109
+
+*/
+class Solution {
+    public int minEatingSpeed(int[] piles, int h)
+    {
+        long  low=1;
+        long high=piles[0];
+        for(int pile:piles)
+        {
+            high=Math.max(high,pile);
+        }     
+        while(low<high)
+        {
+            long mid=low+(high-low)/2;
+            if(!isPossibletoEatingBananas(piles,h,mid))
+            {
+                low=mid+1;
+            }
+            else{
+                high=mid;
+            }
+        }
+        return (int)low;
+    }
+    private boolean isPossibletoEatingBananas(int[] piles,int h, long mintime)
+    {
+             long count=0;
+             for(long pile:piles)
+             {
+                 count+=pile/mintime; // Suppose mintime=3,will divide each array element with 3 and add to know the time required.
+                 if(pile%mintime!=0)
+                 {
+                     count++;   //Incase suppose for element 7 and mintime =3 then the answer would be 2+1 total 3 hours to finish
+                 }
+             }
+             return count<=h;
+    }
+}
+
+//TC::(nlogn) logn for binary search n for traversing the whole array with dividing teh mid element
+//SC::O(1)
+/*
+Range Based Binary Search ::
+Concept here is:: We have to first find the mid element ,and dividing the whole array element with the mid and compute total times required if furtehr can be modified with least mid value untill that is not exists the total time given will keep lowing down low or high or increase as well and get the mid from that.
+Once low cross high will terminate the process and return low.
+The helper method here to traverse the array with computed mid element and divide with all values in teh array and compute the total time taken,if it is less than the time given we can further modify mid value and compute accordingly.
+*/
