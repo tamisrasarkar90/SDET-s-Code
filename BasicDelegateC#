@@ -1,0 +1,37 @@
+/*
+Delegate in C# are reference type, use as type safe function pointer.In order to hold a pointer to the function which must be of same return type and holding same parameters as of delegate!
+Basically Idea is to make a framework more flexible whenever needed to pass a function as a parameter to another function we should think of Delegate! With Delegate we could pass as parameter to another method while this delegate will
+invoke the method/function they are pointing to!
+
+Basic Example::
+//Use of Delegatee 
+using System;
+
+namespace HelloWorld
+{
+  class Program
+  {
+ 
+    static void Main(string[] args)
+    {
+      //addition(10,23);  
+      AddDelegate del=new AddDelegate(addition);
+      del(91,1000987);
+    }
+    
+ //Basic Delegates
+ delegate int AddDelegate(int x, int y);
+ 
+ 
+ public static int addition(int a ,int b)
+ {
+     int sum=a+b;
+     Console.WriteLine("Welcome to Coding World!!");   
+     Console.WriteLine("The sum is:"+sum); 
+     return sum;
+ }
+  
+}
+}
+
+*/
