@@ -1,0 +1,97 @@
+using System;
+
+ class Program
+  {
+    static void Main(string[] args)
+    {
+       HelloBiz h=new HelloBiz();
+       h.LongMethod(delegateMethod);
+    }
+    
+    public static void delegateMethod(int a)
+    {
+       Console.WriteLine(a);
+    }
+    
+  }
+  
+ class HelloBiz
+ {
+ 
+ public delegate void Dele(int x);
+ public  void LongMethod(Dele obj)
+ {
+   for(int i=0;i<1000000;i++)
+   {
+      //Does Something
+      obj(i);
+   }
+ }
+}
+
+
+//*************************************************************************************************************************************************************************************
+
+Result Size: 741 x 653
+using System;
+//With Ananoums Method
+​
+/* class Program
+  {
+   public  delegate double CalculateArea(int x);
+   
+    static void Main(string[] args)
+    {
+    CalculateArea clac=new CalculateArea(delegate(int r)
+    {
+       return 3.14*r*r;
+    });
+      
+      double area= clac(20);
+ 
+       
+    }
+     
+ } */
+ 
+//With lambda expression
+ class Program
+  {
+   public  delegate double CalculateArea(int x);
+   
+    static void Main(string[] args)
+    {
+    CalculateArea clac=r=>3.14*r*r;
+      
+      double area= clac(20);
+ 
+       
+    }
+     
+ } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
