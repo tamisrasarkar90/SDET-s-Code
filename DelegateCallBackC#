@@ -71,6 +71,151 @@ using System;
  } 
 
 
+********************************************************************************************************************************************************************************************
+
+//using System;
+//With Ananoums Method
+
+/* class Program
+  {
+   public  delegate double CalculateArea(int x);
+   
+    static void Main(string[] args)
+    {
+    CalculateArea clac=new CalculateArea(delegate(int r)
+    {
+       return 3.14*r*r;
+    });
+      
+      double area= clac(20);
+ 
+       
+    }
+     
+ } */
+ 
+//With lambda expression
+/* class Program
+  {
+   public  delegate double CalculateArea(int x);
+   
+    static void Main(string[] args)
+    {
+    CalculateArea clac=r=>3.14*r*r;
+      
+      double area= clac(20);
+ 
+       
+    }
+     
+ }*/
+ 
+// Func(Delegate with Generics) Delegate
+
+/* class Program
+  {
+   public  delegate double CalculateArea(int x);
+   
+    static void Main(string[] args)
+    {
+    
+    Func<Double,Double> clac = r =>3.14*r*r;
+    double area= clac(20);
+       
+    }
+     
+ } */
+ 
+ // Action delegate has only input parameter no output parameter
+
+
+
+
+using System;
+//using System.Threading;
+
+ class Program
+  {
+    static void Main(string[] args)
+    {
+       HelloBiz h=new HelloBiz();
+      // h.LongMethod(delegateMethod);
+      
+      h.sender+=Receiver1;
+      h.sender+=Receiver2;
+      h.sender+=Receiver3;
+      
+     // h.sender=null; //will throw error, this is called naked delegate.Violation of publisher subscriber model, coz subscriber which is main here can make publisher null which is not possible if we use event while declaring delegate object in callee method.
+     
+      Thread t=new Thread(new ThreadStart(h.LongMethod));
+      t.Start();
+      Console.WriteLine("programme.cs");
+      Console.ReadLine();
+    }
+    
+    
+    //MultiCast Delegates
+    public static void Receiver1(int rec1)
+    {
+       Console.WriteLine("Receiver1"+rec1.ToString());
+    }
+    public static void Receiver2(int rec2)
+    {
+       Console.WriteLine("Receiver2"+rec2.ToString());
+    }
+    public static void Receiver3(int rec3)
+    {
+       Console.WriteLine("Receiver3"+rec3.ToString());
+    }
+    
+  }
+  
+ class HelloBiz
+ {
+ 
+ public delegate void Sender(int x);
+ public event Sender sender=null;
+ public  void LongMethod()
+ {
+   for(int i=0;i<1000000;i++)
+   {
+       Thread.sleep(5000);
+      //Does Something
+      sender(i); //callback
+   }
+ }
+}
+
+
+
+
+// 1. Delegate is use for callback.
+//2. Delegate is user for method decoupling
+//3.Delegate is use for mainly in async, parallel processing, multithreaded env.where one thread needs to update the status to another thread.
+//4.Multicast delegate which is broadcasting , means one delegate obj can points to multiple methods.
+//5.Naked Delegate -> where subscriber can make delegate object as null.
+//6.event is encapsulation over delegate. It's a wrapper over delegate
+//7. Using Delegate nad event publisher subscriber model can be introduced
+//8.It is also called Observer design pattern
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+
+
 
 
 
