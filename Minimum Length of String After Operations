@@ -69,4 +69,22 @@ class Solution {
         return count;
     }
 }
+/*
+
+     int[] ch=new int[26];
+     int deleted=0;
+     for(int i=0;i<s.length();i++)
+     {
+        ch[s.charAt(i)-'a']++;
+        if(ch[s.charAt(i)-'a']>=3)
+        {
+            ch[s.charAt(i)-'a']-=2;
+            deleted+=2;
+        }
+     }
+     return s.length()-deleted;
+    }
+}
+
+*/
       
