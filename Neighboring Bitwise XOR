@@ -33,6 +33,8 @@ The values in derived are either 0's or 1's
 
 */
 
+ //Approach 1: if a^b=x;then x^b=a and x^a=b 
+
 class Solution {
     public boolean doesValidArrayExist(int[] derived) 
     {
@@ -71,4 +73,22 @@ class Solution {
 }
 
 //TC:O(n)
+//SC:O(1)
+
+//Approach 2
+
+// In derived array all elements should come twice hence if the origina array exists then the XOR of all elements in derived array should be zero, else original array doesn't exists i.e return false;
+   class Solution {
+    public boolean doesValidArrayExist(int[] derived) 
+    {
+   int res=0;
+   for(int num:derived)
+   {
+    res^=num;
+   }
+   return res==0;
+
+    }
+}
+//Tc:O(N)
 //SC:O(1)
