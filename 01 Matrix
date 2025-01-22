@@ -1,0 +1,82 @@
+/*
+Problem Statement:
+Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
+The distance between two cells sharing a common edge is 1.
+
+ 
+Example 1:
+
+Input: mat = [[0,0,0],[0,1,0],[0,0,0]]
+Output: [[0,0,0],[0,1,0],[0,0,0]]
+
+Example 2:
+Input: mat = [[0,0,0],[0,1,0],[1,1,1]]
+Output: [[0,0,0],[0,1,0],[1,2,1]]
+
+Constraints:
+m == mat.length
+n == mat[i].length
+1 <= m, n <= 104
+1 <= m * n <= 104
+mat[i][j] is either 0 or 1.
+There is at least one 0 in mat.
+
+
+*/
+class Solution {
+    public int[][] updateMatrix(int[][] mat) 
+    {
+        Queue<int[]> que =new LinkedList();
+        int m=mat.length;
+        int n=mat[0].length;
+        int count=0;
+        int[][] result=new int[m][n];
+
+        for(int i=0;i<m;i++)
+        {
+             for(int j=0;j<n;j++)
+             {
+                if(mat[i][j]==0)
+                {
+                    result[i][j]=0;
+                    que.add(new int[]{i,j});
+                } 
+                else
+                {
+                      result[i][j]=-1;
+                }              
+                   
+             }
+        }
+        int[][] directions={{-1,0},{1,0},{0,-1},{0,1}};
+       
+
+        while(!que.isEmpty())
+        {
+            int N=que.size();
+            while(N-->0)
+            {
+                int[] arr=que.poll();
+                int i=arr[0];
+                int j=arr[1];
+                for(int[] dir:directions)
+                {
+                    int new_i=dir[0]+i;
+                    int new_j=dir[1]+j;
+
+                    if(new_i>=0 && new_i<m && new_j>=0 && new_j<n && result[new_i][new_j]==-1)
+                    {
+                        result[new_i][new_j]=result[i][j]+1;
+                         que.add(new int[]{new_i,new_j});
+                    }
+
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+//TC:O(m*n)
+//SC:O(m*n)
