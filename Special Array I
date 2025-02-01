@@ -71,3 +71,29 @@ class Solution {
 //SC:O(1)
 
 */
+
+
+/*
+        Approach 2: Bit manipulations: Concept is: For odd number 0's bit is 1 and for even number 0'bit is 0
+        and we get 0' bit and performing AND operation with the number with 1
+        */
+         int n=nums.length;
+        if(nums.length==1)
+        {
+            return true;
+        }
+       
+        int i=0;
+        int j=i+1;
+                while(j<n)
+                {
+                  if(((nums[i]&1)^(nums[j]&1))==0)  //as same bit if we XOR it,return 0
+                  {
+                    return false;
+                  }
+                  i=j;
+                  j++;
+               }
+      return true;
+    }
+}
