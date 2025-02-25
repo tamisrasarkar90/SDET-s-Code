@@ -1,0 +1,129 @@
+/*
+Problem Description::
+Given an array of integers arr, return the number of subarrays with an odd sum.
+Since the answer can be very large, return it modulo 109 + 7.
+
+Example 1:
+Input: arr = [1,3,5]
+Output: 4
+Explanation: All subarrays are [[1],[1,3],[1,3,5],[3],[3,5],[5]]
+All sub-arrays sum are [1,4,9,3,8,5].
+Odd sums are [1,9,3,5] so the answer is 4.
+
+Example 2:
+Input: arr = [2,4,6]
+Output: 0
+Explanation: All subarrays are [[2],[2,4],[2,4,6],[4],[4,6],[6]]
+All sub-arrays sum are [2,6,12,4,10,6].
+All sub-arrays have even sum and the answer is 0.
+
+Example 3:
+Input: arr = [1,2,3,4,5,6,7]
+Output: 16
+
+Constraints:
+1 <= arr.length <= 105
+1 <= arr[i] <= 100
+
+*/
+class Solution {
+    public int numOfSubarrays(int[] arr) 
+    {
+       /* int count=0;
+        int M=(int)1e9+7;
+
+        
+        int M=(int)1e9+7;
+        int[] preSum =new int[arr.length];
+        preSum[0]=arr[0];
+        int evenCount=1;
+        int oddCount=0;
+        int totalResult=0;
+
+        for(int i=1;i<arr.length;i++)
+        {
+            preSum[i]=preSum[i-1]+arr[i];
+        }
+           for(int i=0;i<preSum.length;i++)
+           {
+            if(preSum[i]%2==0)
+            {              
+                totalResult=(totalResult+oddCount)%M;//means even sum you found, ODD+Even=ODD
+                 evenCount+=1;
+            }           
+            else
+            {
+                totalResult=(totalResult+evenCount)%M;//means ODD sum you found, ODD+Even=ODD
+                oddCount+=1;
+            
+            }
+        }
+       return totalResult;
+    }
+} //TC:O(N) SC:O(N)
+//Approach ::2 */
+
+        int count=0;
+        int M=(int)1e9+7;
+        int preSum=0;
+        int evenCount=1;
+        int oddCount=0;
+        int totalResult=0;
+
+           for(int i=0;i<arr.length;i++)
+           {
+            preSum+=arr[i];
+            if(preSum%2==0)
+            {              
+                totalResult=(totalResult+oddCount)%M;//means even sum you found, ODD+Even=ODD
+                 evenCount+=1;
+            }           
+            else
+            {
+                totalResult=(totalResult+evenCount)%M;//means ODD sum you found, ODD+Even=ODD
+                oddCount+=1;
+            
+            }
+        }
+       return totalResult;
+    }
+}
+//TC:O(N)
+//SC:O(1)
+
+
+           
+      /*for(int i=0;i<arr.length;i++)
+      {
+        int sum=0;
+        for(int j=i;j<arr.length;j++)
+        {
+         sum+=arr[j];
+        if(sum%2!=0)
+        {
+            count=(count+1)%M;
+        }
+    }
+}   
+    return count%M; //TLE */
+
+       
+     /* for(int i=0;i<arr.length;i++)
+      {
+       
+        for(int j=i;j<arr.length;j++)
+        {
+             int sum=0;
+            for(int k=i;k<=j;k++)
+            {
+                sum+=arr[k];
+            }
+                   if(sum%2!=0)
+                   {
+                     count+=1;
+                   }    
+        }      
+    }
+      return count%M;  / TLE 
+    }
+}*/
