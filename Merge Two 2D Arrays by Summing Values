@@ -72,5 +72,47 @@ class Solution {
 
 //TC::O(NlogN+N+N)~O(NlogN)
 //SC::O(N)
-        
-   
+//***********************************************************************************************************************************************************        
+   //By Using TreeMap
+class Solution {
+    public int[][] mergeArrays(int[][] nums1, int[][] nums2) 
+    {
+        Map<Integer,Integer> map=new TreeMap();
+        int len1=nums1.length;
+        int len2=nums2.length;
+        for(int i=0;i<len1;i++)
+        {
+           int key=nums1[i][0];
+           int val=nums1[i][1];
+           map.put(key,val);
+        }
+        for(int i=0;i<len2;i++)
+        {
+           int key=nums2[i][0];
+           int val=nums2[i][1];
+           if(map.containsKey(key))
+           {
+             map.put(key,map.get(key)+val);
+           }
+           else
+           {
+                map.put(key,val);
+           }        
+        }
+        int size=map.size();
+        int[][] result=new int[size][2];
+        int index=0;
+        while(index<size)
+        {
+          for(int key:map.keySet())
+         {
+            result[index][0]=key;
+            result[index][1]=map.get(key);
+            index++;
+        }
+    }
+        return result;
+    }
+}
+//TC:O((N1+N2)log(N1+N2))
+//SC:O(N1+N2)
