@@ -1,0 +1,52 @@
+/*
+Problem Description:
+There exists an infinitely large two-dimensional grid of uncolored unit cells. You are given a positive integer n, indicating that you must do the following routine for n minutes:
+
+At the first minute, color any arbitrary unit cell blue.
+Every minute thereafter, color blue every uncolored cell that touches a blue cell.
+Below is a pictorial representation of the state of the grid after minutes 1, 2, and 3.
+
+Return the number of colored cells at the end of n minutes.
+
+Example 1:
+
+Input: n = 1
+Output: 1
+Explanation: After 1 minute, there is only 1 blue cell, so we return 1.
+Example 2:
+
+Input: n = 2
+Output: 5
+Explanation: After 2 minutes, there are 4 colored cells on the boundary and 1 in the center, so we return 5. 
+ 
+
+Constraints:
+
+1 <= n <= 105
+
+*/
+class Solution {
+    public long coloredCells(int n) 
+    {
+        /*
+        //Approach1: TC:O(N),SC:O(1)
+        long answer=1;
+      //  for n=1 answer=1;
+           if(n==1)
+           {
+            return 1;
+           }
+           for(int i=2;i<=n;i++)
+           {
+             answer+=4*(i-1);   //By pattern : i=2=> 1+(4*(2-1))=>5
+           }
+        return answer; */
+
+        //Approach 2:: Thought Process: The series is 1+ 4(n-1)+4(n-2)+4(n-3)...so on=> 1+4*((n-1)+(n-2)+(n-3)...so on) =>1+4*(sum of (n-1) natural number)=>1+4*(n*(n+1)/2) here n=(n-1) hence, 1+4*(n-1)(n-1+1)/2=>1+2*(n-1)*n
+
+      long answer=1;
+
+       answer= 1+2*(long)(n-1)*n;  //TC:O(1) & SC:O(1)
+       return answer;
+    }
+}
