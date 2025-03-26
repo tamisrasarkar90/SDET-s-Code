@@ -68,5 +68,5 @@ class Solution {
         return minNoOP;
     }
 }
-//TC:O(NLogN)
-//SC:O(N)
+//TC:O(mnLog(mn))
+//SC:O(mn)
