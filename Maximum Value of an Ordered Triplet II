@@ -1,0 +1,66 @@
+/*
+Problem Statement::
+You are given a 0-indexed integer array nums.
+
+Return the maximum value over all triplets of indices (i, j, k) such that i < j < k. If all such triplets have a negative value, return 0.
+The value of a triplet of indices (i, j, k) is equal to (nums[i] - nums[j]) * nums[k].
+
+Example 1:
+
+Input: nums = [12,6,1,2,7]
+Output: 77
+Explanation: The value of the triplet (0, 2, 4) is (nums[0] - nums[2]) * nums[4] = 77.
+It can be shown that there are no ordered triplets of indices with a value greater than 77. 
+
+Example 2:
+Input: nums = [1,10,3,4,19]
+Output: 133
+Explanation: The value of the triplet (1, 2, 4) is (nums[1] - nums[2]) * nums[4] = 133.
+It can be shown that there are no ordered triplets of indices with a value greater than 133.
+
+Example 3:
+Input: nums = [1,2,3]
+Output: 0
+Explanation: The only ordered triplet of indices (0, 1, 2) has a negative value of (nums[0] - nums[1]) * nums[2] = -3. Hence, the answer would be 0.
+ 
+Constraints:
+3 <= nums.length <= 105
+1 <= nums[i] <= 106
+
+*/
+class Solution {
+    public long maximumTripletValue(int[] nums) 
+    {
+       
+        long maxi=0;
+        long maxDiff=0;
+        long maxVal=0;
+        int n=nums.length;
+
+         //Approach1: TC:O(N),SC:O(1)
+        for(int k=0;k<nums.length;k++)
+        {
+            maxVal=Math.max(maxVal,maxDiff*nums[k]);
+            maxDiff=Math.max(maxDiff,maxi-nums[k]);
+            maxi=Math.max(maxi,(long)nums[k]);
+        }
+        
+
+         //Approach 2: TC:O(N),SC:O(N)
+         int[] leftMax=new int[n];
+         int[] rightMax=new int[n];
+         for(int j=1;j<n;j++)
+         {
+            leftMax[j]=Math.max(leftMax[j-1],nums[j-1]);
+         }
+         for(int j=n-2;j>=0;j--)
+         {
+            rightMax[j]=Math.max(rightMax[j+1],nums[j+1]);
+         }
+         for (int j = 1; j < n - 1; j++) {
+            maxVal = Math.max(maxVal, (long)(leftMax[j] - nums[j]) * rightMax[j]);
+        }
+        
+        return maxVal;
+    }
+}
