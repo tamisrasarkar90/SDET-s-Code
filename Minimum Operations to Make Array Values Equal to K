@@ -90,7 +90,7 @@ class Solution {
         return -1;
     }
 }
-//TC:O(N^2)
+//TC:O(N^2+NLogN)
 //SC:O(N)
 
 //Approach 2: TC:O(N)
