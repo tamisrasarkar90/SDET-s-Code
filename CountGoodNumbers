@@ -1,0 +1,99 @@
+/*
+Problem Statement:
+A digit string is good if the digits (0-indexed) at even indices are even and the digits at odd indices are prime (2, 3, 5, or 7).
+For example, "2582" is good because the digits (2 and 8) at even positions are even and the digits (5 and 2) at odd positions are prime. However, "3245" is not good because 3 is at an even index but is not even.
+Given an integer n, return the total number of good digit strings of length n. Since the answer may be large, return it modulo 109 + 7.
+A digit string is a string consisting of digits 0 through 9 that may contain leading zeros.
+
+Example 1:
+Input: n = 1
+Output: 5
+Explanation: The good numbers of length 1 are "0", "2", "4", "6", "8".
+
+Example 2:
+Input: n = 4
+Output: 400
+
+Example 3:
+Input: n = 50
+Output: 564908303
+ 
+Constraints:
+1 <= n <= 1015
+
+*/
+class Solution {
+    static final int M = (int)1e9 + 7;
+    public int countGoodNumbers(long n) 
+    {
+        
+        long numEvenPlace=(n+1)/2;
+        long numOddPlace=n/2;
+        long answer=(findPower(5,numEvenPlace)*findPower(4,numOddPlace))%M;
+        return (int) answer;
+    }
+
+       private long findPower(long a,long b)
+       {
+         if(b==0)
+         {
+            return 1;
+         }
+          long result=0;
+          long half=findPower(a,b/2);
+          result=(half*half)%M;
+
+          if(b%2!=0)
+          {
+            result= (a*result)%M;
+          }
+          return result;
+
+       }
+}
+//TC:O(logN)
+//SC:O(1) Considering use of O(logN) system stack
+
+        /*long evenCompute= Math.pow((double)5*numEvenPlace);
+        long oddCompute= Math.pow((double)5*numOddPlace);
+        
+        //Applying Binary exponentitation
+        //as numEvenPlace is always even
+
+        double inner=Math.pow((double)5,numEvenPlace/2);
+        evenCompute=Math.pow(inner,2);
+         //For Odd
+         if(numOddPlace%2==0)
+         {
+              double inner1=Math.pow((double)4,numOddPlace/2);
+              oddCompute=Math.pow(inner1,2);
+         }
+         else if(numOddPlace%2!=0)
+         {
+            double inner2=Math.pow((double)4,numOddPlace/2);
+            oddCompute=(double)4*Math.pow(inner2,2);
+         }
+        double inner=Math.pow((double)5,numEvenPlace/2);
+        evenCompute=Math.pow(inner,2);
+
+
+        
+
+    }
+}*/
+
+/*
+Context:: Very Good Problem::
+There are two part to derive, first no of even and odd indices and then the possible number there to put, third is use binary exponentiation/Fast Exponentiation to calculate large power number .
+
+Algorithm: 1) If the total string length is n then no of even place would be (n+1)/2 and no of odd place would be n/2
+2) Now in each even position there could be 5(0,2,4,6,8) numbers of even value and in each odd positions there could be 4(1,3,5,7) numbers of odd value.
+That means we have to compute permutation for (n+1)/2 places 5 even values permute, and similarly n/2 odd places 4 different digits permute, then only it will be good numbers
+
+3) so the answer lies as anwser=Math.pow(5*(n+1)/2) * Math.pow(4*n/2).
+4) Now to compute any large power value we use binrary exponentiation which formula is,
+       a^b=> a^(b/2)^2 , when b is even
+       a^b-=>a* a^(b/2)^2 , when b is odd
+    with this we can compute that answer easily.
+
+*/
