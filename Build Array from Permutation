@@ -44,3 +44,26 @@ class Solution {
 }
 //TC:O(N)
 //SC:O(1)
+//Approach 2: Constant Space complexity,without modifying the array
+/* Intution is, to get old and new value simuntaneously, we can use the formula r+b*q=a where r is the reminder once divided with b and q is teh quitonet while dividing with b, like this if we need new num we can multiply with value b  then the reminder is our old number and result is out new number. This b can be anything that doesnot belongs to teh num array may be the limits exists or n
+
+*/
+
+class Solution {
+    public int[] buildArray(int[] nums) 
+    {
+        int n=nums.length;
+        // Update the original array with a=b*q+r where r=>a%b and q=>a/b are ld and new value in nums[i]    respectively
+        for(int i=0;i<n;i++)
+        {
+            nums[i]=nums[i]+n*(nums[nums[i]]%n);
+        }
+
+        for(int i=0;i<n;i++)
+        {
+           nums[i]=nums[i]/n; 
+        }
+        return nums;
+    }
+}
+//TC:O(N) SC:O(1)
