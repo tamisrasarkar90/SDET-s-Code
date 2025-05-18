@@ -73,3 +73,85 @@ private static int binarySearch(List<Integer>list,int target)
     return start;
 }
 }
+/*class Solution {
+    int[][]dp;
+    private int n;
+    //Approach 1: recursion with Top Down Memorization
+    
+    public int lengthOfLIS(int[] nums) 
+    {
+        
+        dp=new int[2501][2501];
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+        int i=0;
+        int p=-1;
+
+      return solve(0,-1,nums);
+    }
+    private int solve(int i,int p,int[] nums)
+    {
+        int n=nums.length;
+        //Recursion Base Case
+        if(i==n)
+        {
+            return 0;
+        }
+        if(p!=-1 && dp[i][p]!=-1)
+        {
+            return dp[i][p];
+        }
+        //Recursion condition
+        int take=0;
+        int skip=0;
+            //2 options Take and not take, if take 1+solve(next point),not take-> only call the f^n to it's next point
+       
+            if(p==-1|| nums[i]>nums[p])
+            {
+                //take
+                  take=1+solve(i+1,i,nums);
+            }
+                //Skip
+               skip=solve(i+1,p,nums);
+            
+        if(p!=-1)
+        {
+           dp[i][p]=Math.max(take,skip);  
+        }
+      
+      return Math.max(take,skip);
+    }
+}
+//Recursion : TC:O(2^n)
+//Memorizarion:TC:O(N^2) 
+*/
+class Solution {
+    
+
+    //Approach 2: recursion with Bottom Up Approach
+    /* First we will iterate through the array and will create the dp array such that the value in each index indicate the no of the no of longest increasing subsequence on that index.Initially it would be one, and then will increase i and another loop will check from 0 to i-1 that with i if it can make the longest increasing subsequence, at teh end will return the last index of dp array value which will consists the longest subsequence
+    */
+    
+    public int lengthOfLIS(int[] nums) 
+    {   
+      int[] dp=new int[2501];
+      Arrays.fill(dp,1);
+      int maxLis=1;
+      for(int i=0;i<nums.length;i++)
+      {
+        for(int j=0;j<i;j++)
+        {
+            if(nums[j]<nums[i])
+            {
+                //that means lengest increasing subsequence
+                dp[i]=Math.max(dp[i],dp[j]+1);
+                maxLis=Math.max(maxLis,dp[i]);
+
+            }
+        }
+    }
+    return maxLis;
+}
+}
+//TC:O(N^2)
