@@ -1,0 +1,56 @@
+/*
+Problem Descripton:
+You are given a string word, and an integer numFriends.
+Alice is organizing a game for her numFriends friends. There are multiple rounds in the game, where in each round:
+word is split into numFriends non-empty strings, such that no previous round has had the exact same split.
+All the split words are put into a box.
+Find the lexicographically largest string from the box after all the rounds are finished.
+
+Example 1:
+Input: word = "dbca", numFriends = 2
+Output: "dbc"
+Explanation: 
+All possible splits are:
+"d" and "bca".
+"db" and "ca".
+"dbc" and "a".
+
+Example 2:
+Input: word = "gggg", numFriends = 4
+Output: "g"
+Explanation: 
+The only possible split is: "g", "g", "g", and "g".
+
+Constraints:
+1 <= word.length <= 5 * 103
+word consists only of lowercase English letters.
+1 <= numFriends <= word.length
+
+*/
+class Solution {
+    public String answerString(String word, int numFriends)
+    {
+        int n=word.length();
+        if(numFriends==1) //If Friends=1, then the whole string is largest lexographical
+        {
+            return word;
+        }
+        String result=" ";
+        int largestPossibleLength=n-(numFriends-1); //Why we are assuming that one freind is getting the max, and others are getting what remaining so the best length would be n-(numFriends-1)
+
+        //We are going to each character in teh string and evaluating if it can makes largest possible String
+        for(int i=0;i<n;i++)
+        {
+          int currTake=Math.min(largestPossibleLength,n-i); // What if there are no enough length remaining in teh current string to make LargestPossible length but still there is a possibility to get lexographically largest string
+
+          String newStr=word.substring(i,i+currTake);
+          if(newStr.compareTo(result)>0)//if we found better than result update that
+          {
+            result=newStr;
+          }
+        }
+      return  result; 
+    }
+}
+//TC:O(N^2)
+//SC:O(1)
