@@ -1,0 +1,86 @@
+/*
+Problem Description:
+Given two integers n and k, return the kth lexicographically smallest integer in the range [1, n].
+
+Example 1:
+
+Input: n = 13, k = 2
+Output: 10
+Explanation: The lexicographical order is [1, 10, 11, 12, 13, 2, 3, 4, 5, 6, 7, 8, 9], so the second smallest number is 10.
+
+Example 2:
+Input: n = 1, k = 1
+Output: 1
+ 
+Constraints:
+1 <= k <= n <= 109
+
+
+*/
+class Solution {
+    //Approach 1: MLE
+    /*public int findKthNumber(int n, int k) 
+    {
+        List<Integer> result=new ArrayList();
+        for(int i=1;i<=9;i++)
+        {
+            solve(i,n,result);
+        }
+
+        return result.get(k-1);
+    }
+    void solve(int currNum,int n,List<Integer> result)
+    {
+        if(currNum>n)
+        {
+            return ;
+        }
+        
+        result.add(currNum);
+        for(int append=0;append<=9;append++)
+        {
+            int newNum=currNum*10+append;
+            if(newNum>n)
+            {
+                return;
+            }
+            solve(newNum,n,result);
+        }
+
+    }*/
+    //2nd Approach:  TC:O(log(n)*log(n)), why log(n) coz in n number max no of digit is log(n), and as we are traversing by digit , so first log(n) is for that and the second one if for that COunt method
+    public int findKthNumber(int n, int k) 
+    {
+        int curr=1;
+        k-=1; //As we consider curr=1, that will contribute one element, so k must be 1 less
+        while(k>0)
+        {
+        int countlength=count(curr,curr+1,n);
+        if(countlength<=k) //e.g if countLength=11 and k=14, then will skip the whole countLength and go to the next neighbour, else we will check within this depth or will go one more depth         
+        {
+            curr+=1;
+            k-=countlength;
+        }
+        else
+        {
+            curr*=10; //to go one more level depth
+            k--; //k will decrease
+        }
+    }
+    return curr;
+}
+    public int count(long curr, long next, int n) //to get the length
+    {
+       int countlength=0;
+       while(curr<=n) // if curr is greater than n then we can abort
+       {
+         countlength+=(next-curr); // if curr is 1 and next is 2 then currlength is 1 then go 1 level deep
+         curr*=10;
+         next*=10;
+
+         next=Math.min(next,(long)n+1);   //next can be either next or if next is >k for that will just check next as n+1 while n-curr
+       }
+       return countlength;
+    }
+
+}
