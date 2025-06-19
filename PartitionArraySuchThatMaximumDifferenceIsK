@@ -35,7 +35,7 @@ Constraints:
     0 <= nums[i] <= 105
     0 <= k <= 105
 */
-//**************************************************TC::O(NLogN) and SC::O(N)*************************************************************************
+//**************************************************TC::O(nLog(n) and SC::O(logn)*************************************************************************
 class Solution {
     public int partitionArray(int[] nums, int k)
     {
@@ -60,3 +60,26 @@ class Solution {
         return count+1;
     }
 }
+
+class Solution {
+    public int partitionArray(int[] nums, int k) 
+    {
+        Arrays.sort(nums);
+        int i=0;
+        int j=i+1;
+        int n=nums.length;
+        int subSetCount=0;
+        while(j<n)
+        {
+            if(Math.abs(nums[j]-nums[i])>k)
+            {
+               subSetCount++;
+               i=j;
+            }
+            j++;
+        }
+        return subSetCount+1;
+    }
+}
+//TC:O(nlog(n))
+//SC:O(log(n)// Java sorting Space complexity: O(log(n))
