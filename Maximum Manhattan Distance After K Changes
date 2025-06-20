@@ -1,0 +1,84 @@
+/*
+Problem Description:
+You are given a string s consisting of the characters 'N', 'S', 'E', and 'W', where s[i] indicates movements in an infinite grid:
+
+'N' : Move north by 1 unit.
+'S' : Move south by 1 unit.
+'E' : Move east by 1 unit.
+'W' : Move west by 1 unit.
+Initially, you are at the origin (0, 0). You can change at most k characters to any of the four directions.Find the maximum Manhattan distance from the origin that can be achieved at any time while performing the movements in order.The Manhattan Distance between two cells (xi, yi) and (xj, yj) is |xi - xj| + |yi - yj|.
+ 
+Example 1:
+Input: s = "NWSE", k = 1
+Output: 3
+Explanation:
+Change s[2] from 'S' to 'N'. The string s becomes "NWNE".
+Movement	Position (x, y)	Manhattan Distance	Maximum
+s[0] == 'N'	(0, 1)	0 + 1 = 1	1
+s[1] == 'W'	(-1, 1)	1 + 1 = 2	2
+s[2] == 'N'	(-1, 2)	1 + 2 = 3	3
+s[3] == 'E'	(0, 2)	0 + 2 = 2	3
+The maximum Manhattan distance from the origin that can be achieved is 3. Hence, 3 is the output.
+
+Example 2:
+Input: s = "NSWWEW", k = 3
+Output: 6
+Explanation:
+Change s[1] from 'S' to 'N', and s[4] from 'E' to 'W'. The string s becomes "NNWWWW".
+The maximum Manhattan distance from the origin that can be achieved is 6. Hence, 6 is the output. 
+
+Constraints:
+1 <= s.length <= 105
+0 <= k <= s.length
+s consists of only 'N', 'S', 'E', and 'W'.
+
+*/
+class Solution {
+    public int maxDistance(String s, int k) 
+    {
+        int eastCount=0;
+        int westCount=0;
+        int southCount=0;
+        int northCount=0;
+        int currMD=0;
+        int maxMD=0;
+        int totalStepsTillNow=0;
+
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i)=='N')
+            {
+                northCount++;
+            }
+            else if(s.charAt(i)=='S')
+            {
+                southCount++;
+            }
+             else if(s.charAt(i)=='E')
+            {
+                eastCount++;
+            }
+            else
+            {
+                westCount++;
+            }
+            //1.Here we are checking MD each time from origin so MD= |x2-x1|+|y2-y1|=>|x2|+|y2|, as x1,y1 always zero
+            //2.Another Observations is, MD=|eastCount-westCount|+|northCount-southCount| at any point of time, why because, if once go east and then 1 unit west, it becomes -2 steps wasted and vice versa, same for North and south.
+            //3.If we have k modifications allowed that means if we turn a E->W and N->S and vice versa that implies k*2 steps added to the result.
+            currMD=Math.abs(eastCount-westCount)+Math.abs(northCount-southCount);
+            totalStepsTillNow=i+1; //1 because i is zero index based and once you traverse String it consider as 1 unit step moving
+            int wastedSteps=totalStepsTillNow-currMD;
+            int extra=0;
+            if(wastedSteps!=0) //That menas we need to modify the string, in that case we will not use the whole k value but 
+            {
+                 extra=Math.min(2*k,wastedSteps);//as said we will get max 2*k for each modification in the string, but here will like to use only that much is wasted
+            }
+
+            maxMD=Math.max(maxMD,currMD+extra);
+        }
+
+        return maxMD;
+    }
+}
+//TC:O(N)
+//SC:O(1)
