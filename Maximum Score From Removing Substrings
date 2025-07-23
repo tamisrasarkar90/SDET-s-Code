@@ -1,0 +1,111 @@
+/*
+Problem Statement:
+You are given a string s and two integers x and y. You can perform two types of operations any number of times.Remove substring "ab" and gain x points.For example, when removing "ab" from "cabxbae" it becomes "cxbae".
+Remove substring "ba" and gain y points.For example, when removing "ba" from "cabxbae" it becomes "cabxe".Return the maximum points you can gain after applying the above operations on s.
+
+Example 1:
+Input: s = "cdbcbbaaabab", x = 4, y = 5
+Output: 19
+Explanation:
+- Remove the "ba" underlined in "cdbcbbaaabab". Now, s = "cdbcbbaaab" and 5 points are added to the score.
+- Remove the "ab" underlined in "cdbcbbaaab". Now, s = "cdbcbbaa" and 4 points are added to the score.
+- Remove the "ba" underlined in "cdbcbbaa". Now, s = "cdbcba" and 5 points are added to the score.
+- Remove the "ba" underlined in "cdbcba". Now, s = "cdbc" and 5 points are added to the score.
+Total score = 5 + 4 + 5 + 5 = 19.
+
+Example 2:
+Input: s = "aabbaaxybbaabb", x = 5, y = 4
+Output: 20
+Constraints:
+1 <= s.length <= 105
+1 <= x, y <= 104
+s consists of lowercase English letters.
+
+
+*/
+class Solution {
+    public int maximumGain(String s, int x, int y) 
+    {
+        int totalSum=0;
+        int xSum=0;
+        int ySum=0;
+        StringBuilder st;
+        int maxVal=Math.max(x,y);
+        
+       
+        if(maxVal==x) //try to remove ab max first
+        {
+            int i=0;
+            Stack<Character> xstack=new Stack();
+            while(i<s.length())
+            {
+                if(xstack.size()>0 && xstack.peek()=='a' && s.charAt(i)=='b')
+                {
+                    xstack.pop();
+                    xSum+=x;
+                    i++;
+                }
+                xstack.push(s.charAt(i));
+                i++;
+            }
+            String newS=" ";
+            while(!xstack.isEmpty())
+            {
+                newS+=xstack.pop();
+            }
+            //now we have to search for the least value string in newS
+            int j=0;
+            while(j<newS.length())
+            {
+                if(xstack.size()>0 && xstack.peek()=='b' && newS.charAt(j)=='a')
+                {
+                    xstack.pop();
+                    xSum+=y;
+                    j++;
+                }
+                xstack.push(newS.charAt(j));
+                j++;
+            }
+        }
+            else
+            {
+            int i=0;
+            Stack<Character> ystack=new Stack();
+            while(i<s.length())
+            {
+                if(ystack.size()>0 && ystack.peek()=='b' && s.charAt(i)=='a')
+                {
+                    ystack.pop();
+                    ySum+=y;
+                    i++;
+                }
+                ystack.push(s.charAt(i));
+                i++;
+            }
+            String newS=" ";
+            while(!ystack.isEmpty())
+            {
+                newS+=ystack.pop();
+            }
+            //now we have to search for the least value string in newS
+            int j=0;
+            while(j<newS.length())
+            {
+                if(ystack.size()>0 && ystack.peek()=='a' && newS.charAt(j)=='b')
+                {
+                    ystack.pop();
+                    ySum+=x;
+                    j++;
+                }
+                ystack.push(newS.charAt(j));
+                j++;
+
+            } 
+        }
+        return Math.max(xSum,ySum);
+    }
+}
+/* Approach: Using stack, here we need to proceed greedily by removing first maxvalue string and then minvalue one! So in first pass, we have tried visiting and removing the string correspond to maxVal(x/y) and in second pass the min value string
+TC:O(N)//SC:O(N)
+
+*/
