@@ -21,24 +21,54 @@ Constraints:
 Follow up: Could you solve it without loops/recursion?
 
 */
-class Solution {
+/*class Solution {
     public boolean isPowerOfTwo(int n) 
     {
-       if(n==0)
+        if(n==1)
+        {
+            return true;
+        }
+        if(n==0)
         {
             return false;
         }
-        while(n!=1)
+      
+       while(n!=1)
+       {
+         if(n%2!=0)
+         {
+            return false;
+         }
+         n=n/2;
+       }
+       return true;
+    }
+}*/
+//TC:O(log(n))
+//SC:O(1)
+/*Approach 2*/
+/*class Solution {
+    public boolean isPowerOfTwo(int n) 
+    {
+        if(n<1)
         {
-            if(n%2!=0)
-            {
-                return false;
-            }
-            n=n/2;
+            return false;
         }
-        return true;
+        return (n&(n-1))==0;
+    }
+}*/
+//TC:O(1)
+//SC:O(1)
+/*Approach 3*/
+class Solution {
+    public boolean isPowerOfTwo(int n) 
+    {
+        if(n<=0)
+        {
+            return false;
+        }
+    return Integer.bitCount(n)==1; //Integer.bitCount(int i)=> return how many set bits are there and if it is power of two then the number will always be 1
     }
 }
-
-//TC:O(N)
+//TC:O(log(n))
 //SC:O(1)
