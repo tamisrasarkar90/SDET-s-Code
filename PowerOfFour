@@ -51,3 +51,42 @@ class Solution {
         return Math.log(n)/Math.log(4)%1==0;
     }
 }
+class Solution {
+    public boolean isPowerOfThree(int n) 
+    {
+        //Approach: 2
+        int maxVal=1162261467;//(3^19);
+        return n>0 && maxVal%n==0;
+
+    }
+}
+//TC::O(1)
+// SC:O(1)
+        //Approach:1
+      /*  Set<Integer>set=new HashSet();
+        if(n<=0 ||n==2147483647)
+        {
+            return false;
+        }
+        if(n==1)
+        {
+            return true;
+        }
+
+        for(int i=1;i<=30;i++)
+        {
+            double val=Math.pow(3,i);
+            set.add((int)val);
+        }
+        for(int num:set)
+        {
+            if(set.contains(n))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+//TC:O(31)~TC:O(1)
+//SC:O(31)*/
