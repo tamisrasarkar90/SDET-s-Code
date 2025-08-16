@@ -24,13 +24,28 @@ Constraints:
     1 <= num <= 104
     num consists of only 6 and 9 digits.
 */
-//*****************************************TC:O(N) and SC::O(N) ****************************************************************************************
 class Solution {
     public int maximum69Number (int num) 
     {
-     // Converting num to string and using replacefirst so that very first char if 6 then will change to 9 that would be greatest,if very first char is already 9 then the second occurance will change to 9 from 6 which would be the greatest and so on...Then converting the string to integer as retuen type is integer
+        //Approach2 :TC:O(1)  //SC:O(1)
+         String numStr=String.valueOf(num);  
+         String newStr= numStr.replaceFirst("6","9"); //replace first method return a new String in java
+         return Integer.parseInt(newStr);
+    }
+
+}
         
-        return Integer.parseInt(String.valueOf(num).replaceFirst("6","9"));
-     
+        //Approach1: TC:O(N),SC:O(N)
+        String numStr=String.valueOf(num);
+        StringBuilder st=new StringBuilder(numStr);
+        for(int i=0;i<numStr.length();i++)
+        {
+            if(numStr.charAt(i)!='9')
+            {
+                st.setCharAt(i,'9');
+                break;
+            }
+        }
+        return Integer.parseInt(st.toString());
     }
 }
