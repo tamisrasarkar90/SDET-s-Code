@@ -1,0 +1,90 @@
+/*
+Problem Description:
+Alice plays the following game, loosely based on the card game "21".Alice starts with 0 points and draws numbers while she has less than k points. During each draw, she gains an integer number of points randomly from the range [1, maxPts], where maxPts is an integer. Each draw is independent and the outcomes have equal probabilities.
+Alice stops drawing numbers when she gets k or more points.
+Return the probability that Alice has n or fewer points.Answers within 10-5 of the actual answer are considered accepted.
+
+
+Example 1:
+Input: n = 10, k = 1, maxPts = 10
+Output: 1.00000
+Explanation: Alice gets a single card, then stops.
+
+Example 2:
+Input: n = 6, k = 1, maxPts = 10
+Output: 0.60000
+Explanation: Alice gets a single card, then stops.
+In 6 out of 10 possibilities, she is at or below 6 points.
+
+Example 3:
+Input: n = 21, k = 17, maxPts = 10
+Output: 0.73278
+
+Constraints:
+0 <= k <= n <= 104
+1 <= maxPts <= 104
+
+*/
+class Solution {
+    public double new21Game(int n, int k, int maxPts) 
+    {
+        //Approach 2: TC:O(N) //SC:O(N)
+        double[] P=new double[n+1];
+        P[0]=1 ;
+        double probSum=k>0 ? 1:0;
+        
+        for(int i=1;i<=n;i++)
+        {
+            P[i]=probSum/maxPts;
+            if(i<k)
+            {
+                probSum+=P[i];
+            }           
+            if(i-maxPts>=0 && i-maxPts<k )
+            {
+                probSum-=P[i-maxPts];
+            }          
+        }
+
+        double result=0;
+        for(int i=k;i<=n;i++)
+        {
+            result+=P[i];
+        }
+       return result;
+    }
+}
+    
+        //Approach 1: TC:O(N*maxPts) & SC:O(N*maxPts) ::TLE
+        //P[i] = probability of getting score = i
+        double[] P=new double[n+1];
+        P[0]=1 ;
+        /*as she already started from 0 then the Probablity of getting 0 is 1, for other cards till //   maxPts Probability is (1/maxPts)
+    Now we have to fill the probability array ,how to evalute proabability?*/
+        for(int i=1;i<=n;i++)
+        {
+           for(int card=1;card<=maxPts;card++)//maxcard
+           {
+            if(i-card>=0 && i-card<k)
+            {
+               //if P[i-j]==k game stops there!
+               //Probability of score card = 1/maxPts
+                    //Remaining points = (i-j);
+                    //So,  P[i] = Probability of j * Probability of remaining
+                    //i.e. P[i] = 1/maxPts * P[i-j]
+                    //Or, P[i] = P[i-j]/maxPts;
+                    
+             P[i]+=P[i-card]/maxPts; //Actually P[21] means P[20]*1/maxPts
+            } 
+           }
+        }
+
+        //We need to find probability from P[maxPts]+...+P[k], coz before k, Alice will continue play as per the rules and once reach k or greater than k she will stop
+        double result=0;
+        for(int i=k;i<=n;i++)
+        {
+            result+=P[i];
+        }
+       return result;
+    }
+}
