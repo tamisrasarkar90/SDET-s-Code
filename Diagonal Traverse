@@ -1,0 +1,85 @@
+/*
+Problem Description:Given an m x n matrix mat, return an array of all the elements of the array in a diagonal order.
+
+Example 1:
+Input: mat = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,4,7,5,3,6,8,9]
+
+Example 2:
+Input: mat = [[1,2],[3,4]]
+Output: [1,2,3,4]
+
+Constraints:
+m == mat.length
+n == mat[i].length
+1 <= m, n <= 104
+1 <= m * n <= 104
+-105 <= mat[i][j] <= 105
+
+*/
+/* There are multiple approaches, one of the approaches is, consider (i+j) is even as upwards and odd is downwards, fill the array with matrix cell values, once up consider three scenarios, one is 
+1)can reach row=0,2)col=n-1 and upwars scenario where row-- and col++, Similarly when going downwars two edge scenarios are 1) can reach row=m-1,2)col=0 and regular downwards scenario as r++,c--,
+and fill the array accordingly.
+Another approach is for key(i+j) get all the matrix value(Preferbly point to map) and for alternate values reverse it and add to the array
+*/
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) 
+    {
+        int m=mat.length;
+        int n=mat[0].length;
+        int[] result=new int[m*n];
+        if(m==0 ||n==0)
+        {
+            return new int[0];
+        }
+        //
+        //Map<Integer,List<Integer>> map=new HashMap();
+        int r=0;
+        int c=0;
+        //Fill the array
+        for(int i=0;i<result.length;i++)
+        {
+            result[i]=mat[r][c];
+           // There are two scenarios, one is moving up and another is moving down ,(r+c)->move up,(r-c)->move down
+           //if(r+c)%2==0 the we will move up and else move down
+           if((r+c)%2==0)
+           {
+             //move upwards-> now here we can consider three scenarios
+              if(c==n-1) // reach last coloumn now move next cell
+              {
+                r++;
+              }
+              else if(r==0) //reached first cell, now move to next cell
+              {
+                c++;
+              }
+              else
+              {
+                //Somewhere in the middle, in upwards dir
+                r--;
+                c++;
+              }
+            }
+          else //move downwards and consider three scenarios
+          {
+              if(r==m-1) //reached last cell
+              {
+                c++;
+              }
+              else if(c==0) //move next row
+              {
+                 r++;
+              }
+              else
+              {
+                //move downwards
+                r++;
+                c--;
+              }
+          }
+        }
+      return result;
+    }
+}
+//TC:O(M*N)=>O(N^2)
+//SC:O(1)
