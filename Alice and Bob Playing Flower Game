@@ -29,11 +29,13 @@ class Solution {
     public long flowerGame(int n, int m) 
     {
         //Approach 2: TC:O(1) //SC:O(1)
-        //To get odd sum pairs is possible if x-> pairs is even, y=> pairs is odd=>(x+y)=> odd 
-        //or x=> odd and y=> even,(x+y)=>odd
-        //so getting x pairs of even number and y pairs of odd number is n*m/2,to get even pairs (n*m/2),to get odd pairs (nm-1)/2
-        //so the equation => (m/2*n/2)
-         return ((long) n * m) / 2;
+        /* so we have to put flowers on two lanes, in one lanes it would be from [1,n] and in another it would be from [1,m] , now to make alice win we need odd numbers of flowers, this could be possible if pairs(x,y) from [n,m],as such, either x => odd and y=> even or x=> even and y=> odd
+        now, to get even count from [1,n]=>Math.floor(n/2) and odd count=>Math.ceil(n/2)
+        Similarly, for [1,m]=> to get even count=>Math.floor(m/2) and odd count is Math.ceil(m/2)
+    Now Math.ceil(m/2) can be written as (m+1)/2 Similarly Math.ceil(n/2) can be written as (n+1)/2.
+    Hence total possibility to alice won is=>(m+1)/2*(n/2)+(n+1/2)*(m/2)
+        */
+         return 1L*((n+1)/2)*(m/2)+1L*((m+1)/2)*(n/2);
     }
 }
 
