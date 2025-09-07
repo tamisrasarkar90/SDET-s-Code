@@ -1,0 +1,45 @@
+/*
+Problem Statement::
+You are given a string s consisting only of lowercase English letters.You can perform the following operation any number of times (including zero):
+Choose any character c in the string and replace every occurrence of c with the next lowercase letter in the English alphabet.Return the minimum number of operations required to transform s into a string consisting of only 'a' characters.
+Note: Consider the alphabet as circular, thus 'a' comes after 'z'.
+
+Example 1:
+
+Input: s = "yz"
+Output: 2
+Explanation:
+Change 'y' to 'z' to get "zz".
+Change 'z' to 'a' to get "aa".
+Thus, the answer is 2.
+
+Example 2:
+Input: s = "a"
+Output: 0
+Explanation:
+The string "a" only consists of 'a'​​​​​​​ characters. Thus, the answer is 0.
+ 
+
+Constraints:
+1 <= s.length <= 5 * 105
+s consists only of lowercase English letters.
+Seen this question in a real i
+
+*/
+class Solution {
+    public int minOperations(String s) 
+    {
+        int ans=0;       
+        for(int i=0;i<s.length();i++)
+        {
+            char c=s.charAt(i);
+            int index=c-'a';
+            int distance=(26-index)%26;
+ /*%26 beacuse it is circular and this apporach crux is to find total numbers of steps require, for b to convert a will require 25 steps for c to convert a requires 24, for d it is 23, for e it is 22 and so on.*/
+           ans=Math.max(ans,distance);
+        }
+        return ans;
+    }
+}
+//TC:O(N)
+//SC:O(1)
