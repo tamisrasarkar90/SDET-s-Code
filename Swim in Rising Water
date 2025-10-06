@@ -57,7 +57,10 @@ class Solution {
             }
           }          
         }
-        return -1;
+        return maxElevation;
     }
 }
 //TC:O(N^2*log(N))
+/*
+Approach: At any time t elevation is t(water), so while we have to go from (0,0) to(n-1,n-1) we need to find minElelvation so that time taken would be less , so will traverse in all four directions from one cell, and will keep it in the PriorityQueue which is sorted in minimum value of grid[row][col] and then will process that min value of grid from queue once poll it and will check around 4 cell from this polled cell from queue! Once done will return maxElevation which is the time as well!
+*/
