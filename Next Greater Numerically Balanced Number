@@ -1,0 +1,69 @@
+/*
+Problem Statement: An integer x is numerically balanced if for every digit d in the number x, there are exactly d occurrences of that digit in x.Given an integer n, return the smallest numerically balanced number strictly greater than n.
+Example 1:
+Input: n = 1
+Output: 22
+Explanation: 
+22 is numerically balanced since:
+- The digit 2 occurs 2 times. 
+It is also the smallest numerically balanced number strictly greater than 1.
+
+Example 2:
+Input: n = 1000
+Output: 1333
+Explanation: 
+1333 is numerically balanced since:
+- The digit 1 occurs 1 time.
+- The digit 3 occurs 3 times. 
+It is also the smallest numerically balanced number strictly greater than 1000.
+Note that 1022 cannot be the answer because 0 appeared more than 0 times.
+
+Example 3:
+Input: n = 3000
+Output: 3133
+Explanation: 
+3133 is numerically balanced since:
+- The digit 1 occurs 1 time.
+- The digit 3 occurs 3 times.
+It is also the smallest numerically balanced number strictly greater than 3000.
+ 
+Constraints:
+0 <= n <= 106 */
+class Solution {
+    public int nextBeautifulNumber(int n) 
+    {
+        boolean flag=false;
+        int i=n+1;
+        for(;i <= 1224444;i++)
+        {
+            String newStr=String.valueOf(i);
+            if(OccuranceofDigit(newStr))
+            {
+                flag=true;
+                return i;
+            }
+        }
+       return 0;
+    }
+    private static boolean OccuranceofDigit(String s)
+    {
+        char[] chArray=s.toCharArray();
+        Map<Character,Integer> map=new HashMap();
+        for(char c:chArray)
+        {
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+        for(char key:map.keySet())
+        {
+            if(key-'0'!=map.get(key))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+//TC:O(C-n) //where C= 1224444 ~TC:O(N)
+//SC:O(N)
+
+*/
