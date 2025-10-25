@@ -1,0 +1,63 @@
+/*
+Problem Description: Hercy wants to save money for his first car. He puts money in the Leetcode bank every day.
+He starts by putting in $1 on Monday, the first day. Every day from Tuesday to Sunday, he will put in $1 more than the day before. On every subsequent Monday, he will put in $1 more than the previous Monday.Given n, return the total amount of money he will have in the Leetcode bank at the end of the nth day.
+
+Example 1:
+Input: n = 4
+Output: 10
+Explanation: After the 4th day, the total is 1 + 2 + 3 + 4 = 10.
+
+Example 2:
+Input: n = 10
+Output: 37
+Explanation: After the 10th day, the total is (1 + 2 + 3 + 4 + 5 + 6 + 7) + (2 + 3 + 4) = 37. Notice that on the 2nd Monday, Hercy only puts in $2.
+
+Example 3:
+Input: n = 20
+Output: 96
+Explanation: After the 20th day, the total is (1 + 2 + 3 + 4 + 5 + 6 + 7) + (2 + 3 + 4 + 5 + 6 + 7 + 8) + (3 + 4 + 5 + 6 + 7 + 8) = 96.
+ 
+Constraints:
+1 <= n <= 1000
+*/
+class Solution {
+    public int totalMoney(int n) 
+    {
+        //Approach 2: TC:O(1) with the help if Arithmetic Progression
+        //totalSum(Sn)=term/2*(a[0]+a[n]) //AP of sum of n terms, where terms=(n/7)
+    //To a0=1 th item which is =first week(7 days) sum of money=28,finalterm(a[n])=a[0]+(term-1)*common difference
+    //=>28+(3-1)*d=>28+2*7=>42
+       int totalSum=0;
+       int firstItem=28;
+       int term=(n/7);
+       int finalItem=28+(term-1)*7;//always 7 coz teh difference between common diffirence is always 7 here in this AP
+       totalSum=term*(firstItem+finalItem)/2;
+       
+       int startMoney=1+(n/7);
+       for(int day=1;day<=n%7;day++)
+       {
+        totalSum+=startMoney;
+        startMoney++;
+       }
+      return totalSum;
+    }
+}
+
+        /*
+        //Approach:TC:O(N)//SC:O(1)
+      int result=0;
+      int monday=1;
+       while(n>0)
+       {
+        int money=monday;
+        for(int day=1;day<=Math.min(n,7);day++)
+        {
+            result+=money;
+            money++;
+        }
+         n=n-7;
+         monday++;
+       }
+     return result;
+    }
+}*/
