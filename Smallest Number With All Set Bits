@@ -43,3 +43,46 @@ class Solution {
 
     }
 }
+//class Solution {
+    public int smallestNumber(int n) 
+    {
+        //Approach 3:
+        int totalNoOfBits=(int)(Math.log(n) / Math.log(2)) + 1;
+        return (1<<totalNoOfBits)-1;
+    }
+}//TC:O(1) &SC:O(1)
+
+
+        /*
+        //Approach:2
+        int result=1;
+        while(result<n)
+        {
+           result=2*result+1;
+        }
+      return result;
+    }   
+} */
+
+        /*
+        //Approach:1
+        int result=n;
+        while(!allBitsSets(result))
+        {
+            result++;
+        }
+       return result;      
+    }
+    boolean allBitsSets(int num)
+    {
+       return (num&(num+1))==0;
+    }
+}
+
+//Important learnings:
+     /*1.Any number which is a power of 2,if we deduct 1 from that number,comes a number where all bits are set!
+       2.if (n&(n+1))==0, that means n has all bits sets
+       3.To get all bits/totalBitsCount of a number=> log(n)+1,
+       now once we get this if we do, 1<<totalNumbersofBits=> giving a number which is power of two, now we can apply point number 1 , we deduct 1 from this, and we get a number which is having all bits set
+       4.The difference between two all distinguish set bits numbers are => 2*num+1, where num=1,2,3,..so on 
+     */
