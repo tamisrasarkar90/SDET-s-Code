@@ -1,0 +1,63 @@
+/*
+Problem Description: Given an integer n, you must transform it into 0 using the following operations any number of times:Change the rightmost (0th) bit in the binary representation of n.Change the ith bit in the binary representation of n if the (i-1)th bit is set to 1 and the (i-2)th through 0th bits are set to 0.
+Return the minimum number of operations to transform n into 0.
+
+Example 1:
+Input: n = 3
+Output: 2
+Explanation: The binary representation of 3 is "11".
+"11" -> "01" with the 2nd operation since the 0th bit is 1.
+"01" -> "00" with the 1st operation.
+
+Example 2:
+Input: n = 6
+Output: 4
+Explanation: The binary representation of 6 is "110".
+"110" -> "010" with the 2nd operation since the 1st bit is 1 and 0th through 0th bits are 0.
+"010" -> "011" with the 1st operation.
+"011" -> "001" with the 2nd operation since the 0th bit is 1.
+"001" -> "000" with the 1st operation.
+ 
+Constraints:
+0 <= n <= 109
+
+*/
+class Solution {
+    public int minimumOneBitOperations(int n) 
+    {
+        int result=0;
+        int[] F=new int[32];
+        F[0]=1;
+        for(int i=1;i<32;i++)
+        {
+           F[i]=2*F[i-1]+1;
+        }
+        
+        int sign=1;
+        for(int i=31;i>=0;i--)
+        {
+            int val=((1<<i)&n); //in order to get if i is set or not
+            if(val==0)
+            { 
+                continue;
+            }
+            if(sign>0)
+            {
+              result+=F[i];
+             }
+             else
+             {
+                result-=F[i];
+            }  
+            sign=sign*(-1);
+        }
+        return result;
+    }
+}
+//TC:O(1) //SC:O(1)
+/*
+Approach: If there is only 1 set bit in n=> then it will take=>F[i]=2*F[i-1]+1 no of steps
+If there is multiple set bits in n then from left to right(in Bit postion the leftmost bit is 32 and then 31,30,29,..0)whatever the set bits is add or subtract to the result alternatively(Incase of n has multiple set bits), that way it can evalute no of steps required to convert n->0
+And if n has only 1 set bit whcih is power 2 , then no of steps required F[i-1]*2+1, where F[0]=1(only 1 has 0 th bit set)
+
+*/
