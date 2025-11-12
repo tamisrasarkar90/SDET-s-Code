@@ -29,6 +29,12 @@ class Solution {
        
         // Two Observation while solving it greedily 1) If there is number 1 in nums array then result=nums.elngth-oneCunt
      //   2) if compute gcd of total nums array is geater then 1 then it is not possible to make the array elemnet as 1
+//Approach: Greedy will work and n=50 so, n^2 solution will work, incase there is 
+//currently no one in the subarray then we need to consider evalute subarray with minLength can have a 
+//1 after gcd replacement, why min length as min length subarray will consume min operations to make aubarray as 1, 
+//and then the answer is n-countOfOne here countOfOne is (minLength-1) as in the minLength subarray one element is already 1 so remiaing needs to convert to one 
+//is (minLength-1), similary I am considering in nlength array, 1 elemnent has already converted so remaining element is n-1, 
+//hence the result would be (minlength-1)+(n-1)=> minLength+n-2
      for(int num:nums)
      {
         if(num==1)
