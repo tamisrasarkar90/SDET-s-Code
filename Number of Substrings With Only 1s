@@ -1,0 +1,71 @@
+/*
+Problem Description: Given a binary string s, return the number of substrings with all characters 1's. Since the answer may be too large, return it modulo 109 + 7. 
+Example 1:
+Input: s = "0110111"
+Output: 9
+Explanation: There are 9 substring in total with only 1's characters.
+"1" -> 5 times.
+"11" -> 3 times.
+"111" -> 1 time.
+Example 2:
+Input: s = "101"
+Output: 2
+Explanation: Substring "1" is shown 2 times in s.
+Example 3:
+Input: s = "111111"
+Output: 21
+Explanation: Each substring contains only 1's characters.
+
+Constraints:
+1 <= s.length <= 105
+s[i] is either '0' or '1'.
+
+*/
+class Solution {
+    public int numSub(String s) 
+    {
+        //Approach 2: is simplified version of Approach 1 TC:O(N)//SC:O(1)
+        long M=1000000007;
+        long result=0;
+        long count=0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i)=='1')
+            {
+                count++;
+                result+=count;
+                result=result%M;
+            }
+            else
+            {
+                count=0;
+            }
+        }
+        return (int)result;
+    }
+}
+     
+     /*
+        //Approach 1: TC:O(N)//SC:O(1)
+        long M=1000000007;
+        long result=0;
+        long count=0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i)=='1')
+            {
+                count++;
+            }
+            else //if 0 encounter
+            {
+               result+=(count*(count+1))/2; //This is to get noof substrings containing any character
+               result=result%M;
+               count=0;
+            }
+        }
+        //if i is out of bound and count>0
+        result+=(count*(count+1))/2;
+        result=result%M;
+        return (int)result;
+    }
+}*/
