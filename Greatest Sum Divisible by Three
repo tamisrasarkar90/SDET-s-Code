@@ -74,3 +74,41 @@ class Solution {
 }
 //TC:O(nlog(n))
 //SC:O(N)
+
+//Approach 2: DP(Top Down)
+{
+public int maxSumDivThree(int[] nums) 
+    { 
+      int[][] dp=new int[nums.length][3]; //here two things are changing index, and rem as rem can be 0,1,2 hence 3 is the size we take
+    for(int i=0;i<dp.length;i++)
+    {
+        for(int j=0;j<dp[0].length;j++)
+        {
+            dp[i][j]=-1;
+        }
+    }
+
+      return solve(0,0,nums,dp);
+    }
+    private static int solve(int i,int rem,int[] nums,int[][] dp)
+    {
+        if(i>=nums.length)
+        {
+           if(rem==0)
+           {
+             return 0;
+           }
+          return Integer.MIN_VALUE;
+        }
+        if(dp[i][rem]!=-1)
+        {
+            return dp[i][rem];
+        }
+        
+        int take=nums[i]+solve(i+1,(rem+nums[i])%3,nums,dp);
+        int skip=solve(i+1,rem,nums,dp);
+        return dp[i][rem]=Math.max(take,skip);
+    }
+}
+
+
