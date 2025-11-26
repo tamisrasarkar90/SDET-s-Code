@@ -68,4 +68,5 @@ class Solution {
         return dp[r][c][currSum]=(int)((long)down+right)%M;
     }
 }
-//TC:O(N^2)
+//TC:O(m*n*K)
+//SC:O(m*n*K);
