@@ -1,0 +1,60 @@
+/*
+Problem Description: You are given a 2D integer array points, where points[i] = [xi, yi] represents the coordinates of the ith point on the Cartesian plane.A horizontal trapezoid is a convex quadrilateral with at least one pair of horizontal sides (i.e. parallel to the x-axis). Two lines are parallel if and only if they have the same slope.
+Return the number of unique horizontal trapezoids that can be formed by choosing any four distinct points from points.Since the answer may be very large, return it modulo 109 + 7.
+
+Example 1:
+Input: points = [[1,0],[2,0],[3,0],[2,2],[3,2]]
+Output: 3
+Explanation:
+There are three distinct ways to pick four points that form a horizontal trapezoid:
+Using points [1,0], [2,0], [3,2], and [2,2].
+Using points [2,0], [3,0], [3,2], and [2,2].
+Using points [1,0], [3,0], [3,2], and [2,2].
+Example 2:
+Input: points = [[0,0],[1,0],[0,1],[2,1]]
+Output: 1
+Explanation:
+There is only one horizontal trapezoid that can be formed.
+
+Constraints:
+4 <= points.length <= 105
+–108 <= xi, yi <= 108
+All points are pairwise distinct.
+
+*/
+class Solution {
+    public int countTrapezoids(int[][] points) 
+    {
+        int M=1000000007;
+        int n=points.length;
+        Map<Integer,Long> map=new HashMap();
+        for(int[] point:points)
+        {
+            map.put(point[1],map.getOrDefault(point[1],0L)+1);
+        }
+        long[] values=new long[map.size()];
+        int index=0;
+        for(int key:map.keySet())
+        {
+           long val =map.get(key);
+           values[index]=((val*(val-1))/2)%M;
+           index++;
+        }
+        long sum=0;
+        long result=0;
+        for(int i=0;i<values.length;i++)
+        {
+            result=(result+(sum*values[i])%M)%M;
+            sum=(sum+values[i])%M;
+        }    
+        return (int)result;
+    }
+}
+/*
+Approach: In order to find number of unique horizontal trapezoids, one needs to group points according to their y axis values, and then based on that group, one needs to choose out of values only 2 points suppose there are 3 values have same y axis value,then one need to perform 3C2 combination which is 3*(3-1)/2, now in order to get the result one needs to multiple such combinations values,
+Ex: suppose there are 5 points whose y axis values are same as 0 and 9 points whose y axis values are same as 2,
+Now we need to first group them(using map where key=y axis value and val=no of points having same y axis values),
+now we need to evalute how many combinations possible on these values if we select 2 points each time? Means suppose my map values seems like 5,9, then 5C2 * 9C2 is the answer, as the values would be large hence we use two variable as sum and result where is sum we are updating sum value and in result we are storing result*sum values, at last will return result
+*/
+//TC:O(N)
+//SC:O(N)
