@@ -1,0 +1,77 @@
+/*
+Problem Description: 
+You are given an integer array nums.
+A special triplet is defined as a triplet of indices (i, j, k) such that:
+0 <= i < j < k < n, where n = nums.length
+nums[i] == nums[j] * 2
+nums[k] == nums[j] * 2
+Return the total number of special triplets in the array.Since the answer may be large, return it modulo 109 + 7.
+
+Example 1:
+Input: nums = [6,3,6]
+Output: 1
+Explanation:
+The only special triplet is (i, j, k) = (0, 1, 2), where:
+nums[0] = 6, nums[1] = 3, nums[2] = 6
+nums[0] = nums[1] * 2 = 3 * 2 = 6
+nums[2] = nums[1] * 2 = 3 * 2 = 6
+Example 2:
+Input: nums = [0,1,0,0]
+Output: 1
+Explanation:
+The only special triplet is (i, j, k) = (0, 2, 3), where:
+nums[0] = 0, nums[2] = 0, nums[3] = 0
+nums[0] = nums[2] * 2 = 0 * 2 = 0
+nums[3] = nums[2] * 2 = 0 * 2 = 0
+
+Example 3:
+Input: nums = [8,4,2,8,4]
+Output: 2
+Explanation:
+There are exactly two special triplets:
+(i, j, k) = (0, 1, 3)
+nums[0] = 8, nums[1] = 4, nums[3] = 8
+nums[0] = nums[1] * 2 = 4 * 2 = 8
+nums[3] = nums[1] * 2 = 4 * 2 = 8
+(i, j, k) = (1, 2, 4)
+nums[1] = 4, nums[2] = 2, nums[4] = 4
+nums[1] = nums[2] * 2 = 2 * 2 = 4
+nums[4] = nums[2] * 2 = 2 * 2 = 4
+
+Constraints:
+3 <= n == nums.length <= 105
+0 <= nums[i] <= 105
+*/
+class Solution {
+    int M=1000000007;
+    public int specialTriplets(int[] nums) 
+    {
+        long result=0;
+        Map<Integer,Integer> map=new HashMap();
+        Map<Integer,Integer> numCount=new HashMap();
+        for(int num:nums)
+        {
+            map.put(num,map.getOrDefault(num,0)+1);
+        }
+        for(int num:nums)
+        {
+           numCount.put(num,numCount.getOrDefault(num,0)+1);
+           int target=num*2;
+           int leftCount=numCount.getOrDefault(target,0);
+           int rightCount=map.getOrDefault(target,0)-numCount.getOrDefault(target,0);
+           result=(result+(long)leftCount*rightCount)%M;
+        }
+        
+       return (int)result;
+    }
+}
+//TC:O(N)
+//SC:O(N)
+/*
+Approach: We need to find for each j how many i(target/j*2) I have seen in left and in right(=>k/j*2/target)
+Now the result+=left*right,
+The first map is used to ease the computation and store all numbers frequency, the above mnetion calculation is done by numCount teh second map, interesting part is how we calculate rightCount which is frq of target in original map -the freq of target in left map
+
+*/
+
+*/
