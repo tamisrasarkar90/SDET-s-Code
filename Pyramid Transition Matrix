@@ -1,0 +1,94 @@
+/*
+Problem Description: You are stacking blocks to form a pyramid. Each block has a color, which is represented by a single letter. Each row of blocks contains one less block than the row beneath it and is centered on top.
+
+To make the pyramid aesthetically pleasing, there are only specific triangular patterns that are allowed. A triangular pattern consists of a single block stacked on top of two blocks. The patterns are given as a list of three-letter strings allowed, where the first two characters of a pattern represent the left and right bottom blocks respectively, and the third character is the top block.
+
+For example, "ABC" represents a triangular pattern with a 'C' block stacked on top of an 'A' (left) and 'B' (right) block. Note that this is different from "BAC" where 'B' is on the left bottom and 'A' is on the right bottom.
+You start with a bottom row of blocks bottom, given as a single string, that you must use as the base of the pyramid.
+
+Given bottom and allowed, return true if you can build the pyramid all the way to the top such that every triangular pattern in the pyramid is in allowed, or false otherwise.
+
+ 
+
+Example 1:
+
+
+Input: bottom = "BCD", allowed = ["BCC","CDE","CEA","FFF"]
+Output: true
+Explanation: The allowed triangular patterns are shown on the right.
+Starting from the bottom (level 3), we can build "CE" on level 2 and then build "A" on level 1.
+There are three triangular patterns in the pyramid, which are "BCC", "CDE", and "CEA". All are allowed.
+Example 2:
+
+
+Input: bottom = "AAAA", allowed = ["AAB","AAC","BCD","BBE","DEF"]
+Output: false
+Explanation: The allowed triangular patterns are shown on the right.
+Starting from the bottom (level 4), there are multiple ways to build level 3, but trying all the possibilites, you will get always stuck before building level 1.
+ 
+
+Constraints:
+
+2 <= bottom.length <= 6
+0 <= allowed.length <= 216
+allowed[i].length == 3
+The letters in all input strings are from the set {'A', 'B', 'C', 'D', 'E', 'F'}.
+All the values of allowed are unique
+
+*/
+class Solution {
+    public boolean pyramidTransition(String bottom, List<String> allowed) 
+    {
+    Map<String,List<Character>> map=new HashMap();
+    //this map will contains key as 2 letters string for each allowed string and value as the next characters remaining within the list
+    //This for loop to create the map which indication String and characer value map
+       for(int i=0;i<allowed.size();i++)
+       {
+          String ss=allowed.get(i);
+          String key=ss.substring(0,2);
+          char val=ss.charAt(2);
+
+          if(!map.containsKey(key))
+          {
+             map.put(key,new ArrayList<>());
+          }
+          map.get(key).add(val);
+       }
+       StringBuilder str=new StringBuilder();
+       return backtrack(bottom,map,str,0);
+    }
+    private boolean backtrack(String bottom,Map<String,List<Character>>map,StringBuilder st,int index)
+    {
+        //Base Condition when will the function return true? When the bottom(which is base)length is 1(i.e at the top)
+        if(bottom.length()==1)
+        {
+            return true;
+        }
+    //when to move to the next level ? when StringBuilder length==bottom.length()-1 as the top level length is always-1 of bottom level's length , then new bottom= stringbuilder String & stringBuilder would be reinitialize and index is 0
+         if(st.length()==bottom.length()-1)
+         {
+            return backtrack(st.toString(),map,new StringBuilder(),0);
+         }
+         //Another check if the key is not there in the map return false
+         String key=bottom.substring(index,index+2);
+         if(!map.containsKey(key))
+         {
+            return false;
+         }
+
+     //Now the main crux of backTracking 1)DO, 2)Explore, 3)UNDO
+       for(char c: map.get(key))
+       {
+          //Do
+          st.append(c);
+           //Explore
+          if(backtrack(bottom,map,st,index+1)) 
+          {
+                return true;
+          }
+           //UNDO
+           st.deleteCharAt(index);
+       }       
+     return false;
+    }
+}
