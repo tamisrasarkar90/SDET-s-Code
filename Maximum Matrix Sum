@@ -1,0 +1,48 @@
+/*
+Problem Statement: You are given an n x n integer matrix. You can do the following operation any number of times:
+Choose any two adjacent elements of matrix and multiply each of them by -1.
+Two elements are considered adjacent if and only if they share a border.Your goal is to maximize the summation of the matrix's elements. Return the maximum sum of the matrix's elements using the operation mentioned above.
+
+Example 1:
+
+Input: matrix = [[1,-1],[-1,1]]
+Output: 4
+Explanation: We can follow the following steps to reach sum equals 4:
+- Multiply the 2 elements in the first row by -1.
+- Multiply the 2 elements in the first column by -1.
+Example 2:
+Input: matrix = [[1,2,3],[-1,-2,-3],[1,2,3]]
+Output: 16
+Explanation: We can follow the following step to reach sum equals 16:
+- Multiply the 2 last elements in the second row by -1.
+ 
+Constraints:
+n == matrix.length == matrix[i].length
+2 <= n <= 250
+-105 <= matrix[i][j] <= 105
+
+*/
+class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+            long totalSum=0;
+            long countOfNegative=0;
+            long small=Long.MAX_VALUE;
+            for(int i=0;i<matrix.length;i++)
+            {
+                for(int j=0;j<matrix[0].length;j++)
+                {
+                    int val=matrix[i][j];
+                    if(val<0)
+                    {
+                        countOfNegative++;
+                    }
+                    totalSum+=Math.abs(val);
+                    small=Math.min(small,(Math.abs(val)));
+                }
+            }
+        return countOfNegative%2==0 ? totalSum:totalSum-(2*small);
+    }
+}
+//TC:O(N^2)
+//SC:O(1)
+//Approach: Greedy-> If negative count is even then return totalSum, because all negatives willcancel out by them self while negative propagating on each iteration,If negative count is odd, then as we have to maxixmize the sum, the smallest one ,we have to subtract from totalSum,but as in totalSum already a component of smallest value exists ,hence we need to remove it twice!
