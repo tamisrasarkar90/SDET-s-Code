@@ -1,0 +1,124 @@
+/*
+Problem Statement: Given the root of a binary tree, the level of its root is 1, the level of its children is 2, and so on.Return the smallest level x such that the sum of all the values of nodes at level x is maximal.
+Example 1:
+
+Input: root = [1,7,0,7,-8,null,null]
+Output: 2
+Explanation: 
+Level 1 sum = 1.
+Level 2 sum = 7 + 0 = 7.
+Level 3 sum = 7 + -8 = -1.
+So we return the level with the maximum sum which is level 2.
+Example 2:
+Input: root = [989,null,10250,98693,-89388,null,null,null,-32127]
+Output: 2
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 104].
+-105 <= Node.val <= 105
+
+*/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+ 
+ //Approach :BFS
+class Solution {
+    public int maxLevelSum(TreeNode root) 
+    {     
+        int maxVal=Integer.MIN_VALUE;
+        int level=0;
+        Queue<TreeNode> queue=new LinkedList();
+        queue.offer(root);
+        int currLevel=1; //as level of root is 1
+        // BFS template
+        while(!queue.isEmpty())
+        {
+           //Step 1. Always get first the size of the queue
+           int n=queue.size();
+           int currSum=0;
+           
+           while(n>0)
+           {
+           //Step 2: Remove element from queue and traverse left and right and add the children to the queue
+            TreeNode temp=queue.poll();
+            currSum+=temp.val;
+            if(temp.left!=null)
+            {
+                queue.offer(temp.left);
+            }
+            if(temp.right!=null)
+            {
+                queue.offer(temp.right);
+            } 
+            n--;         
+        }
+        if(currSum>maxVal)  
+        {
+            maxVal=currSum;
+            level=currLevel;
+        } 
+        currLevel++;       
+    }
+    return level;
+  }
+}
+//TC:O(N) //Each node is process only once, Queue insertion :O(1) for each node ,for N node:O(N), deletion O(1)for each node ,for N node:O(N),Queue processing time:O(N) to check left & right of the tree O(1),add sum:O(1) total :O(N)
+//Total time complexity:O(N)+O(N)+O(N)~O(N)
+//Total Space Complexity:O(N)
+
+
+//Approach : DFS:
+class Solution {
+   
+    public int maxLevelSum(TreeNode root) 
+    { 
+        Map<Integer, Integer> levelSumMap = new HashMap<>();
+
+        // DFS traversal
+        dfs(root, 1, levelSumMap);
+
+        int maxSum = Integer.MIN_VALUE;
+        int answerLevel = Integer.MAX_VALUE;
+
+        // Find smallest level with maximum sum
+        for (Map.Entry<Integer, Integer> entry : levelSumMap.entrySet()) {
+            int level = entry.getKey();
+            int sum = entry.getValue();
+
+            if (sum > maxSum || (sum == maxSum && level < answerLevel)) {
+                maxSum = sum;
+                answerLevel = level;
+            }
+        }
+
+        return answerLevel;
+    }
+
+    private static void dfs(TreeNode node, int level, Map<Integer, Integer> map) {
+        if (node == null) {
+            return;
+        }
+
+        // Add current node value to its level sum
+        map.put(level, map.getOrDefault(level, 0) + node.val);
+
+        // Recurse left and right
+        dfs(node.left, level + 1, map);
+        dfs(node.right, level + 1, map);
+    }
+}
