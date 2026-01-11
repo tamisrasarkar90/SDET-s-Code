@@ -1,0 +1,105 @@
+/*
+Problem Statement:: Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+Example 1:
+Input: heights = [2,1,5,6,2,3]
+Output: 10
+Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+Example 2:
+Input: heights = [2,4]
+Output: 4
+ 
+Constraints:
+1 <= heights.length <= 105
+0 <= heights[i] <= 104
+
+*/
+/*
+Approach: All we want to do is , get the height and width of a each row(1D), and then calculate the corresponding area and get max out of it!
+So to get height: we will traverse through each row, if row value 1 then it is contributing to heigt array if 0 then we need to discard as it would be vacant, and for that the whole height is discontinue.
+To get width, we need to get(Considering 1D array), Next small element's index in left and Next small element's index in right and then subtract 1 of it! that would be the width considering 1D Array
+So to get NSR and NSL we have used monotonic stack, we can do it in a brute force way but it would add more complexity in terms of time and space,
+so to evalute NSR-> will traverse through right to left, tracking the very small element in right, if stack.peek which is index of height array is greater than then current heights[i], then will pop untill we found such index where heights[index] is smaller one,
+Same logic for NCL-> will traverse through left t right, tracking the smallest in left, if stack.peek index of heights is greater than the current index of height array then simply we will pop untill we found another smallest elements's index or stack becomes empty!
+Atleast will return this two arrays NCR,NCL, consisting smallest element of an elemnet to it's right and to it's left
+in order to calculate the width and then the area, so that we can get the maxArea out of it!
+*/
+      
+class Solution {
+    public int largestRectangleArea(int[] heights) 
+    {
+           int[] NSR=new int[heights.length];
+           int[] NSL=new int[heights.length];
+           int[] width=new int[heights.length];
+           NSR=getNSR(heights);
+           NSL=getNSL(heights);
+           for(int i=0;i<heights.length;i++)
+           {
+             width[i]=(NSR[i]-NSL[i])-1;
+           }
+           //Now compute the height * width i.e. area
+           int maxArea=0;
+           for(int i=0;i<heights.length;i++)
+           {
+             int area=width[i]*heights[i];
+             maxArea=Math.max(maxArea,area);
+           }
+        return maxArea;
+    }
+    private int[] getNSR(int[] heights)
+    {
+        Stack<Integer> st = new Stack<>();
+        int n = heights.length;
+        int pseudo_index = n;
+        int[] right = new int[n];
+        for (int i = n - 1; i >= 0; i--) {
+            if (st.empty()) {
+                right[i] = pseudo_index;
+            } else {
+                while (!st.empty() && heights[st.peek()] >= heights[i])
+                    st.pop();
+                if (st.empty())
+                    right[i] = pseudo_index;
+                else
+                    right[i] = st.peek();
+            }
+            st.push(i);
+        }
+        return right;
+    }
+     private int[] getNSL(int[] heights)
+    {
+        Stack<Integer> st = new Stack<>();
+        int n = heights.length;
+        int pseudo_index = -1;
+        int[] left = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (st.empty()) {
+                left[i] = pseudo_index;
+            } else {
+                while (!st.empty() && heights[st.peek()] >= heights[i])
+                    st.pop();
+                if (st.empty())
+                    left[i] = pseudo_index;
+                else
+                    left[i] = st.peek();
+            }
+            st.push(i);
+        }
+        return left;
+    }
+}
+//TC:O(M*N)
+//SC:O(M)
+/*
+Approach: All we want to do is , get the height and width of a each row(1D), and then calculate the corresponding area and get max out of it!
+So to get height: we will traverse through each row, if row value 1 then it is contributing to heigt array if 0 then we need to discard as it would be vacant, and for that the whole height is discontinue.
+To get width, we need to get(Considering 1D array), Next small element's index in left and Next small element's index in right and then subtract 1 of it! that would be the width considering 1D Array
+So to get NSR and NSL we have used monotonic stack, we can do it in a brute force way but it would add more complexity in terms of time and space,
+so to evalute NSR-> will traverse through right to left, tracking the very small element in right, if stack.peek which is index of height array is greater than then current heights[i], then will pop untill we found such index where heights[index] is smaller one,
+Same logic for NCL-> will traverse through left t right, tracking the smallest in left, if stack.peek index of heights is greater than the current index of height array then simply we will pop untill we found another smallest elements's index or stack becomes empty!
+Atleast will return this two arrays NCR,NCL, consisting smallest element of an elemnet to it's right and to it's left
+in order to calculate the width and then the area, so that we can get the maxArea out of it!
+*/
+        
