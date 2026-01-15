@@ -1,0 +1,77 @@
+/*
+Problem Description: You are given the two integers, n and m and two integer arrays, hBars and vBars. The grid has n + 2 horizontal and m + 2 vertical bars, creating 1 x 1 unit cells. The bars are indexed starting from 1.
+You can remove some of the bars in hBars from horizontal bars and some of the bars in vBars from vertical bars. Note that other bars are fixed and cannot be removed.Return an integer denoting the maximum area of a square-shaped hole in the grid, after removing some bars (possibly none).
+
+Example 1:
+Input: n = 2, m = 1, hBars = [2,3], vBars = [2]
+Output: 4
+Explanation:
+The left image shows the initial grid formed by the bars. The horizontal bars are [1,2,3,4], and the vertical bars are [1,2,3].
+One way to get the maximum square-shaped hole is by removing horizontal bar 2 and vertical bar 2.
+
+Example 2:
+Input: n = 1, m = 1, hBars = [2], vBars = [2]
+Output: 4
+Explanation:
+To get the maximum square-shaped hole, we remove horizontal bar 2 and vertical bar 2.
+
+Example 3:
+Input: n = 2, m = 3, hBars = [2,3], vBars = [2,4]
+Output: 4
+Explanation:
+One way to get the maximum square-shaped hole is by removing horizontal bar 3, and vertical bar 4.
+
+Constraints:
+1 <= n <= 109
+1 <= m <= 109
+1 <= hBars.length <= 100
+2 <= hBars[i] <= n + 1
+1 <= vBars.length <= 100
+2 <= vBars[i] <= m + 1
+All values in hBars are distinct.
+All values in vBars are distinct.
+*/
+class Solution {
+    public int maximizeSquareHoleArea(int n, int m, int[] hBars, int[] vBars) 
+    {
+        Arrays.sort(hBars); //Inorder to get consecutive numbers
+        Arrays.sort(vBars);
+        //We need to find longest increasing subarray
+        int maxHorizontalBar=1;
+        int maxVerticalBar=1;
+        int currConsecutiveHorizonalBar=1;
+        //To get how many consecutive hBars
+        for(int i=1;i<hBars.length;i++)
+        {
+            if(hBars[i]-hBars[i-1]==1) 
+            {
+                //means these are consecutive and we may consider this
+                currConsecutiveHorizonalBar++;
+            }
+            else
+            {
+                currConsecutiveHorizonalBar=1; //as the current bar is still 1
+            }
+           maxHorizontalBar=Math.max(maxHorizontalBar,currConsecutiveHorizonalBar) ;
+        }
+        int currConsecutiveVerticalBar=1;
+        //To get how many consecutive vBars
+        for(int i=1;i<vBars.length;i++)
+        {
+            if(vBars[i]-vBars[i-1]==1) 
+            {
+                //means these are consecutive and we may consider this
+                currConsecutiveVerticalBar++;
+            }
+            else
+            {
+                currConsecutiveVerticalBar=1; //as the current bar is still 1
+            }
+           maxVerticalBar=Math.max(maxVerticalBar,currConsecutiveVerticalBar); 
+        }
+        int maxlen=Math.min(maxVerticalBar,maxHorizontalBar)+1; //as we need square we need both sides equals, so taking the min as max can be reduced to min but not vice versa & +1 because, if we remove length of the bar as 2 we get width as length of the bar+1; and height as well, length of the height of the bar+1;
+
+       return maxlen*maxlen; //as area
+    }
+}
+//TC:O(nlog(n))
