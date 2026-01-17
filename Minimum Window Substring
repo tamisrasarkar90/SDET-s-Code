@@ -1,0 +1,99 @@
+/*
+Problem Description: Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+The testcases will be generated such that the answer is unique.
+
+Example 1:
+
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+Example 2:
+
+Input: s = "a", t = "a"
+Output: "a"
+Explanation: The entire string s is the minimum window.
+Example 3:
+
+Input: s = "a", t = "aa"
+Output: ""
+Explanation: Both 'a's from t must be included in the window.
+Since the largest window of s only has one 'a', return empty string.
+ 
+
+Constraints:
+m == s.length
+n == t.length
+1 <= m, n <= 105
+s and t consist of uppercase and lowercase English letters.
+ 
+Follow up: Could you find an algorithm that runs in O(m + n) time?
+
+*/
+class Solution {
+    public String minWindow(String s, String t) 
+    {int l1=s.length();
+        int l2=t.length();
+        if(l1<l2)
+        {
+            return "";
+        }
+        if(l1==1 && l2==1 && s.charAt(0)!=t.charAt(0))
+        {
+            return "";
+        }
+        Map<Character,Integer> map=new HashMap();
+        for(char c: t.toCharArray())
+        {
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+        int i=0;
+        int j=0;
+        int countRequired=l2;
+        int minWindowLen=Integer.MAX_VALUE;
+        int start_index=0;
+        while(j<l1)
+        {
+            char ch=s.charAt(j);
+            if (map.containsKey(ch)) {
+                if (map.get(ch) > 0) 
+                {
+                 countRequired--;
+                }
+                map.put(ch, map.get(ch) - 1);
+            }
+            //conditions to get a window
+            while(countRequired==0)
+            {
+                //that means we get a window
+                int currentWindowSize=j-i+1;
+                if (minWindowLen > currentWindowSize) {
+                    minWindowLen = currentWindowSize;
+                    start_index = i;
+                }
+                //Now window shrink
+               char leftChar = s.charAt(i);
+                if (map.containsKey(leftChar)) {
+                    map.put(leftChar, map.get(leftChar) + 1);
+                    if (map.get(leftChar) > 0) {
+                        countRequired++;
+                    }
+                }
+                i++;
+            }
+            j++;
+        }
+        return minWindowLen == Integer.MAX_VALUE ? "" : s.substring(start_index, start_index + minWindowLen);
+    }
+}
+//TC:O(m+n)
+//SC:O(m)
+
+
+/*
+Approach: 
+Step 1: We need to find t within s but not in order, inorder to check the window of all letters in t, will first store all characters of t within a map,so that search option would take O(1), Now for S will have two pointers i & j,
+j will traverse rightwards and if get any char which belongs to map , then in the map count of that char will get decrease and countRequired will get decrease, 
+Step 2:Once countRequired is 0 that means we get the require window(Inititally countRequired is equals to t's length) and then we can shrink i
+Step 3: While shrinking i will add in map corresponding character's frequency, if any character's frequency is greater than 1 that means our countRequired will gt increase again, and then i will stop and j will start to find that character whose freqency in Map is >0 
+Step 4: At each point will keep track of window length and update our result with min len as j-i+1, and the starting index of the window
+*/
