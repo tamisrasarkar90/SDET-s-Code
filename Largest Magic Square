@@ -1,0 +1,99 @@
+/*
+Problem Statement:: A k x k magic square is a k x k grid filled with integers such that every row sum, every column sum, and both diagonal sums are all equal. The integers in the magic square do not have to be distinct. Every 1 x 1 grid is trivially a magic square.
+Given an m x n integer grid, return the size (i.e., the side length k) of the largest magic square that can be found within this grid.
+
+Example 1:
+Input: grid = [[7,1,4,5,6],[2,5,1,6,4],[1,5,4,3,2],[1,2,7,3,4]]
+Output: 3
+Explanation: The largest magic square has a size of 3.
+Every row sum, column sum, and diagonal sum of this magic square is equal to 12.
+- Row sums: 5+1+6 = 5+4+3 = 2+7+3 = 12
+- Column sums: 5+5+2 = 1+4+7 = 6+3+3 = 12
+- Diagonal sums: 5+4+3 = 6+4+2 = 12
+Example 2:
+Input: grid = [[5,1,3,1],[9,3,3,1],[1,3,3,8]]
+Output: 2
+ 
+Constraints:
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 50
+1 <= grid[i][j] <= 106
+*/
+class Solution {
+    public int largestMagicSquare(int[][] grid) 
+    {
+        int m=grid.length; //row
+        int n=grid[0].length; //col
+        int maxSize=Math.min(m,n); //square grid size
+        int[][] prefixSRow=new int[m][n+1];
+        int[][] prefixSCol=new int[m+1][n];
+        //Now to fill prefixSum Array
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                prefixSRow[i][j+1]=prefixSRow[i][j]+grid[i][j];
+                prefixSCol[i+1][j]=prefixSCol[i][j]+grid[i][j];
+            }
+        }
+        while(maxSize>=2) //Because anyway we can form 1 size of square so will check if we could make current maxsize of square till 2, the moment we get a valid one will return that would be the max Size
+        {
+            for(int i=0;i+maxSize<=m;i++)
+            {
+                 for(int j=0;j+maxSize<=n;j++)
+                 {
+                   if(checkValidSquare(i,j,maxSize,prefixSRow,prefixSCol,grid))
+                   {
+                     return maxSize;
+                   }
+                 }
+            }
+            maxSize--;
+        }
+        return 1; //Incase no magic square found      
+    }
+    private boolean checkValidSquare(int row, int col, int size, int[][]prefixSRow, int[][]prefixSCol,int[][]grid)
+    {
+       int targetRowSum= prefixSRow[row][size+col]-prefixSRow[row][col];
+       //Now check for this targetRowSum in each row, each col and each diagonal
+       //For row
+       for(int i=row;i<row+size;i++)
+       {
+          if(prefixSRow[i][col+size]-prefixSRow[i][col]!=targetRowSum)
+          {
+            return false;
+          }
+       }
+       //For col
+        for(int j=col;j<col+size;j++)
+       {
+          if(prefixSCol[row+size][j]-prefixSCol[row][j]!=targetRowSum)
+          {
+            return false;
+          }
+       }
+       //For diagonal
+       int d1=0;
+       int d2=0;
+       for(int i=0;i<size;i++)
+       {
+          d1+=grid[row+i][col+i];
+          d2+=grid[row+i][col+size-1-i];
+       }
+       if (d1 != targetRowSum || d2 != targetRowSum) 
+       {
+         return false;
+       }
+     return true;
+    }
+}
+//TC:O(min(m,n)^3)
+/*
+Approach: 1) We need to evaluate magic square so for that we need to first find the maxSize(greedily)
+2) as the square size can be min(m,n), so will start from there to 2(as max 1 magic square possible anyway)
+3)That's what the outer while loop is , now for each size we need to check , if consider that size each row,col and diagonal within that grid has same sum value
+4) so the for loop start from 0 to till i+maxSize<=m,j+maxSize<=n and will for each i there we need to check if that (i,j) can able to give  amigic square starting from (i & j)
+5)In checkMagic square method, we check row wise, colwise and  diagonally , and if with current maxSixe will able to form a magic square will return that or else return 1
+
+*/
