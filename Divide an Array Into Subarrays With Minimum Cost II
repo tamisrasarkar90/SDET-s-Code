@@ -1,0 +1,114 @@
+/*
+Problem Description: You are given a 0-indexed array of integers nums of length n, and two positive integers k and dist.
+
+The cost of an array is the value of its first element. For example, the cost of [1,2,3] is 1 while the cost of [3,4,1] is 3.
+
+You need to divide nums into k disjoint contiguous subarrays, such that the difference between the starting index of the second subarray and the starting index of the kth subarray should be less than or equal to dist. In other words, if you divide nums into the subarrays nums[0..(i1 - 1)], nums[i1..(i2 - 1)], ..., nums[ik-1..(n - 1)], then ik-1 - i1 <= dist.
+
+Return the minimum possible sum of the cost of these subarrays.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,2,6,4,2], k = 3, dist = 3
+Output: 5
+Explanation: The best possible way to divide nums into 3 subarrays is: [1,3], [2,6,4], and [2]. This choice is valid because ik-1 - i1 is 5 - 2 = 3 which is equal to dist. The total cost is nums[0] + nums[2] + nums[5] which is 1 + 2 + 2 = 5.
+It can be shown that there is no possible way to divide nums into 3 subarrays at a cost lower than 5.
+Example 2:
+
+Input: nums = [10,1,2,2,2,1], k = 4, dist = 3
+Output: 15
+Explanation: The best possible way to divide nums into 4 subarrays is: [10], [1], [2], and [2,2,1]. This choice is valid because ik-1 - i1 is 3 - 1 = 2 which is less than dist. The total cost is nums[0] + nums[1] + nums[2] + nums[3] which is 10 + 1 + 2 + 2 = 15.
+The division [10], [1], [2,2,2], and [1] is not valid, because the difference between ik-1 and i1 is 5 - 1 = 4, which is greater than dist.
+It can be shown that there is no possible way to divide nums into 4 subarrays at a cost lower than 15.
+Example 3:
+
+Input: nums = [10,8,18,9], k = 3, dist = 1
+Output: 36
+Explanation: The best possible way to divide nums into 4 subarrays is: [10], [8], and [18,9]. This choice is valid because ik-1 - i1 is 2 - 1 = 1 which is equal to dist.The total cost is nums[0] + nums[1] + nums[2] which is 10 + 8 + 18 = 36.
+The division [10], [8,18], and [9] is not valid, because the difference between ik-1 and i1 is 3 - 1 = 2, which is greater than dist.
+It can be shown that there is no possible way to divide nums into 3 subarrays at a cost lower than 36.
+ 
+
+Constraints:
+
+3 <= n <= 105
+1 <= nums[i] <= 109
+3 <= k <= n
+k - 2 <= dist <= n - 2
+
+*/
+class Solution {
+    public long minimumCost(int[] nums, int k, int dist) 
+    {
+        long minSum=Long.MAX_VALUE;
+       TreeSet<int[]> original = new TreeSet<>((a, b) -> {
+            if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+            return Integer.compare(a[1], b[1]);
+        });
+
+        TreeSet<int[]> remaining = new TreeSet<>((a, b) -> {
+            if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+            return Integer.compare(a[1], b[1]);
+        });
+        long currentSum=0;
+        int i=1;
+        while(i<nums.length && i-dist<=0 )
+        {
+            //when  to insert
+            original.add(new int[]{nums[i],i});
+            currentSum+=nums[i];
+            if(original.size()>k-1)
+            {
+              int[] value= original.pollLast();
+              int index=value[1];
+              int val=value[0];
+              currentSum-=val;
+              remaining.add(new int[]{val,index});
+            }
+              i++;
+         }
+          while(i<nums.length)
+        {
+            //when  to insert
+            original.add(new int[]{nums[i],i});
+            currentSum+=nums[i];
+            minSum=Math.min(minSum,currentSum);
+            if(original.size()>k-1)
+            {
+              int[] value= original.pollLast();
+              int index=value[1];
+              int val=value[0];
+              currentSum-=val;
+              remaining.add(new int[]{val,index});
+            }           
+            minSum=Math.min(minSum,currentSum);
+            //Now shift the window and then remove element
+            int[] removeElement={nums[i-dist],i-dist};
+            //If present in the original set
+            if(original.contains(removeElement))
+            {
+              currentSum-=removeElement[0];
+              original.remove(removeElement);
+              if(!remaining.isEmpty())
+              {
+                int[] temp=remaining.pollFirst();//smaller element
+                original.add(temp);
+                currentSum+=temp[0];
+              }
+            }
+            else
+            {
+                remaining.remove(removeElement);
+            }
+            i++;
+         }
+        return minSum+nums[0];
+    }
+}
+/*
+Approach: We are doing Sliding window since index 1(as index 0 is bydefault in the answer), once we reach k partion will sqiz the window in both left and right(Here refer the the second while loop), will take the min element from remaining set(the firstelement one)and add it to the original if remaining is not empty, and remove the i-dist element from original if that contains it,
+Apart from that to fill those set, will traverse the num array and add upto k th elmene and i-dist index<=0, rest will add to the remaining, will have a currentsum to calculate the current sum, will check it with result and update accordingly, At the last will add the first element of nums[0]+result
+TC:O(nlog(n))
+*/
