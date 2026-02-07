@@ -51,3 +51,30 @@ class Solution {
 
 //TC:O(N)
 //SC:O(N)
+ //Approach 2
+        int n=s.length(); //we have problem if we have ba i.e left b and right a
+        int left_b=0;
+        int right_a=0;
+        int min_deletion=Integer.MAX_VALUE;
+        for(int i=0;i<n;i++)
+        {
+          if(s.charAt(i)=='a')
+          {
+             right_a++; //first compute no of a in right side of the string
+          }
+        }
+         for(int i=0;i<n;i++)
+        {
+          if(s.charAt(i)=='a')
+          {
+            right_a--;
+          }
+           min_deletion=Math.min(min_deletion,right_a+left_b);   //First will compute mincount then will increase b count
+           if(s.charAt(i)=='b')
+          {
+            left_b++;
+          }
+        }
+      return min_deletion;
+    }
+}
