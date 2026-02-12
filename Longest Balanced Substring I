@@ -1,0 +1,72 @@
+/*
+Problem Statement:You are given a string s consisting of lowercase English letters.A substring of s is called balanced if all distinct characters in the substring appear the same number of times.
+Return the length of the longest balanced substring of s.
+
+Example 1:
+Input: s = "abbac"
+Output: 4
+Explanation:
+The longest balanced substring is "abba" because both distinct characters 'a' and 'b' each appear exactly 2 times.
+
+Example 2:
+Input: s = "zzabccy"
+Output: 4
+Explanation:
+The longest balanced substring is "zabc" because the distinct characters 'z', 'a', 'b', and 'c' each appear exactly 1 time.​​​​​​​
+
+Example 3:
+Input: s = "aba"
+Output: 2
+Explanation:
+​​​​​​​One of the longest balanced substrings is "ab" because both distinct characters 'a' and 'b' each appear exactly 1 time. Another longest balanced substring is "ba".
+
+Constraints:
+1 <= s.length <= 1000
+s consists of lowercase English letters.
+
+*/
+class Solution {
+    public int longestBalanced(String s) 
+    {
+        int n=s.length();
+        int maxLen=1;
+        int[] seen;
+        for(int i=0;i<n;i++)
+        {
+            seen =new int[26];
+            for(int j=i;j<n;j++)
+            {
+                 seen[s.charAt(j)-'a']++;
+                 if(checkFreqSame(seen))
+                 {
+                   maxLen=Math.max(maxLen,j-i+1);
+                 }
+            }
+        }
+        return maxLen;
+    }
+    private boolean checkFreqSame(int[] seen) //All non zero character would be same
+    {
+        int val=0;
+        for(int k=0;k<seen.length;k++)
+        {
+            if(seen[k]>0)
+            {
+                if(val==0)
+                {
+                    val=seen[k];
+                }
+                else
+                {
+                    if(val!=seen[k])
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return val!=0;
+    }
+}
+//TC:O(N^2)
+//SC:O(1)
