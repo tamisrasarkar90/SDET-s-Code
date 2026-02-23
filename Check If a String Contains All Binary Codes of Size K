@@ -1,0 +1,86 @@
+/*
+Problem Statement:Given a binary string s and an integer k, return true if every binary code of length k is a substring of s. Otherwise, return false.
+Example 1:
+Input: s = "00110110", k = 2
+Output: true
+Explanation: The binary codes of length 2 are "00", "01", "10" and "11". They can be all found as substrings at indices 0, 1, 3 and 2 respectively.
+Example 2:
+Input: s = "0110", k = 1
+Output: true
+Explanation: The binary codes of length 1 are "0" and "1", it is clear that both exist as a substring. 
+Example 3:
+Input: s = "0110", k = 2
+Output: false
+Explanation: The binary code "00" is of length 2 and does not exist in the array.
+
+Constraints:
+1 <= s.length <= 5 * 105
+s[i] is either '0' or '1'.
+1 <= k <= 20
+
+*/
+class Solution {
+    public boolean hasAllCodes(String s, int k) 
+    {
+          /*Approach 2: Same approach as 1 will create substring from s and will add to a hashset in order to remove duplicacy, once hashset's size meet to the expected totalsize will return true from there*/
+          int n=s.length();
+          if(k>n)
+          {
+            return false;
+          }
+        Set<String> set=new HashSet();
+        for(int i=0;i<=n-k;i++)
+        {
+            String subS=s.substring(i,i+k);
+            set.add(subS);
+        } 
+        if(set.size()==Math.pow(2,k))
+        {
+            return true;
+        }
+        return false;
+    }
+}
+//TC:O(n-k)*O(k)
+//SC:O(2^k)
+
+    //Approach1:
+        //2^k->(1<<k)
+    /*  int totalCount= (1<<k);
+      boolean[] seen =new boolean[totalCount];
+      int n=0;
+      int count=0;
+      int m=totalCount-1;
+      for(int i=0;i<s.length();i++)
+      {
+        n= ((n<<1) & m)|(s.charAt(i)-'0');
+        if(i>=k-1)
+        {
+         if(!seen[n])
+         {
+            seen[n]=true;
+            count++;
+        }
+    }
+        if(count==totalCount)
+        {
+            return true;
+        }
+      }
+      return false;
+    }
+}*/
+//TC:O(N)
+//SC:O(2^k)
+/*
+001
+000
+010
+011
+100
+111
+101
+110
+Approach: First create all permutation possible by rearranging of length k, now check all posibilities exists on the same  string if no return false;
+OR, Create totalExpected count from k which is 2^k, create a HashSet with same size, now iterate through sand generate all possible combination add it to the set, once the length is same as expected, return true or else false
+*/
