@@ -1,0 +1,61 @@
+/*
+Problem Description: You are given the root of a binary tree where each node has a value 0 or 1. Each root-to-leaf path represents a binary number starting with the most significant bit.
+For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
+For all leaves in the tree, consider the numbers represented by the path from the root to that leaf. Return the sum of these numbers.
+
+The test cases are generated so that the answer fits in a 32-bits integer.
+
+Example 1:
+Input: root = [1,0,1,0,1,0,1]
+Output: 22
+Explanation: (100) + (101) + (110) + (111) = 4 + 5 + 6 + 7 = 22
+Example 2:
+Input: root = [0]
+Output: 0
+
+Constraints:
+The number of nodes in the tree is in the range [1, 1000].
+Node.val is 0 or 1.
+
+*/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int sumRootToLeaf(TreeNode root) 
+    {
+        return solve(root,0);
+    }
+    private int solve(TreeNode root,int val)
+    {
+      if(root==null)
+       {
+         return 0;
+       }
+     val=val*2+(1*root.val);
+     if(root.left==null && root.right==null)
+     {
+        return val;
+     }
+        return solve(root.left,val)+solve(root.right,val);
+    }
+}
+//TC:O(N)
+//SC:O(1)
+/*
+Approach: if root is null then return 0(2 example), else eachtime wshile we are traversing binary value is getting shift a bit left , if it is left shift then we do *2 or else if it is right shift then /2
+and then add (2^0+root.val)  as that's what we declare decimal,and we add them up at the end the result from left of root of the tree and right of root of the tree.
+Once reach to the left and right of the tree will return val
+*/
