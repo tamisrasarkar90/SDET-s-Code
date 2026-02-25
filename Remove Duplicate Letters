@@ -1,0 +1,59 @@
+/*
+Problem Description: Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.
+Example 1:
+Input: s = "bcabc"
+Output: "abc"
+Example 2:
+Input: s = "cbacdcbc"
+Output: "acdb"
+Constraints:
+1 <= s.length <= 104
+s consists of lowercase English letters.
+ 
+Note: This question is the same as 1081: https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/
+
+*/
+class Solution {
+    public String removeDuplicateLetters(String s) 
+    {
+        boolean[] charPresent=new boolean[26];
+        Arrays.fill(charPresent,false);
+        int[] lastIndex=new int[26];
+        Arrays.fill(lastIndex,-1);
+        for(int i=0;i<s.length();i++)
+        {
+              lastIndex[s.charAt(i)-'a']=i;
+        }
+        StringBuilder result=new StringBuilder();
+        for(int i=0;i<s.length();i++)
+        {
+           char ch=s.charAt(i);
+           int idx=ch-'a';
+           if(charPresent[idx])
+           {
+             continue;
+           }
+
+ while (result.length() > 0 && ch < result.charAt(result.length() - 1) && lastIndex[result.charAt(result.length() - 1) - 'a'] > i) {
+        charPresent[result.charAt(result.length() - 1) - 'a'] = false;
+        result.deleteCharAt(result.length() - 1);
+    }
+     result.append(ch);
+     charPresent[idx]=true;
+    }
+     return result.toString();
+    }
+}
+/*
+acdb
+c->4
+b->2
+a->1
+
+Observation 1: Try to find lexographically small char at first , get the frequency, if some chars needs to be deleted delete it lexographically
+Approach: will take one 26 size array to store if once the char has came in result string, it will not come again so mark true once it is result set or else false, for another array which will store last index for each char to check if it is lexogrphically larger than the next char can it be remove and placed next time? last return the result
+*/
+/*
+
+//TC:O(n)
+//SC:O(1)
