@@ -42,3 +42,57 @@ class Solution {
     return result;
   }
 }
+
+class Solution {
+    public int concatenatedBinary(int n) 
+    {
+        long result=0;
+        int MOD=1000000007;
+        int digits=0;
+        for(int num=1;num<=n;num++)
+        {
+            //Step1: First check how many digits num has
+           //  digits = (int)(Math.log(num) / Math.log(2)) + 1;
+             //This above lone can be done as for each (pow,2) the noOfDigits increase hence check if it is a power oftwo then add 1
+             if((num &(num-1))==0) //then it is power of two
+             {
+                digits++;
+             }
+            //Step2: Then left shift result to the noOFdigitsposition so that these digits can accomodate
+            result=(((result<<digits)%MOD)+num)%MOD;
+        }
+        return (int)result;
+    }
+}
+//TC:O(N) //SC:O(1)
+
+        
+
+
+
+
+
+
+
+
+
+/*
+Approach: int MOD=1000000007;
+        int result=0;
+        for(int num=1;num<=n;num++)
+        {
+            String s=Integer.toBinaryString(num);
+            for(char c:s.toCharArray())
+            {
+                 int val= c=='0' ?0:1; 
+                result=((result*2)%MOD+ val)%MOD;
+            }
+        }
+        return result;
+    }
+}
+//TC:O(N^2)
+//SC:O(1)
+
+
+*/
