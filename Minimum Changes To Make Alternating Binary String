@@ -1,0 +1,69 @@
+/*
+Problem Description:You are given a string s consisting only of the characters '0' and '1'. In one operation, you can change any '0' to '1' or vice versa.
+The string is called alternating if no two adjacent characters are equal. For example, the string "010" is alternating, while the string "0100" is not.
+Return the minimum number of operations needed to make s alternating.
+
+Example 1:
+Input: s = "0100"
+Output: 1
+Explanation: If you change the last character to '1', s will be "0101", which is alternating.
+Example 2:
+Input: s = "10"
+Output: 0
+Explanation: s is already alternating.
+Example 3:
+Input: s = "1111"
+Output: 2
+Explanation: You need two operations to reach "0101" or "1010".
+ 
+Constraints:
+1 <= s.length <= 104
+s[i] is either '0' or '1'.
+*/
+class Solution {
+    public int minOperations(String s) 
+    {
+        int op=0;
+        int n=s.length();
+        int start_with_One=0;
+        int start_with_Zero=0;
+        for(int i=0;i<n;i++)
+        {
+            if(i%2==0 && s.charAt(i)=='0')
+            {
+               start_with_One++;
+            }
+            else if(i%2==0 && s.charAt(i)=='1')
+            {
+                start_with_Zero++;
+            }
+            else if(i%2!=0 && s.charAt(i)=='1')
+            {
+                start_with_One++;
+            }
+            else if(i%2!=0 && s.charAt(i)=='0')
+            {
+                  start_with_Zero++;
+            }
+        }
+        return Math.min(start_with_One,start_with_Zero);
+    }
+}
+//TC:O(N)
+//SC:O(1)
+/*
+Approach as string is '0' or '1' it can be only start with 0 and start with 1, so if we know n, then we construct two strings starts with zero and starts with 1 , and will check with current string, if char mismach will increment the noofop and then return which one is minimum,
+e,g: s=0100
+n=4
+if start_with_zer0: 0101
+if start_with_one: 1010
+now while traversing the curr staring for i=0 start_with_one++, as the curr string has 0 in it and ideally it should 1,
+i=1->start_with_one=2,start_with_zer0=0;
+i=2->start_with_one=3,start_with_zer0=0;
+i=3->start_with_one=3,start_with_zer0=1;
+return min(start_with_zer0,start_with_one)
+Now, see we need not to create the string for start_with_zer0-> even pos is always 0 and odd position is always 1
+for start_with_one->even pos is 1 and odd pos is 0, so will remember this while traversing curr string and add operation accordingly;
+
+Approach 2: just evaluate start_with_zer0 and n-start_with_zer0 will give you start_with_one and vice versa, return the min of start_with_zer0,start_with_One
+*/
