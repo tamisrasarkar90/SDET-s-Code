@@ -1,0 +1,53 @@
+/*
+Problem Description:Given a binary string s ​​​​​without leading zeros, return true​​​ if s contains at most one contiguous segment of ones. Otherwise, return false.
+Example 1:
+Input: s = "1001"
+Output: false
+Explanation: The ones do not form a contiguous segment.
+Example 2:
+Input: s = "110"
+Output: true
+
+Constraints:
+1 <= s.length <= 100
+s[i]​​​​ is either '0' or '1'.
+s[0] is '1'.
+*/
+class Solution {
+    public boolean checkOnesSegment(String s) 
+    {
+          return (!s.contains("01"));
+    }
+}
+        //Approach 1: 
+        int n=s.length();
+        int firstZeroIndex=-1;
+        if(n==1 && s.charAt(0)=='1')
+        {
+            return true;
+        }
+        //first occurance of zero
+        for(int i=1;i<n;i++)
+        {
+            if(s.charAt(i)=='0')
+            {
+                firstZeroIndex=i;
+                break;
+            }
+        }
+         if(firstZeroIndex==-1)
+        {
+            return true;
+        }
+        for(int j=n-1;j>=firstZeroIndex;j--)
+        {
+            if(s.charAt(j)=='1')
+            {
+                return false;
+            }
+        }  
+        return true;
+    }
+}
+//TC:O(N)
+//SC:O(1)      
