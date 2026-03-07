@@ -1,0 +1,161 @@
+/*
+Problem Description: You are given a binary string s. You are allowed to perform two types of operations on the string in any sequence:
+Type-1: Remove the character at the start of the string s and append it to the end of the string.
+Type-2: Pick any character in s and flip its value, i.e., if its value is '0' it becomes '1' and vice-versa.
+Return the minimum number of type-2 operations you need to perform such that s becomes alternating.The string is called alternating if no two adjacent characters are equal.
+For example, the strings "010" and "1010" are alternating, while the string "0100" is not.
+Example 1:
+Input: s = "111000"
+Output: 2
+Explanation: Use the first operation two times to make s = "100011".
+Then, use the second operation on the third and sixth elements to make s = "101010".
+
+Example 2:
+Input: s = "010"
+Output: 0
+Explanation: The string is already alternating.
+Example 3:
+Input: s = "1110"
+Output: 1
+Explanation: Use the second operation on the second element to make s = "1010".
+ 
+Constraints:
+1 <= s.length <= 105
+s[i] is either '0' or '1'.
+
+*/
+class Solution {
+    public int minFlips(String s) 
+    {
+        int n=s.length();
+        String newS=s+s;
+        StringBuilder alterZ=new StringBuilder();
+        StringBuilder alterO=new StringBuilder();
+        int result=Integer.MAX_VALUE;
+        int fZero=0;
+        int fOne=0;
+        alterZ.append('0');
+        alterO.append('1');
+        for(int i=1;i<2*n;i++)
+        {
+           char curr = alterZ.charAt(i-1)=='0'?'1':'0';
+           alterZ.append(curr);
+           char currO = alterO.charAt(i-1)=='0'?'1':'0';
+           alterO.append(currO);
+        }
+        String alterZero=alterZ.toString();
+        String alterOne=alterO.toString();
+        //To get how many flips required
+        for(int k=0;k<n;k++)
+        {
+            if(newS.charAt(k)!=alterZero.charAt(k)) fZero++;
+            if(newS.charAt(k)!=alterOne.charAt(k)) fOne++;
+        }
+        result=Math.min(fZero,fOne);
+        int i=0;
+        int j=n;
+        while(j<2*n)
+        {
+         if(newS.charAt(j)!=alterZero.charAt(j)) fZero++;
+            if(newS.charAt(j)!=alterOne.charAt(j)) fOne++;
+
+            if(newS.charAt(i)!=alterZero.charAt(i)) fZero--;
+            if(newS.charAt(i)!=alterOne.charAt(i)) fOne--;
+
+            i++;
+            result = Math.min(result, Math.min(fZero,fOne));
+
+            j++;
+        }
+     return result;
+    }
+}
+//TC:O(N)
+//SC:O(2*N)
+//Approach-2 (Sliding Window + without modifying input)
+//T.C : O(2*n) ~= O(n)
+//S.C : O(2*n) for s1 and s2
+class Solution {
+    public int minFlips(String s) {
+
+        int n = s.length();
+
+        StringBuilder s1 = new StringBuilder();
+        StringBuilder s2 = new StringBuilder();
+
+        for(int i = 0; i < 2*n; i++) {
+            s1.append(i % 2 == 1 ? '0' : '1');
+            s2.append(i % 2 == 1 ? '1' : '0');
+        }
+
+        int i = 0, j = 0;
+        int result1 = 0, result2 = 0;
+        int result = Integer.MAX_VALUE;
+
+        while(j < 2*n) {
+
+            // expand window
+            if(s.charAt(j % n) != s1.charAt(j)) result1++;
+            if(s.charAt(j % n) != s2.charAt(j)) result2++;
+
+            // shrink window
+            if(j - i + 1 > n) {
+                if(s.charAt(i % n) != s1.charAt(i)) result1--;
+                if(s.charAt(i % n) != s2.charAt(i)) result2--;
+                i++;
+            }
+
+            if(j - i + 1 == n)
+                result = Math.min(result, Math.min(result1, result2));
+
+            j++;
+        }
+
+        return result;
+    }
+}
+
+
+
+//Approach-3 (Sliding Window + without modifying input)
+//T.C : O(2*n) ~= O(n)
+//S.C : O(1)
+class Solution {
+    public int minFlips(String s) {
+
+        int n = s.length();
+
+        int result = Integer.MAX_VALUE;
+        int flip1 = 0;
+        int flip2 = 0;
+
+        int i = 0, j = 0;
+
+        while(j < 2*n) {
+
+            char expectedCharS1 = (j % 2 == 1) ? '1' : '0';
+            char expectedCharS2 = (j % 2 == 1) ? '0' : '1';
+
+            if(s.charAt(j % n) != expectedCharS1) flip1++;
+            if(s.charAt(j % n) != expectedCharS2) flip2++;
+
+            if(j - i + 1 > n) {
+
+                expectedCharS1 = (i % 2 == 1) ? '1' : '0';
+                expectedCharS2 = (i % 2 == 1) ? '0' : '1';
+
+                if(s.charAt(i % n) != expectedCharS1) flip1--;
+                if(s.charAt(i % n) != expectedCharS2) flip2--;
+
+                i++;
+            }
+
+            if(j - i + 1 == n)
+                result = Math.min(result, Math.min(flip1, flip2));
+
+            j++;
+        }
+
+        return result;
+    }
+}
