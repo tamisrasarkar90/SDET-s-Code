@@ -1,0 +1,59 @@
+/*
+Problem Description: You are given a 0-indexed binary string s and two integers minJump and maxJump. In the beginning, you are standing at index 0, which is equal to '0'. You can move from index i to index j if the following conditions are fulfilled:
+i + minJump <= j <= min(i + maxJump, s.length - 1), and
+s[j] == '0'.
+Return true if you can reach index s.length - 1 in s, or false otherwise.
+
+Example 1:
+Input: s = "011010", minJump = 2, maxJump = 3
+Output: true
+Explanation:
+In the first step, move from index 0 to index 3. 
+In the second step, move from index 3 to index 5.
+Example 2:
+Input: s = "01101110", minJump = 2, maxJump = 3
+Output: false
+ 
+Constraints:
+2 <= s.length <= 105
+s[i] is either '0' or '1'.
+s[0] == '0'
+1 <= minJump <= maxJump < s.length
+
+*/
+class Solution {
+    public boolean canReach(String s, int minJump, int maxJump) {
+
+        int n = s.length();
+
+        boolean[] dp = new boolean[n];
+
+        dp[0] = true;
+
+        int reachable = 0;
+
+        for (int i = 1; i < n; i++) {
+
+            // Add new index entering window
+            if (i - minJump >= 0 && dp[i - minJump]) {
+                reachable++;
+            }
+
+            // Remove old index leaving window
+            if (i - maxJump - 1 >= 0 && dp[i - maxJump - 1]) {
+                reachable--;
+            }
+
+            // Current index reachable?
+            if (s.charAt(i) == '0' && reachable > 0) {
+                dp[i] = true;
+            }
+        }
+
+        return dp[n - 1];
+    }
+}
+//TC:O(N)
+//The Intution here is, we need to find if we can reach to (n-1)index, here each dp[i] depicts that if it is possible to reach dp[i], where it is always possible to reach dp[0] , as we start from there!
+//So now, we are checking from i=1 to i=(n-1), for each individual indecies to find if possible to reach that index, and the range/bound is, [i-maxJump,i-minJump], so for each i we are checking the ways to reach index i from minjump as dp(i-minJump) is true and i.e not out of bound, similarly when we consider to jump in current index i, the range/window is shifting, so we need to exclude
+//dp[i - maxJump - 1] and check if (i - maxJump - 1) i.e not out of bound, if the number of ways is greater than 0 and current s.//chatAt(i)=='0' then we can consider this index is reachable, likewise will calculate till (n-1) and return if it is possible to //reach (n-1) by way >0 then will return true
