@@ -1,0 +1,90 @@
+/*
+Problem Statement:You are given a string word. A letter c is called special if it appears both in lowercase and uppercase in word, and every lowercase occurrence of c appears before the first uppercase occurrence of c.
+Return the number of special letters in word.
+
+Example 1:
+Input: word = "aaAbcBC"
+Output: 3
+Explanation:
+The special characters are 'a', 'b', and 'c'.
+
+Example 2:
+Input: word = "abc"
+Output: 0
+Explanation:
+There are no special characters in word.
+
+Example 3:
+Input: word = "AbBCab"
+Output: 0
+Explanation:
+There are no special characters in word.
+
+Constraints:
+1 <= word.length <= 2 * 105
+word consists of only lowercase and uppercase English letters.
+
+*/
+class Solution {
+    public int numberOfSpecialChars(String word) 
+    {
+        int[] lowerCase=new int[26];
+        int[] upperCase=new int[26];
+        Arrays.fill(lowerCase,-1);
+        Arrays.fill(upperCase,-1);
+        int specialCount=0;
+        int n=word.length();
+        for(int i=0;i<n;i++)
+        {
+           char c=word.charAt(i);
+           if(Character.isLowerCase(c))
+           {
+             lowerCase[c-'a']=i;
+           }
+           else
+           {
+             if(upperCase[c-'A']==-1)
+             {
+                upperCase[c-'A']=i;
+             }
+           }
+        }
+       for(int i=0;i<26;i++)
+       {
+         if(lowerCase[i]!=-1 && upperCase[i]!=-1 && lowerCase[i]<upperCase[i])
+         {
+            specialCount++;
+         }
+       }
+      return specialCount;
+    }
+}
+//TC:O(N)
+//SC:O(1)
+      
+      
+      
+      
+      
+      
+      //Approcah: Not all tcs pass some <100 tcs failed due to logic
+      /*
+        int specialCount=0;
+        int n=word.length();
+        int[] visited=new int[26];
+        for(int i=0;i<n;i++)
+        {
+           char c=word.charAt(i);
+           if(Character.isLowerCase(c) && (i+1)<n && visited[c-'a']==0)
+           {
+             String newStr=word.substring(i+1,n);
+             if(newStr.contains(String.valueOf(Character.toUpperCase(c))) && !newStr.contains(String.valueOf(c)))
+             {
+                specialCount++;
+                visited[c-'a']++;
+             }
+           }
+        }
+        return specialCount;
+    }
+}*/
