@@ -81,3 +81,46 @@ class Solution {
 }
 //TC:O(NLogN) //AS TreeMap
 //SC:O(2N)~O(N)
+class Solution {
+    public int[] pivotArray(int[] nums, int pivot) 
+    {
+        int n=nums.length;
+        int[] answer=new int[n];
+        int countOfpivot=0;
+        int smallerCount=0;
+        for (int num : nums) {
+            if (num < pivot)
+            {
+              smallerCount++;
+            } 
+            else if(num == pivot){
+               countOfpivot++;
+            } 
+        }
+        int pivot_Index=smallerCount;
+        while(countOfpivot>0)
+        {
+           answer[pivot_Index]=pivot;
+           pivot_Index++;
+           countOfpivot--;
+        }
+        int prePivotIndex=0;
+        int postPivotIndex=pivot_Index;
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]<pivot)
+            {
+                answer[prePivotIndex]=nums[i];
+                prePivotIndex++;
+            }
+            else if(nums[i]>pivot)
+            {
+                answer[postPivotIndex]=nums[i];
+                postPivotIndex++;
+            }
+        }
+        return answer;
+    }
+}
+//TC:O(N)
+//SC:O(N)
