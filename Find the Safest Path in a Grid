@@ -1,0 +1,151 @@
+/*
+Problem Statement:You are given a 0-indexed 2D matrix grid of size n x n, where (r, c) represents:
+A cell containing a thief if grid[r][c] = 1
+An empty cell if grid[r][c] = 0
+You are initially positioned at cell (0, 0). In one move, you can move to any adjacent cell in the grid, including cells containing thieves.
+The safeness factor of a path on the grid is defined as the minimum manhattan distance from any cell in the path to any thief in the grid.
+Return the maximum safeness factor of all paths leading to cell (n - 1, n - 1).
+An adjacent cell of cell (r, c), is one of the cells (r, c + 1), (r, c - 1), (r + 1, c) and (r - 1, c) if it exists.
+The Manhattan distance between two cells (a, b) and (x, y) is equal to |a - x| + |b - y|, where |val| denotes the absolute value of val.
+
+Example 1:
+Input: grid = [[1,0,0],[0,0,0],[0,0,1]]
+Output: 0
+Explanation: All paths from (0, 0) to (n - 1, n - 1) go through the thieves in cells (0, 0) and (n - 1, n - 1).
+Example 2:
+Input: grid = [[0,0,1],[0,0,0],[0,0,0]]
+Output: 2
+Explanation: The path depicted in the picture above has a safeness factor of 2 since:
+- The closest cell of the path to the thief at cell (0, 2) is cell (0, 0). The distance between them is | 0 - 0 | + | 0 - 2 | = 2.
+It can be shown that there are no other paths with a higher safeness factor.
+Example 3:
+Input: grid = [[0,0,0,1],[0,0,0,0],[0,0,0,0],[1,0,0,0]]
+Output: 2
+Explanation: The path depicted in the picture above has a safeness factor of 2 since:
+- The closest cell of the path to the thief at cell (0, 3) is cell (1, 2). The distance between them is | 0 - 1 | + | 3 - 2 | = 2.
+- The closest cell of the path to the thief at cell (3, 0) is cell (3, 2). The distance between them is | 3 - 3 | + | 0 - 2 | = 2.
+It can be shown that there are no other paths with a higher safeness factor.
+
+Constraints:
+1 <= grid.length == n <= 400
+grid[i].length == n
+grid[i][j] is either 0 or 1.
+There is at least one thief in the grid.
+
+*/
+class Solution {
+    int[][] directions={{1,0},{-1,0},{0,1},{0,-1}};
+    public int maximumSafenessFactor(List<List<Integer>> grid) 
+    {
+        int n=grid.size();
+        int[][] nearestDis=new int[n][n];
+        boolean[][] visited=new boolean[n][n];
+        Queue<int[]> queue=new LinkedList();
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+               if(grid.get(i).get(j)==1)
+               {
+                 // this is a candidate,contains thief
+                    queue.add(new int[]{i,j}); //we are putting the indices in queue
+                    visited[i][j]=true;
+               }
+            }
+        }
+         int level=0;
+        //Traverse the queue,Multi Source BFS
+        while(!queue.isEmpty())
+        {
+            int size=queue.size();
+            while(size>0)
+            {
+              int[] curr=queue.poll(); // the cell contains thief
+              int curr_i= curr[0];
+              int curr_j=curr[1];
+              nearestDis[curr_i][curr_j]=level; //as level initially is 0 we are assigning teh current source i.e cell contains thief as 0 level
+              for(int[] dir:directions) //now get all the cell around cell containing thief
+              {
+                 int new_i=curr_i+dir[0];
+                 int new_j=curr_j+dir[1];
+                 // check if new_i new_j is valid
+                 if(new_i<0 || new_i>=n || new_j<0 || new_j>=n || visited[new_i][new_j]==true)
+                 {
+                    continue;
+                 }
+                 queue.add(new int[] {new_i,new_j});
+                 visited[new_i][new_j]=true;
+              }
+               size--;
+            }
+            level++;
+        }
+        //Now do Binary Serach in order to get a mid_safe value
+        int low=0;
+        int high=400; //as n could be 400
+        int result=0;
+        while(low<=high)
+        {
+            int mid_SF=low+(high-low)/2;
+            if(check(nearestDis,mid_SF))
+            {
+                result=mid_SF;
+                low=mid_SF+1;
+            }
+            else
+            {
+                high=mid_SF-1;
+            }
+        }
+        return result;
+    }
+    boolean check(int[][]nearestDis, int mid_SF )
+    {
+        //again apply BFS to check if each cell is obeying current mid_val
+        Queue<int[]> q=new LinkedList();
+        int len=nearestDis.length;
+        boolean[][]visited=new boolean[len][len];
+        q.add(new int[]{0,0});
+        visited[0][0]=true;
+        while(!q.isEmpty())
+        {
+            if(nearestDis[0][0]<mid_SF)
+            {
+                return false;
+            }
+            int[] curr=q.poll();
+            int curr_i=curr[0];
+            int curr_j=curr[1];
+            if(curr_i==len-1 && curr_j==len-1 ) //out goal is to reach (n-1,n-1) from(0,0)
+            {
+                return true;
+            }
+            for(int[] dir:directions)
+            {
+                int new_i=curr_i+dir[0];
+                int new_j=curr_j+dir[1];
+                if(new_i>=0 && new_i<len && new_j>=0 && new_j<len && visited[new_i][new_j]==false)
+                 {
+                    // it means it is valid
+                        if(nearestDis[new_i][new_j]<mid_SF)
+                        {
+                            continue;
+                        }
+                    q.add(new int[]{new_i,new_j});
+                    visited[new_i][new_j]=true;
+                 }
+            }
+        }
+        return false;
+    }
+}
+/*
+Will apply here 1)Multi Source BFS, 2)Binary Search & then 3) BFS
+Approach: 1)The Goal is to fine max Safest value i.e. cell value having max distance from the cell containing theif
+so for that for the sake of avoiding complexity, will go to all cells containing thief initially and and evaluate the each cell distance corresponding to source cell containing thief, which is called multi source BFS, and we might can update the current grid or create a separate grid ,
+2) Once evaluated the the manhatten distance from thief cell to all cells, will apply binary search on answer considering low=1 to high = 400  max safest distance
+3) Once computed the mid as binary search on result will check if all cells can oblige that value if yes return that otherwise decrease high or even check with increasing low to mid+1 if current mid is satisfying the anwser, in order to get a better max safe value as answer
+
+TC:O(n^2 Log(n))
+//SC:O(n^2)
+*/
