@@ -1,0 +1,97 @@
+/*
+Problem Statement:You are given an m x n binary matrix grid and an integer health.You start on the upper-left corner (0, 0) and would like to get to the lower-right corner (m - 1, n - 1).
+You can move up, down, left, or right from one cell to another adjacent cell as long as your health remains positive.
+Cells (i, j) with grid[i][j] = 1 are considered unsafe and reduce your health by 1.Return true if you can reach the final cell with a health value of 1 or more, and false otherwise.
+Example 1:
+Input: grid = [[0,1,0,0,0],[0,1,0,1,0],[0,0,0,1,0]], health = 1
+Output: true
+Explanation:
+The final cell can be reached safely by walking along the gray cells below.
+Example 2:
+Input: grid = [[0,1,1,0,0,0],[1,0,1,0,0,0],[0,1,1,1,0,1],[0,0,1,0,1,0]], health = 3
+Output: false
+Explanation:
+A minimum of 4 health points is needed to reach the final cell safely.
+
+Example 3:
+Input: grid = [[1,1,1],[1,0,1],[1,1,1]], health = 5
+Output: true
+Explanation:
+The final cell can be reached safely by walking along the gray cells below.
+Any path that does not go through the cell (1, 1) is unsafe since your health will drop to 0 when reaching the final cell.
+Constraints:
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 50
+2 <= m * n
+1 <= health <= m + n
+grid[i][j] is either 0 or 1.
+
+*/
+class Solution {
+    int[][]dir={{0,1},{1,0},{0,-1},{-1,0}};
+    public boolean findSafeWalk(List<List<Integer>> grid, int health) 
+    {
+       int m=grid.size();
+       int n=grid.get(0).size();
+       int[][] dist=new int[m][n];
+       for(int[]d:dist)
+       {
+          Arrays.fill(d,Integer.MAX_VALUE);
+       }
+       Deque<int[]> dq=new ArrayDeque<>();
+       dq.offerFirst(new int[]{0,0});
+       dist[0][0]=grid.get(0).get(0);
+
+       //Traditional BFS
+       while(!dq.isEmpty())
+       {
+         int size=dq.size();
+         int[] curr=dq.pollFirst();
+         int curr_i=curr[0];
+         int curr_j=curr[1];
+         if(curr_i==m-1 && curr_j==n-1)
+         {
+            return true;
+         }
+         for(int[] d:dir)
+         {
+            int next_i=curr_i+d[0];
+            int next_j=curr_j+d[1];
+            if (next_i < 0 || next_j < 0 || next_i >= m ||next_j>= n) 
+            {
+                continue;
+            } 
+            int cost=dist[curr_i][curr_j]+grid.get(next_i).get(next_j);
+            if(cost>=health)
+            {
+                continue;
+            }
+            if(cost<dist[next_i][next_j])
+            {
+                dist[next_i][next_j]=cost;
+                 if(grid.get(next_i).get(next_j)==0)
+                 {
+                       dq.offerFirst(new int[]{next_i,next_j});
+                 }
+                 else
+                 {
+                    dq.offerLast(new int[]{next_i,next_j});
+                 }
+            }
+         }
+       }
+     return false;
+    }
+}
+//TC:O(mn)
+//SC:O(mn)
+/*
+Approach: 0-1 BFS : When to use:-> When we need to find shortest path from source to destintion.
+1)Traditional BFS-> When the edge value/distance are same, we can treat as level and at any point of time only two levels are keep in queue, and each level is -1 less than the upper level.
+2)Dijkstra: When we need to find shortest path between source and  destination and edges values are random, using minheap/priorityqueue
+3)O-1 BFS-> Similar to dijkstra, but a  better time complexity additional log(n) part is not there, when needs to find shortest path, but edges values can be either 0 or 1, then we can treat as BFS(as the level wise distance 1, and at a time two level we can proceed), Using Dqueue.
+1)Similar as traditional BFS, only difference is here it is keeping in ascending order without using Priorityqueue, will use dequeue, will keep edge 0 in front and edge 1 is in back/rear of the Dqueue.
+Here we need to find shortest path only(min use of 1),so will create a Dqueue and another data structure may be array/list, will keep initially the value as MAXVAL, then will proceed each node after putting in Dqueue as {cost,node}, will traverse from source to destination in order to get minimun path value, will update the result accordingly.
+The traverse would be same as Dijkstra, will take each node and get the cost to reach it neighbours and update the additional datastructure value from MAXVAL to the current val
+*/
