@@ -1,0 +1,72 @@
+/*
+Problem Description: An integer has sequential digits if and only if each digit in the number is one more than the previous digit.Return a sorted list of all the integers in the range [low, high] inclusive that have sequential digits.
+Example 1:
+Input: low = 100, high = 300
+Output: [123,234]
+Example 2:
+Input: low = 1000, high = 13000
+Output: [1234,2345,3456,4567,5678,6789,12345]
+
+Constraints:
+10 <= low <= high <= 10^9
+
+*/
+class Solution {
+    public List<Integer> sequentialDigits(int low, int high) 
+    {
+        Queue<Integer> q=new LinkedList();
+        List<Integer> result=new ArrayList();
+        for(int i=1;i<9;i++)
+        {
+            q.offer(i);
+        }
+        while(!q.isEmpty())
+        {
+            int num=q.poll();
+            if(num>=low && num<=high)
+            {
+                result.add(num);
+            }
+            int lastDigit=num%10;
+            if(lastDigit<9)
+            {
+                q.offer(num*10+(lastDigit+1));
+            }
+        }
+        return result;
+    }
+}
+//TC:O(N)
+//SC:O(N)
+    /*
+        //TLE:
+        List<Integer> result=new ArrayList();
+        for(int num=low+1;num<high;num++)
+        {
+            //
+            int temp=num;
+            int n=String.valueOf(num).length();
+            int[] arr=new int[n];
+            boolean flag=true;
+            int j=n-1;
+            while(temp>0)
+            {
+               arr[j--]=temp%10;
+               temp=temp/10;
+            }
+           for(int k=1;k<n;k++)
+           {
+            if(arr[k]!=arr[k-1]+1)
+            {
+                flag=false;
+                break;
+            }
+           }
+           if(flag)
+           {
+             result.add(num);
+           }
+        }
+        return result;
+    }
+}*/
