@@ -68,6 +68,8 @@ class Solution {
 /*
 Approach: We are finding here only A's part , not B's Part, In Game theory the Optimal Strategy is 1) Max the your point when it is your take, 2) Expect Min when it is other's time to choose, hence in recursion while choosing next A's choice there is min val expectation as B might take the large pie already(Math.min(solve(i+2,j,nums),solve(i+1,j-1,nums));)
 then we try to optimize  the max out of A's choice and return that value
+Another Recursion approach is, result=Math.max((score[i]-remaining from solve fnc(i+1,j)),(A's score[j]-remaining from solve fnc(i,j-1))
+now check if that result>=0 , then only A player win
 
 */
 
