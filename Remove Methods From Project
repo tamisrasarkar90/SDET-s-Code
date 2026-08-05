@@ -1,0 +1,103 @@
+/*
+Problem Description: You are maintaining a project that has n methods numbered from 0 to n - 1.You are given two integers n and k, and a 2D integer array invocations, where invocations[i] = [ai, bi] indicates that method ai invokes method bi.
+There is a known bug in method k. Method k, along with any method invoked by it, either directly or indirectly, are considered suspicious and we aim to remove them.
+A group of methods can only be removed if no method outside the group invokes any methods within it.
+Return an array containing all the remaining methods after removing all the suspicious methods. You may return the answer in any order. If it is not possible to remove all the suspicious methods, none should be removed.
+
+Example 1:
+Input: n = 4, k = 1, invocations = [[1,2],[0,1],[3,2]]
+Output: [0,1,2,3]
+Explanation:
+Method 2 and method 1 are suspicious, but they are directly invoked by methods 3 and 0, which are not suspicious. We return all elements without removing anything.
+
+Example 2:
+Input: n = 5, k = 0, invocations = [[1,2],[0,2],[0,1],[3,4]]
+Output: [3,4]
+Explanation:
+Methods 0, 1, and 2 are suspicious and they are not directly invoked by any other method. We can remove them.
+
+Example 3:
+Input: n = 3, k = 2, invocations = [[1,2],[0,1],[2,0]]
+Output: []
+Explanation:
+All methods are suspicious. We can remove them.
+
+
+Constraints:
+
+1 <= n <= 105
+0 <= k <= n - 1
+0 <= invocations.length <= 2 * 105
+invocations[i] == [ai, bi]
+0 <= ai, bi <= n - 1
+ai != bi
+invocations[i] != invocations[j]
+*/
+class Solution {
+    public List<Integer> remainingMethods(int n, int k, int[][] invocations) 
+    {
+        List<List<Integer>> adj =new ArrayList();
+        boolean[] susp=new boolean[n];
+        int[] indegree=new int[n];
+        for(int i=0;i<n;i++)
+        {
+            adj.add(new ArrayList());
+        }
+
+        for(int[] edge: invocations) 
+        {
+            int u=edge[0];
+            int v=edge[1];
+            adj.get(u).add(v);
+            indegree[v]++;
+        }
+        Queue<Integer> q=new LinkedList();
+        q.offer(k);
+        susp[k]=true;
+        while(!q.isEmpty())
+        {
+            int curr=q.poll();
+        //traverse the current suspicious node nad adjacent of it and put it to the queue
+            for(int node:adj.get(curr))
+            {
+                 indegree[node]--;
+                 if(!susp[node])
+                 {
+                    q.offer(node);
+                    susp[node]=true;
+                 }
+            }
+        }
+        List<Integer> result =new ArrayList();
+        boolean canRemove=true;
+        for(int i=0;i<n;i++)
+        {
+            if(susp[i] && indegree[i]>0) //suspicious but having outer edge coming this node-> can't remove;
+            {
+                canRemove=false;
+                break;
+            }
+            if(!susp[i])
+            {
+                result.add(i);
+            }
+        }
+        if(!canRemove)
+        {
+             List<Integer> newList =new ArrayList();
+             for(int i=0;i<n;i++)
+             {
+                newList.add(i);
+             }
+            return newList;
+        }
+
+        return result;
+    }
+}
+/* Approach: Will start traversal from the affected node, will mark all node as affected(suspicious) if a edge is coming to that node from k eka source of suspicious, now we need to 
+consider indegree i.e. how many edges are incoming to that node as suspicious+ indegree>0 == not removable, else not suspicious means we can add them to the result list
+that what we did, starting from the suspicious node, we traverse all node and mark accordingly, and reduce the indegree count , last add it to the result and return it
+*/
+//TC:O(V+E)
+//SC:O(V+E) //V= number of vertices, E= total number of edges
