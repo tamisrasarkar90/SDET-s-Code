@@ -1,0 +1,111 @@
+/*
+Problem Statement:An axis-aligned rectangle is represented as a list [x1, y1, x2, y2], where (x1, y1) is the coordinate of its bottom-left corner, and (x2, y2) is the coordinate of its top-right corner. Its top and bottom edges are parallel to the X-axis, and its left and right edges are parallel to the Y-axis.
+Two rectangles overlap if the area of their intersection is positive. To be clear, two rectangles that only touch at the corner or edges do not overlap.
+Given two axis-aligned rectangles rec1 and rec2, return true if they overlap, otherwise return false.
+
+
+Example 1:
+
+Input: rec1 = [0,0,2,2], rec2 = [1,1,3,3]
+Output: true
+Example 2:
+
+Input: rec1 = [0,0,1,1], rec2 = [1,0,2,1]
+Output: false
+Example 3:
+
+Input: rec1 = [0,0,1,1], rec2 = [2,2,3,3]
+Output: false
+ 
+
+Constraints:
+
+rec1.length == 4
+rec2.length == 4
+-109 <= rec1[i], rec2[i] <= 109
+rec1 and rec2 represent a valid rectangle with a non-zero area.
+
+
+*/
+//*********************************************************Java solution**********************************************************************
+class Solution {
+    public boolean isRectangleOverlap(int[] rec1, int[] rec2) 
+    {
+        //Approach/Observation=> firstRecEndIndex should be strictly greater than secondRecFirstIndex
+        int firstStartIndex_X=rec1[0];
+        int firstStartIndex_Y=rec1[1];
+        int firstEndIndex_X=rec1[2];
+        int firstEndIndex_Y=rec1[3];
+        int secondStartIndex_X=rec2[0];
+        int secondStartIndex_Y=rec2[1];
+        int secondEndIndex_X=rec2[2];
+        int secondEndIndex_Y=rec2[3];
+        // int X_Overlap= firstEndIndex_X>secondStartIndex_X && secondEndIndex_X>firstStartIndex_X
+        //int Y_OverLap=firstEndIndex_Y>secondStartIndex_Y && secondEndIndex_Y>firstEndIndex_X
+
+        if((firstEndIndex_X>secondStartIndex_X && secondEndIndex_X>firstStartIndex_X)&& (firstEndIndex_Y>secondStartIndex_Y && secondEndIndex_Y>firstStartIndex_Y) )
+        {
+            return true;
+        }
+       return false;    
+    }
+}
+//TC:O(1)
+//SC:O(1)
+//*********************************************************Python solution**********************************************************************
+class Solution:
+    def isRectangleOverlap(self, rec1: List[int], rec2: List[int]) -> bool:
+         firstStartIndex_X=rec1[0]
+         firstStartIndex_Y=rec1[1]
+         firstEndIndex_X=rec1[2]
+         firstEndIndex_Y=rec1[3]
+         secondStartIndex_X=rec2[0]
+         secondStartIndex_Y=rec2[1]
+         secondEndIndex_X=rec2[2]
+         secondEndIndex_Y=rec2[3]
+         X_Overlap= firstEndIndex_X>secondStartIndex_X and secondEndIndex_X>firstStartIndex_X 
+         Y_Overlap= firstEndIndex_Y>secondStartIndex_Y and secondEndIndex_Y>firstStartIndex_Y
+       
+         return X_Overlap and Y_Overlap
+
+//*********************************************************C# solution**********************************************************************
+public class Solution {
+    public bool IsRectangleOverlap(int[] rec1, int[] rec2) {
+        int firstStartIndex_X=rec1[0];
+        int firstStartIndex_Y=rec1[1];
+        int firstEndIndex_X=rec1[2];
+        int firstEndIndex_Y=rec1[3];
+        int secondStartIndex_X=rec2[0];
+        int secondStartIndex_Y=rec2[1];
+        int secondEndIndex_X=rec2[2];
+        int secondEndIndex_Y=rec2[3];
+         // X_Overlap= firstEndIndex_X>secondStartIndex_X && secondEndIndex_X>firstStartIndex_X
+        //int Y_OverLap=firstEndIndex_Y>secondStartIndex_Y && secondEndIndex_Y>firstEndIndex_X
+
+        if((firstEndIndex_X>secondStartIndex_X && secondEndIndex_X>firstStartIndex_X)&& (firstEndIndex_Y>secondStartIndex_Y && secondEndIndex_Y>firstStartIndex_Y) )
+        {
+            return true;
+        }
+       return false;   
+    }
+}
+//*********************************************************TypeScript solution**********************************************************************
+function isRectangleOverlap(rec1: number[], rec2: number[]): boolean 
+{
+        let firstStartIndex_X:number=rec1[0];
+        let firstStartIndex_Y:number=rec1[1];
+        let firstEndIndex_X:number=rec1[2];
+        let firstEndIndex_Y:number=rec1[3];
+        let secondStartIndex_X:number=rec2[0];
+        let secondStartIndex_Y:number=rec2[1];
+        let secondEndIndex_X:number=rec2[2];
+        let secondEndIndex_Y:number=rec2[3];
+        let X_Overlap:boolean=( firstEndIndex_X>secondStartIndex_X) && ( secondEndIndex_X>firstStartIndex_X );
+        let Y_Overlap:boolean= (firstEndIndex_Y>secondStartIndex_Y) && ( secondEndIndex_Y>firstStartIndex_Y);
+       
+      return X_Overlap && Y_Overlap;
+};
+//TC:O(1)
+//SC:O(1)
+
+      
