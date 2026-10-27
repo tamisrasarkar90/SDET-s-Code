@@ -1,0 +1,81 @@
+/*
+Problem Statement:You are given two integers m and n, representing the number of rows and columns of a grid.Construct any m x n grid consisting only of the characters '.' and '#', where:
+
+'.' represents a free cell.
+'#' represents an obstacle cell.
+A valid path is a sequence of free cells that:
+
+Starts at the top-left cell (0, 0).
+Ends at the bottom-right cell (m - 1, n - 1).
+Moves only:
+Right, from (i, j) to (i, j + 1), or
+Down, from (i, j) to (i + 1, j).
+Return any grid such that there is exactly one valid path from the top-left cell to the bottom-right cell.
+
+
+Example 1:
+Input: m = 2, n = 3
+Output: ["..#","#.."]
+Explanation:
+The only valid path is: (0,0) → (0,1) → (1,1) → (1,2)
+
+Example 2:
+Input: m = 3, n = 3
+Output: ["..#","#..","##."]
+Explanation:
+The only valid path is: (0,0) → (0,1) → (1,1) → (1,2) → (2,2)
+
+Example 3:
+Input: m = 1, n = 4
+Output: ["...."]
+Explanation:
+The only valid path is: (0,0) → (0,1) → (0,2) → (0,3)
+
+Constraints:
+1 <= m, n <= 25
+
+*/
+class Solution {
+    public String[] createGrid(int m, int n) 
+    {
+       char[][] grid=new char[m][n];
+       int j=0;
+       for(int i=0;i<m;i++)
+       {
+          grid[i][j]='.';
+
+       } 
+       int k=m-1;
+       for(int l=0;l<n;l++)
+       {
+         grid[k][l]='.';
+       }
+
+       for(int ii=0;ii<m;ii++)
+       {
+         for(int jj=0;jj<n;jj++)
+         {
+            if(grid[ii][jj]!='.')
+            {
+                grid[ii][jj]='#';
+            }
+         }
+       }
+
+       String[] result=new String[m];
+
+       for(int i_=0;i_<m;i_++)
+       {
+         StringBuilder sb=new StringBuilder();
+         for(int j_=0;j_<n;j_++)
+         {
+            sb.append(grid[i_][j_]);
+         }
+         result[i_]=sb.toString();
+       }
+
+       return result;
+    }
+}
+//TC:O(m*n)
+//SC:O(m+n)
